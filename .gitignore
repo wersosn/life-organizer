@@ -47,9 +47,6 @@ data/
 logs/
 Logs/
 
-**/[Dd]ockerfile
-**/docker-compose*
-
 publish/
 *.publishsettings
 
