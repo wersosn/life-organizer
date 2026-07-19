@@ -34,3 +34,6 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build
+
+      - name: Build Docker image
+        run: docker build -t lifeorganizer-api ./LifeOrganizer.API
