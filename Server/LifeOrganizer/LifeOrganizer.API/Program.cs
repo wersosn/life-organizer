@@ -9,6 +9,26 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("mobile",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5292);
+    serverOptions.ListenAnyIP(7297, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+});
+
 // Infrastructure:
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -26,7 +46,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapHealthChecks("/health");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

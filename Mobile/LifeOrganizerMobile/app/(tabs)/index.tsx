@@ -1,13 +1,38 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { apiClient } from '@/api/apiClient';
 
 export default function HomeScreen() {
+  // Server-mobile app connection test:
+  /*const [message, setMessage] = useState("Sprawdzanie połączenia...");
+
+  useEffect(() => {
+    apiClient
+      .get("/test")
+      .then(response => {
+        console.log(response.data);
+        setMessage("Działa połączenie z serwerem");
+      })
+      .catch(error => {
+        console.log(error);
+        setMessage("Nie działa połączenie z serwerem " + error);
+      });
+  }, []);
+
+  return (
+    <View>
+      <ThemedText>{message}</ThemedText>
+    </View>
+  )*/
+
+  // Default layout
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}

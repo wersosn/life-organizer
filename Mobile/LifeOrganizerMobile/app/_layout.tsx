@@ -15,12 +15,12 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   // Sqlite test:
-  useEffect(() => {
+  /*useEffect(() => {
     const initialize = async () => {
       await initializeDatabase();
     };
     initialize();
-  }, []);
+  }, []);*/
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
