@@ -12,6 +12,9 @@ builder.Services.AddSwaggerGen();
 // Infrastructure:
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// Test health check 
+builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")); // 20.07.2026 - healthy
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +23,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();
 
