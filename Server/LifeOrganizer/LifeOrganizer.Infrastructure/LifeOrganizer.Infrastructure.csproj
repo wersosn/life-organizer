@@ -16,12 +16,15 @@
     <Folder Include="Email\" />
     <Folder Include="Logging\" />
     <Folder Include="Repositories\" />
-    <Folder Include="Persistence\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.29">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.29">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
