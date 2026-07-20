@@ -69,7 +69,7 @@ publish/
 
 # Mobile:
 node_modules/
-
+.claude/
 .expo/
 dist/
 web-build/
