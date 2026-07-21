@@ -30,16 +30,5 @@ namespace LifeOrganizer.API.Controllers
             var result = await mediator.Send(command);
             return Ok(result);
         }
-
-        [Authorize]
-        [HttpGet("me")]
-        public IActionResult Me()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Ok(new
-            {
-                id = userId
-            });
-        }
     }
 }
