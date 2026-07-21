@@ -1,14 +1,9 @@
 import { Redirect } from "expo-router";
-import { useAuth } from "./authProvider";
-
+import { useAuth } from "./AuthContext";
 
 export default function AuthRedirect({ children }: { children: React.ReactNode; }) 
 {
-    const { token, loading } = useAuth();
-    if (loading) {
-        return null;
-    }
-
+    const { token } = useAuth();
     if (!token) {
         return <Redirect href="../login" />;
     }

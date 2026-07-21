@@ -7,9 +7,10 @@ export default function RegisterScreen() {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     async function register() {
-        await apiClient.post("/auth/register")
+        await apiClient.post("/auth/register", { email, name, password });
         console.log({
             email,
             name,
@@ -20,11 +21,12 @@ export default function RegisterScreen() {
 
     return (
         <View style={{ padding: 20, flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text>Rejestracja</Text>
-            <TextInput placeholder="Nazwa użytkownika" value={name} onChangeText={setName} />
+            <Text>Registration</Text>
+            <TextInput placeholder="Username" value={name} onChangeText={setName} />
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" />
-            <TextInput placeholder="Hasło" value={password} onChangeText={setPassword} secureTextEntry />
-            <Button title="Utwórz konto" onPress={register} />
+            <TextInput placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
+            <TextInput placeholder="Repeat password" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry />
+            <Button title="Create account" onPress={register} />
         </View>
     );
 }

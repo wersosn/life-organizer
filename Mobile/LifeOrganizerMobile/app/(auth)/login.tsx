@@ -1,13 +1,15 @@
-import { View, Text, Button, TextInput } from "react-native";
+import { View, Text, Button, TextInput, useColorScheme } from "react-native";
 import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/api/apiClient";
 import { saveToken } from "@/auth/tokenStorage";
-import { useAuth } from "@/auth/authProvider";
+import { useAuth } from "@/auth/AuthContext";
 import { ThemedText } from "@/components/themed-text";
+import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 
 export default function LoginScreen() {
-    const [message, setMessage] = useState("Sprawdzanie połączenia...");
+    // Connection test:
+    /*const [message, setMessage] = useState("Sprawdzanie połączenia...");
 
     useEffect(() => {
         apiClient
@@ -26,11 +28,12 @@ export default function LoginScreen() {
         <View>
             <ThemedText>{message}</ThemedText>
         </View>
-    )
-    /*const [email, setEmail] = useState("");
+    )*/
+
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
-
+    const colorScheme = useColorScheme();
     async function handleLogin() {
         try {
             const response = await apiClient.post("/auth/login", {
@@ -39,7 +42,6 @@ export default function LoginScreen() {
             });
 
             await login(response.data.token);
-
             router.replace("/(tabs)");
         }
         catch (error) {
@@ -48,12 +50,14 @@ export default function LoginScreen() {
     }
 
     return (
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <View style={{ padding: 20, flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text>Logowanie</Text>
+            <Text>Login</Text>
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" />
-            <TextInput placeholder="Hasło" value={password} onChangeText={setPassword} secureTextEntry />
-            <Button title="Zaloguj" onPress={handleLogin} />
-            <Link href="../register"> Nie masz konta? Zarejestruj się </Link>
+            <TextInput placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
+            <Button title="Login" onPress={handleLogin} />
+            <Link href="../register"> Don't have an account? Register here </Link>
         </View>
-    );*/
+        </ThemeProvider>
+    );
 }

@@ -1,22 +1,24 @@
-import { Redirect, Tabs } from 'expo-router';
-import React from 'react';
+import { Redirect, router, Tabs } from 'expo-router';
+import React, { useEffect } from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useAuth } from '@/auth/authProvider';
+import { useAuth } from "@/auth/AuthContext";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { token, loading } = useAuth();
+  
+  useEffect(() => {
+    if (!loading && !token) {
+      router.replace("/(auth)/login");
+    }
+  }, [loading, token]);
 
-  if (loading) {
+  if (loading || !token) {
     return null;
-  }
-
-  if (!token) {
-    return <Redirect href="../login" />;
   }
 
   return (

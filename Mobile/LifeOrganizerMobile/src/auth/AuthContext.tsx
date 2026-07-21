@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getToken, removeToken, saveToken } from "./tokenStorage";
+import { getToken, saveToken, removeToken } from "./tokenStorage";
+import { apiClient } from "@/api/apiClient";
 
 type AuthContextType = {
     token: string | null;
@@ -11,22 +12,35 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
     token: null,
     loading: true,
-    login: async (token: string) => { },
-    logout: async () => { },
+    login: async () => {},
+    logout: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        async function checkToken() {
-            const storedToken = await getToken();
-            setToken(storedToken);
+        loadToken();
+    }, []);
+
+    async function loadToken() {
+        const savedToken = await getToken();
+        if (!savedToken) {
+            setLoading(false);
+            return;
+        }
+
+        try {
+            await apiClient.get("/auth/me");
+            setToken(savedToken);
+        } catch {
+            await removeToken();
+            setToken(null);
+        } finally {
             setLoading(false);
         }
-        checkToken();
-    }, []);
+    }
 
     async function login(token: string) {
         await saveToken(token);

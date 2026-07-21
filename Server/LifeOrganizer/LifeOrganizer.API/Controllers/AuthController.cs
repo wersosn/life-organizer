@@ -1,7 +1,9 @@
 ﻿using LifeOrganizer.Application.Users.Commands.LoginUser;
 using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LifeOrganizer.API.Controllers
 {
@@ -27,6 +29,17 @@ namespace LifeOrganizer.API.Controllers
         {
             var result = await mediator.Send(command);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(new
+            {
+                id = userId
+            });
         }
     }
 }
