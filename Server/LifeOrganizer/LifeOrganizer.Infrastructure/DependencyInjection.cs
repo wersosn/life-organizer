@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Application.Interfaces;
 using LifeOrganizer.Infrastructure.Persistence;
+using LifeOrganizer.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,7 @@ namespace LifeOrganizer.Infrastructure
         {
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IApplicationDbContext, AppDbContext>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
             return services;
         }
     }

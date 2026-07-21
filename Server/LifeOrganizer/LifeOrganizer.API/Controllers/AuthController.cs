@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Users.Commands;
+﻿using LifeOrganizer.Application.Users.Commands.LoginUser;
+using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,13 @@ namespace LifeOrganizer.API.Controllers
         {
             var id = await mediator.Send(command);
             return Ok(id);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginUserCommand command)
+        {
+            var result = await mediator.Send(command);
+            return Ok(result);
         }
     }
 }

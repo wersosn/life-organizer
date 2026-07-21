@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace LifeOrganizer.Application.Users.Commands
+namespace LifeOrganizer.Application.Users.Commands.RegisterUser
 {
     public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Guid>
     {
