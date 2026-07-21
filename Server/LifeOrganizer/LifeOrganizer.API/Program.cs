@@ -1,3 +1,4 @@
+using LifeOrganizer.Application;
 using LifeOrganizer.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,20 +21,19 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
+/*builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(5292);
     serverOptions.ListenAnyIP(7297, listenOptions =>
     {
         listenOptions.UseHttps();
     });
-});
+});*/
+
+builder.Services.AddApplication();
 
 // Infrastructure:
 builder.Services.AddInfrastructure(builder.Configuration);
-
-// Test health check 
-builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")); // 20.07.2026 - healthy
 
 var app = builder.Build();
 
@@ -43,8 +43,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.MapHealthChecks("/health");
 
 //app.UseHttpsRedirection();
 
