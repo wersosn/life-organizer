@@ -16,7 +16,9 @@
     <Folder Include="Habits\" />
     <Folder Include="Finances\" />
     <Folder Include="Chores\" />
-    <Folder Include="Tasks\" />
+    <Folder Include="Todo\Commands\DeleteTodo\" />
+    <Folder Include="Todo\Commands\CompleteTodo\" />
+    <Folder Include="Todo\Commands\UpdateTodo\" />
   </ItemGroup>
 
   <ItemGroup>
