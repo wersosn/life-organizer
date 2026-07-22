@@ -17,9 +17,11 @@ namespace LifeOrganizer.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpContextAccessor();
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IApplicationDbContext, AppDbContext>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             return services;
         }
     }

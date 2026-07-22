@@ -15,5 +15,6 @@ namespace LifeOrganizer.Domain.Entities
         public string PasswordHash { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public bool EmailConfirmed { get; set; } = false;
+        public ICollection<TodoItem> TodoItems { get; set; } = [];
     }
 }
