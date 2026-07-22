@@ -1,5 +1,5 @@
-import { View, Text, Button, TextInput } from "react-native";
-import { router } from "expo-router";
+import { View, Text, Button, TextInput, useColorScheme, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { apiClient } from "@/api/apiClient";
 
@@ -9,7 +9,15 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const colorScheme = useColorScheme();
+    const isDark = colorScheme === "dark";
+
     async function register() {
+        if (password !== confirmPassword) {
+            console.log("Passwords do not match");
+            return;
+        }
+
         await apiClient.post("/auth/register", { email, name, password });
         console.log({
             email,
@@ -20,13 +28,113 @@ export default function RegisterScreen() {
     }
 
     return (
-        <View style={{ padding: 20, flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text>Registration</Text>
-            <TextInput placeholder="Username" value={name} onChangeText={setName} />
-            <TextInput placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" />
-            <TextInput placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
-            <TextInput placeholder="Repeat password" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry />
-            <Button title="Create account" onPress={register} />
-        </View>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <ScrollView
+                contentContainerStyle={[
+                    styles.container,
+                    {
+                        backgroundColor: isDark ? "#121212" : "#F5F5F5",
+                    },
+                ]}
+                keyboardShouldPersistTaps="handled"
+            >
+                <Text
+                    style={[
+                        styles.title,
+                        {
+                            color: isDark ? "#FFFFFF" : "#000000",
+                        },
+                    ]}
+                >
+                    Registration
+                </Text>
+
+                <TextInput
+                    placeholder="Username"
+                    placeholderTextColor="#888"
+                    value={name}
+                    onChangeText={setName}
+                    style={styles.input}
+                />
+
+                <TextInput
+                    placeholder="Email"
+                    placeholderTextColor="#888"
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    style={styles.input}
+                />
+
+                <TextInput
+                    placeholder="Password"
+                    placeholderTextColor="#888"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    style={styles.input}
+                />
+
+                <TextInput
+                    placeholder="Repeat password"
+                    placeholderTextColor="#888"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry
+                    style={styles.input}
+                />
+
+                <View style={styles.buttonContainer}>
+                    <Button
+                        title="Create account"
+                        onPress={register}
+                    />
+                </View>
+
+                <Link href="../login" style={styles.link}>
+                    Already have an account? Login here
+                </Link>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 32,
+    },
+
+    title: {
+        fontSize: 32,
+        fontWeight: "700",
+        textAlign: "center",
+        marginBottom: 40,
+    },
+
+    input: {
+        backgroundColor: "#FFFFFF",
+        borderWidth: 1,
+        borderColor: "#CCCCCC",
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        fontSize: 16,
+        marginBottom: 20,
+    },
+
+    buttonContainer: {
+        marginTop: 10,
+        marginBottom: 30,
+    },
+
+    link: {
+        textAlign: "center",
+        fontSize: 15,
+    },
+});
