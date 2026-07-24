@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { Todo } from "@/types/todo";
-import { getTodos } from "@/api/todoApi";
-import { useFocusEffect } from "expo-router";
+import { completeTodo, deleteTodo, getTodos } from "@/api/todoApi";
+import { router, useFocusEffect } from "expo-router";
+import TodoCard from "@/components/TodoCard";
 
 export default function TodoScreen() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -22,6 +23,36 @@ export default function TodoScreen() {
         }, [])
     );
 
+    async function handleComplete(id: string) {
+        setTodos(prev =>
+            prev.map(todo =>
+                todo.id === id
+                    ? {
+                        ...todo,
+                        isCompleted: !todo.isCompleted,
+                    }
+                    : todo
+            )
+        );
+        await completeTodo(id);
+    }
+
+    async function handleDelete(id: string) {
+        await deleteTodo(id);
+        loadTodos();
+    }
+
+    function handleEdit(todo: Todo) {
+        router.push({
+            pathname: "../(todo)/update",
+            params: {
+                id: todo.id,
+                title: todo.title,
+                description: todo.description ?? "",
+            },
+        });
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>To-do List</Text>
@@ -30,15 +61,12 @@ export default function TodoScreen() {
                 data={todos}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text style={styles.title}>
-                            {item.title}
-                        </Text>
-
-                        {item.description ? (
-                            <Text>{item.description}</Text>
-                        ) : null}
-                    </View>
+                    <TodoCard
+                        todo={item}
+                        onComplete={handleComplete}
+                        onDelete={handleDelete}
+                        onEdit={handleEdit}
+                    />
                 )}
             />
         </View>

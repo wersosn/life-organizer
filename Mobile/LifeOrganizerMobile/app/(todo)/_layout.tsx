@@ -9,6 +9,12 @@ export default function TodoLayout() {
                     title: "Create task"
                 }}
             />
+            <Stack.Screen
+                name="update"
+                options={{
+                    title: "Update task"
+                }}
+            />
         </Stack>
     );
 }
