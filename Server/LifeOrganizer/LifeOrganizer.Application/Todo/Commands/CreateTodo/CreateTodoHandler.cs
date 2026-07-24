@@ -12,10 +12,12 @@ namespace LifeOrganizer.Application.Todo.Commands.CreateTodo
     public class CreateTodoHandler : IRequestHandler<CreateTodoCommand, Guid>
     {
         private readonly IApplicationDbContext _context;
+        private readonly ICurrentUserService _currentUser;
 
-        public CreateTodoHandler(IApplicationDbContext context)
+        public CreateTodoHandler(IApplicationDbContext context, ICurrentUserService currentUser)
         {
             _context = context;
+            _currentUser = currentUser;
         }
 
         public async Task<Guid> Handle(CreateTodoCommand request, CancellationToken cancellationToken)
@@ -23,9 +25,10 @@ namespace LifeOrganizer.Application.Todo.Commands.CreateTodo
             var todo = new TodoItem
             {
                 Id = Guid.NewGuid(),
-                UserId = request.UserId,
+                UserId = _currentUser.UserId,
                 Title = request.Title,
-                Description = request.Description
+                Description = request.Description,
+                CreatedAt = DateTime.UtcNow
             };
 
             _context.TodoItems.Add(todo);

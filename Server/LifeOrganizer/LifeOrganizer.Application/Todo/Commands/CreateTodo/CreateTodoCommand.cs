@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace LifeOrganizer.Application.Todo.Commands.CreateTodo
 {
-    public record CreateTodoCommand(Guid UserId, string Title, string? Description) : IRequest<Guid>;
+    public record CreateTodoCommand(string Title, string? Description) : IRequest<Guid>;
 }

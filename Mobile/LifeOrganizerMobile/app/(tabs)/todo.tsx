@@ -1,12 +1,48 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import { router } from "expo-router";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { Todo } from "@/types/todo";
+import { getTodos } from "@/api/todoApi";
+import { useFocusEffect } from "expo-router";
 
 export default function TodoScreen() {
-  return (
-          <View style={styles.container}>
-              <Text style={styles.title}>To-do List</Text>
-          </View>
-      );
+    const [todos, setTodos] = useState<Todo[]>([]);
+
+    async function loadTodos() {
+        try {
+            const data = await getTodos();
+            setTodos(data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            loadTodos();
+        }, [])
+    );
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>To-do List</Text>
+            <FlatList
+                style={{ marginTop: 20 }}
+                data={todos}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text style={styles.title}>
+                            {item.title}
+                        </Text>
+
+                        {item.description ? (
+                            <Text>{item.description}</Text>
+                        ) : null}
+                    </View>
+                )}
+            />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -43,5 +79,11 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 38,
         marginTop: -2,
+    },
+
+    item: {
+        padding: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
     },
 });
