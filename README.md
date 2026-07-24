@@ -144,7 +144,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 ### Backend
 - [x] Project structure (Clean Architecture)
 - [x] User registration & login (JWT)
-- [ ] Task List module (CRUD)
+- [x] Task List module
 - [ ] Habit Tracker module
 - [ ] Finance Tracker module
 - [ ] Chore Tracker module
@@ -159,7 +159,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 ### Mobile App
 - [x] Auth screens (register/login)
 - [x] Navigation & tab structure (4 modules)
-- [ ] Task List screen
+- [x] Task List screen
 - [ ] Habit Tracker screen
 - [ ] Finance Tracker screen
 - [ ] Chore Tracker screen
@@ -312,7 +312,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 ### Backend
 - [x] Struktura projektu (Clean Architecture)
 - [x] Rejestracja i logowanie użytkownika (JWT)
-- [ ] Moduł listy zadań (CRUD)
+- [x] Moduł listy zadań
 - [ ] Moduł Habit Tracker
 - [ ] Moduł Finance Tracker
 - [ ] Moduł Chore Tracker
@@ -327,7 +327,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 ### Aplikacja mobilna
 - [x] Ekrany logowania/rejestracji
 - [x] Nawigacja i struktura zakładek (4 moduły)
-- [ ] Ekran listy zadań
+- [x] Ekran listy zadań
 - [ ] Ekran Habit Tracker
 - [ ] Ekran Finance Tracker
 - [ ] Ekran Chore Tracker
