@@ -6,12 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
+namespace LifeOrganizer.Application.Habits.Commands.UpdateHabit
 {
-    public class CreateHabitValidator : AbstractValidator<CreateHabitCommand>
+    public class UpdateHabitValidator : AbstractValidator<UpdateHabitCommand>
     {
-        public CreateHabitValidator()
+        public UpdateHabitValidator()
         {
+            RuleFor(x => x.Id)
+                .NotEmpty();
+
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(200);
@@ -28,7 +31,7 @@ namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
                 .IsInEnum();
 
             RuleFor(x => x.CompletionDeadline)
-                .Must(deadline => deadline is null || deadline.Value >= TimeSpan.Zero && deadline.Value < TimeSpan.FromDays(1))
+                .Must(deadline => deadline is null || (deadline.Value >= TimeSpan.Zero && deadline.Value < TimeSpan.FromDays(1)))
                 .WithMessage("CompletionDeadline must represent a valid time of day.");
         }
     }

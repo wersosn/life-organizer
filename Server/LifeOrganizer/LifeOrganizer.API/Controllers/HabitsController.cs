@@ -1,5 +1,7 @@
 ﻿using LifeOrganizer.Application.Habits.Commands.CreateHabit;
+using LifeOrganizer.Application.Habits.Commands.DeleteHabit;
 using LifeOrganizer.Application.Habits.Commands.GetAllHabits;
+using LifeOrganizer.Application.Habits.Commands.UpdateHabit;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +31,20 @@ namespace LifeOrganizer.API.Controllers
         {
             var id = await mediator.Send(command);
             return Ok(id);
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, UpdateHabitCommand command)
+        {
+            await mediator.Send(command with { Id = id });
+            return NoContent();
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await mediator.Send(new DeleteHabitCommand(id));
+            return NoContent();
         }
     }
 }

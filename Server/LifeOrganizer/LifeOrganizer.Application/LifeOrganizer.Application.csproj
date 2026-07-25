@@ -14,9 +14,7 @@
     <Folder Include="Features\" />
     <Folder Include="Finances\" />
     <Folder Include="Chores\" />
-    <Folder Include="Habits\Commands\DeleteHabit\" />
     <Folder Include="Habits\Commands\CompleteHabit\" />
-    <Folder Include="Habits\Commands\UpdateHabit\" />
   </ItemGroup>
 
   <ItemGroup>
