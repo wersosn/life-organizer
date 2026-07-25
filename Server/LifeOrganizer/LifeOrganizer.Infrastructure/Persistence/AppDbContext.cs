@@ -14,7 +14,7 @@ namespace LifeOrganizer.Infrastructure.Persistence
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<User> Users => Set<User>();
         public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-
+        public DbSet<Habit> Habits => Set<Habit>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

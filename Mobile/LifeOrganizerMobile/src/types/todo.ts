@@ -5,4 +5,5 @@ export type Todo = {
     isCompleted: boolean;
     createdAt: string;
     completedAt?: string;
+    isSynced?: boolean;
 };

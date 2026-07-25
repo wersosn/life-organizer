@@ -1,4 +1,5 @@
 import { createTodo } from "@/api/todoApi";
+import { createTodoLocal } from "@/database/repositories/todoRepository";
 import { router } from "expo-router";
 import { useState } from "react";
 import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
@@ -20,6 +21,7 @@ export default function CreateTodoScreen() {
                 title,
                 description
             );
+            await createTodoLocal(title, description);
             router.back();
         } catch (error) {
             console.log(error);

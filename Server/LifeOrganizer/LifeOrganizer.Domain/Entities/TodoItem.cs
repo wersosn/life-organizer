@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LifeOrganizer.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,7 @@ namespace LifeOrganizer.Domain.Entities
         public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? CompletedAt { get; set; }
+        public TaskSource Source { get; set; } = TaskSource.Manual;
+        public Guid? SourceId { get; set; }
     }
 }
