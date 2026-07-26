@@ -30,6 +30,7 @@ namespace LifeOrganizer.Application.Todo.Commands.UpdateTodo
 
             todo.Title = request.Title;
             todo.Description = request.Description;
+            todo.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

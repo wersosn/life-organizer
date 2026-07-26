@@ -1,4 +1,5 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,19 +18,21 @@ namespace LifeOrganizer.Application.Habits.Commands.GetAllHabits
         public async Task<List<HabitDto>> Handle(GetAllHabitsQuery request, CancellationToken cancellationToken)
         {
             var userId = _currentUser.UserId;
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
             return await _context.Habits
                 .Where(x => x.UserId == userId)
                 .OrderByDescending(x => x.CreatedAt)
                 .Select(x => new HabitDto
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Frequency = x.Frequency,
-                    ScheduledDays = x.ScheduledDays,
-                    CompletionDeadline = x.CompletionDeadline,
-                    IsActive = x.IsActive,
-                    CreatedAt = x.CreatedAt
-                })
+                (
+                    x.Id,
+                    x.Name,
+                    x.Frequency,
+                    x.ScheduledDays,
+                    x.CompletionDeadline,
+                    x.IsActive,
+                    x.CreatedAt,
+                    x.Completions.Any(c => c.Date == today && c.Status == HabitCompletionStatus.Completed)
+                ))
                 .ToListAsync(cancellationToken);
         }
 

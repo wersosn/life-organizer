@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Habits.Commands.CreateHabit;
 using LifeOrganizer.Application.Habits.Commands.DeleteHabit;
 using LifeOrganizer.Application.Habits.Commands.GetAllHabits;
+using LifeOrganizer.Application.Habits.Commands.GetHabitById;
 using LifeOrganizer.Application.Habits.Commands.UncompleteHabit;
 using LifeOrganizer.Application.Habits.Commands.UpdateHabit;
 using MediatR;
@@ -26,6 +27,13 @@ namespace LifeOrganizer.API.Controllers
         {
             var habits = await mediator.Send(new GetAllHabitsQuery());
             return Ok(habits);
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var habit = await mediator.Send(new GetHabitByIdQuery(id));
+            return Ok(habit);
         }
 
         [HttpPost]

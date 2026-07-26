@@ -19,5 +19,6 @@ namespace LifeOrganizer.Domain.Entities
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<HabitCompletion> Completions { get; set; } = new List<HabitCompletion>();
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

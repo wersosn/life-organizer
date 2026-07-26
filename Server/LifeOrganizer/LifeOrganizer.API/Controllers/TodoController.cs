@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Todo.Commands.CreateTodo;
 using LifeOrganizer.Application.Todo.Commands.DeleteTodo;
 using LifeOrganizer.Application.Todo.Commands.GetAllTodo;
+using LifeOrganizer.Application.Todo.Commands.GetTodoById;
 using LifeOrganizer.Application.Todo.Commands.UpdateTodo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,13 @@ namespace LifeOrganizer.API.Controllers
         {
             var todos = await mediator.Send(new GetAllTodosQuery());
             return Ok(todos);
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var todo = await mediator.Send(new GetTodoByIdQuery(id));
+            return Ok(todo);
         }
 
         [HttpPost]

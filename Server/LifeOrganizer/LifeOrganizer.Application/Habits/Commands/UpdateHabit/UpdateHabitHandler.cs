@@ -31,6 +31,7 @@ namespace LifeOrganizer.Application.Habits.Commands.UpdateHabit
             habit.Frequency = request.Frequency;
             habit.ScheduledDays = request.ScheduledDays;
             habit.CompletionDeadline = request.CompletionDeadline;
+            habit.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

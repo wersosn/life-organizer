@@ -5,17 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LifeOrganizer.Application.Habits.Commands.GetAllHabits
+namespace LifeOrganizer.Application.Habits.Commands.GetHabitById
 {
-    public record HabitDto
+    public record HabitDetailsDto
     (
         Guid Id,
         string Name,
         HabitFrequency Frequency,
         List<DayOfWeek> ScheduledDays,
         TimeSpan? CompletionDeadline,
-        bool IsActive,
-        DateTime CreatedAt,
-        bool IsCompletedToday
+        List<HabitCompletionDto> RecentCompletions
     );
+    public record HabitCompletionDto(DateOnly Date, HabitCompletionStatus Status);
 }

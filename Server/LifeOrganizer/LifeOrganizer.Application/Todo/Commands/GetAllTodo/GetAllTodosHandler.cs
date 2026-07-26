@@ -26,15 +26,15 @@ namespace LifeOrganizer.Application.Todo.Commands.GetAllTodo
             return await _context.TodoItems
                 .Where(x => x.UserId == userId)
                 .OrderByDescending(x => x.CreatedAt)
-                .Select(x => new TodoDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    IsCompleted = x.IsCompleted,
-                    CreatedAt = x.CreatedAt,
-                    CompletedAt = x.CompletedAt
-                })
+                .Select(x => new TodoDto(
+                
+                    x.Id,
+                    x.Title,
+                    x.Description,
+                    x.IsCompleted,
+                    x.CreatedAt,
+                    x.CompletedAt
+                ))
                 .ToListAsync(cancellationToken);
         }
     }

@@ -19,5 +19,6 @@ namespace LifeOrganizer.Domain.Entities
         public DateTime? CompletedAt { get; set; }
         public TaskSource Source { get; set; } = TaskSource.Manual;
         public Guid? SourceId { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }
