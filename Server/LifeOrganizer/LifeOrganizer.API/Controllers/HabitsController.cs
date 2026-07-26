@@ -1,6 +1,8 @@
-﻿using LifeOrganizer.Application.Habits.Commands.CreateHabit;
+﻿using LifeOrganizer.Application.Habits.Commands.CompleteHabit;
+using LifeOrganizer.Application.Habits.Commands.CreateHabit;
 using LifeOrganizer.Application.Habits.Commands.DeleteHabit;
 using LifeOrganizer.Application.Habits.Commands.GetAllHabits;
+using LifeOrganizer.Application.Habits.Commands.UncompleteHabit;
 using LifeOrganizer.Application.Habits.Commands.UpdateHabit;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +46,20 @@ namespace LifeOrganizer.API.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             await mediator.Send(new DeleteHabitCommand(id));
+            return NoContent();
+        }
+
+        [HttpPatch("{id:guid}/complete")]
+        public async Task<IActionResult> Complete(Guid id, [FromQuery] DateOnly? date)
+        {
+            var completionId = await mediator.Send(new CompleteHabitCommand(id, date));
+            return Ok(completionId);
+        }
+
+        [HttpPatch("{id:guid}/uncomplete")]
+        public async Task<IActionResult> Uncomplete(Guid id, [FromQuery] DateOnly? date)
+        {
+            await mediator.Send(new UncompleteHabitCommand(id, date));
             return NoContent();
         }
     }

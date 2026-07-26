@@ -25,14 +25,14 @@ namespace LifeOrganizer.Application.Habits.Commands.UpdateHabit
             RuleFor(x => x.ScheduledDays)
                 .NotEmpty()
                 .When(x => x.Frequency is HabitFrequency.Weekly or HabitFrequency.Monthly or HabitFrequency.Custom)
-                .WithMessage("ScheduledDays is required for Weekly, Monthly or Custom frequency.");
+                .WithMessage("Scheduled days is required for Weekly, Monthly or Custom frequency");
 
             RuleForEach(x => x.ScheduledDays)
                 .IsInEnum();
 
             RuleFor(x => x.CompletionDeadline)
                 .Must(deadline => deadline is null || (deadline.Value >= TimeSpan.Zero && deadline.Value < TimeSpan.FromDays(1)))
-                .WithMessage("CompletionDeadline must represent a valid time of day.");
+                .WithMessage("Completion deadline must represent a valid time of day");
         }
     }
 }

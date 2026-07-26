@@ -13,6 +13,7 @@ namespace LifeOrganizer.Application.Common.Interfaces
         DbSet<User> Users { get; }
         DbSet<TodoItem> TodoItems { get; }
         DbSet<Habit> Habits { get; }
+        DbSet<HabitCompletion> HabitCompletions { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
