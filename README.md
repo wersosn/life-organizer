@@ -145,7 +145,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Project structure (Clean Architecture)
 - [x] User registration & login (JWT)
 - [x] Task List module
-- [ ] Habit Tracker module
+- [x] Habit Tracker module
 - [ ] Finance Tracker module
 - [ ] Chore Tracker module
 - [ ] Automation engine (habits → tasks)
@@ -313,7 +313,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Struktura projektu (Clean Architecture)
 - [x] Rejestracja i logowanie użytkownika (JWT)
 - [x] Moduł listy zadań
-- [ ] Moduł Habit Tracker
+- [x] Moduł Habit Tracker
 - [ ] Moduł Finance Tracker
 - [ ] Moduł Chore Tracker
 - [ ] Silnik automatyzacji (nawyki → zadania)
