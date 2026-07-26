@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\" />
     <Folder Include="Integration\" />
     <Folder Include="Unit\Chores\" />
     <Folder Include="Unit\Finances\" />
