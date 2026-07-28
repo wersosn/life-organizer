@@ -6,4 +6,5 @@ export type Todo = {
     createdAt: string;
     completedAt?: string;
     isSynced?: boolean;
+    serverId?: string; 
 };

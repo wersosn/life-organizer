@@ -1,4 +1,5 @@
 import { updateTodo } from "@/api/todoApi";
+import { markSynced, updateTodoLocal } from "@/database/repositories/todoRepository";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from "react-native";

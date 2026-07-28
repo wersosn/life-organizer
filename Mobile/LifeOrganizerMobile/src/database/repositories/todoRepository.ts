@@ -24,6 +24,7 @@ function mapRow(row: TodoRow): Todo {
         createdAt: row.created_at,
         completedAt: row.completed_at ?? undefined,
         isSynced: !!row.is_synced,
+        serverId: row.server_id ?? undefined,
     };
 }
 
@@ -76,6 +77,34 @@ export async function updateTodoLocal(id: string, changes: Partial<Pick<Todo, "t
             id,
         ]
     );
+}
+
+export async function upsertFromServer(serverTodos: Todo[]) {
+    for (const todo of serverTodos) {
+        await db.runAsync(
+            `INSERT INTO todos (id, server_id, title, description, is_completed, created_at, completed_at, updated_at, is_deleted, is_synced)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 1)
+             ON CONFLICT(id) DO UPDATE SET
+                title = excluded.title,
+                description = excluded.description,
+                is_completed = excluded.is_completed,
+                completed_at = excluded.completed_at,
+                server_id = excluded.server_id,
+                is_synced = 1
+             WHERE todos.is_synced = 1`,
+            [
+                todo.id,
+                todo.id,
+                todo.title,
+                todo.description ?? null,
+                todo.isCompleted ? 1 : 0,
+                todo.createdAt,
+                todo.completedAt ?? null,
+                Date.now(),
+            ]
+        );
+    }
+    console.log("[DB] Cached", serverTodos.length, "todos from server");
 }
 
 export async function deleteTodoLocal(id: string) {

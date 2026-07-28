@@ -4,6 +4,7 @@ import { Todo } from "@/types/todo";
 import { completeTodo, deleteTodo, getTodos } from "@/api/todoApi";
 import { router, useFocusEffect } from "expo-router";
 import TodoCard from "@/components/TodoCard";
+import { deleteTodoLocal, getAllTodos, markSynced, updateTodoLocal, upsertFromServer } from "@/database/repositories/todoRepository";
 
 export default function TodoScreen() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -39,7 +40,7 @@ export default function TodoScreen() {
 
     async function handleDelete(id: string) {
         await deleteTodo(id);
-        loadTodos();
+        await loadTodos();
     }
 
     function handleEdit(todo: Todo) {

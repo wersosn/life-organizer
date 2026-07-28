@@ -26,3 +26,8 @@ export function initDatabase() {
     );
   `);
 }
+
+export async function resetDatabase() {
+    await db.execAsync("DELETE FROM todos");
+    console.log("[DB] Cleared all todos");
+}

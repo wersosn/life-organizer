@@ -5,13 +5,14 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useEffect } from 'react';
 import { AuthProvider } from "@/auth/AuthContext";
-import { initDatabase } from '@/database/database';
+import { initDatabase, resetDatabase } from '@/database/database';
 import { syncTodos } from '@/services/syncService';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const isOnline = useNetworkStatus();
+  resetDatabase();
   initDatabase();
 
   useEffect(() => {

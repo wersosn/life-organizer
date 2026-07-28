@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
 
         setToken(savedToken);
+        
         try {
             const response = await apiClient.get("/auth/me");
             setUser(response.data);
