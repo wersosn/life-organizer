@@ -1,8 +1,8 @@
 import { createTodo } from "@/api/todoApi";
-import { createTodoLocal, markSynced } from "@/database/repositories/todoRepository";
 import { router } from "expo-router";
 import { useState } from "react";
-import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
+import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
+import { styles } from "../../src/styles/createTodo.styles";
 
 export default function CreateTodoScreen() {
     const [title, setTitle] = useState("");
@@ -15,17 +15,6 @@ export default function CreateTodoScreen() {
             console.log("Title is required");
             return;
         }
-
-        /*try {
-            await createTodo(
-                title,
-                description
-            );
-            await createTodoLocal(title, description);
-            router.back();
-        } catch (error) {
-            console.log(error);
-        }*/
 
         await createTodo(title, description);
         router.back();
@@ -91,34 +80,3 @@ export default function CreateTodoScreen() {
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 32,
-    },
-
-    title: {
-        fontSize: 30,
-        fontWeight: "700",
-        textAlign: "center",
-        marginBottom: 40,
-    },
-
-    input: {
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 12,
-        padding: 14,
-        fontSize: 16,
-        marginBottom: 20,
-    },
-
-    description: {
-        height: 120,
-        textAlignVertical: "top",
-    },
-
-});

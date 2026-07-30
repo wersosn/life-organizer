@@ -4,7 +4,6 @@ import { HabitFrequency } from "@/types/habit";
 export const FREQUENCY_LABELS: Record<HabitFrequency, string> = {
     [HabitFrequency.Daily]: "Daily",
     [HabitFrequency.Weekly]: "Weekly",
-    [HabitFrequency.Monthly]: "Monthly",
     [HabitFrequency.Custom]: "Custom",
 };
 

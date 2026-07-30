@@ -2,13 +2,13 @@ import { View, Text, Button, TextInput, useColorScheme, StyleSheet, ScrollView, 
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { apiClient } from "@/api/apiClient";
+import { styles } from "../../src/styles/register.styles";
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
@@ -28,10 +28,7 @@ export default function RegisterScreen() {
     }
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <ScrollView
                 contentContainerStyle={[
                     styles.container,
@@ -39,16 +36,9 @@ export default function RegisterScreen() {
                         backgroundColor: isDark ? "#121212" : "#F5F5F5",
                     },
                 ]}
-                keyboardShouldPersistTaps="handled"
-            >
-                <Text
-                    style={[
-                        styles.title,
-                        {
-                            color: isDark ? "#FFFFFF" : "#000000",
-                        },
-                    ]}
-                >
+                keyboardShouldPersistTaps="handled">
+
+                <Text style={[ styles.title, { color: isDark ? "#FFFFFF" : "#000000", }, ]}>
                     Registration
                 </Text>
 
@@ -103,39 +93,3 @@ export default function RegisterScreen() {
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 32,
-    },
-
-    title: {
-        fontSize: 32,
-        fontWeight: "700",
-        textAlign: "center",
-        marginBottom: 40,
-    },
-
-    input: {
-        backgroundColor: "#FFFFFF",
-        borderWidth: 1,
-        borderColor: "#CCCCCC",
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        fontSize: 16,
-        marginBottom: 20,
-    },
-
-    buttonContainer: {
-        marginTop: 10,
-        marginBottom: 30,
-    },
-
-    link: {
-        textAlign: "center",
-        fontSize: 15,
-    },
-});

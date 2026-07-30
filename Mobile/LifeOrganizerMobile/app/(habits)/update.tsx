@@ -6,8 +6,9 @@ import { DAY_LABELS, FREQUENCY_LABELS } from "@/utils/habitLabels";
 import { formatTimeDisplay, formatTimeSpan, parseTimeSpan } from "@/utils/habitTime";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
+import { View, Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { styles } from "../../src/styles/updateHabit.styles";
 
 export default function UpdateHabitScreen() {
     const params = useLocalSearchParams();
@@ -78,8 +79,7 @@ export default function UpdateHabitScreen() {
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-        >
+            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
             <ScrollView
                 contentContainerStyle={[
                     styles.container,
@@ -88,7 +88,6 @@ export default function UpdateHabitScreen() {
                 keyboardShouldPersistTaps="handled"
             >
                 <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Edit habit</Text>
-
                 <TextInput
                     placeholder="Name"
                     placeholderTextColor="#888"
@@ -108,7 +107,7 @@ export default function UpdateHabitScreen() {
                                 style={[
                                     styles.segment,
                                     {
-                                        backgroundColor: isSelected ? "#4CAF50" : isDark ? "#1E1E1E" : "#fff",
+                                        backgroundColor: isSelected ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
                                         borderColor: isDark ? "#333" : "#ccc",
                                     },
                                 ]}
@@ -134,7 +133,7 @@ export default function UpdateHabitScreen() {
                                         style={[
                                             styles.dayChip,
                                             {
-                                                backgroundColor: isSelected ? "#4CAF50" : isDark ? "#1E1E1E" : "#fff",
+                                                backgroundColor: isSelected ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
                                                 borderColor: isDark ? "#333" : "#ccc",
                                             },
                                         ]}
@@ -185,88 +184,9 @@ export default function UpdateHabitScreen() {
                 {error && <Text style={styles.errorText}>{error}</Text>}
 
                 <View style={styles.buttonWrapper}>
-                    <Button title="Save" onPress={handleUpdate} />
+                    <Button title="Save" onPress={handleUpdate} color="#4F7CFF" />
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 32,
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: "700",
-        textAlign: "center",
-        marginBottom: 40,
-    },
-    input: {
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 12,
-        padding: 14,
-        fontSize: 16,
-        marginBottom: 20,
-    },
-    label: {
-        fontSize: 14,
-        fontWeight: "600",
-        marginBottom: 8,
-    },
-    segmentedControl: {
-        flexDirection: "row",
-        gap: 8,
-        marginBottom: 20,
-    },
-    segment: {
-        flex: 1,
-        paddingVertical: 10,
-        borderRadius: 10,
-        borderWidth: 1,
-        alignItems: "center",
-    },
-    daysRow: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-        marginBottom: 20,
-    },
-    dayChip: {
-        paddingHorizontal: 12,
-        paddingVertical: 8,
-        borderRadius: 8,
-        borderWidth: 1,
-    },
-    errorText: {
-        color: "#E53935",
-        fontSize: 13,
-        marginBottom: 12,
-        textAlign: "center",
-    },
-    deadlineRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 16,
-        marginBottom: 20
-    },
-    deadlineButton: {
-        flex: 1,
-        paddingVertical: 12,
-        paddingHorizontal: 14,
-        borderRadius: 10,
-        borderWidth: 1
-    },
-    clearText: {
-        color: "#E53935",
-        fontSize: 13,
-        fontWeight: "600"
-    },
-    buttonWrapper: {
-        marginTop: 8,
-    },
-});

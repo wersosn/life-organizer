@@ -1,8 +1,8 @@
 import { updateTodo } from "@/api/todoApi";
-import { markSynced, updateTodoLocal } from "@/database/repositories/todoRepository";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
+import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
+import { styles } from "../../src/styles/updateTodo.styles";
 
 export default function UpdateTodoScreen() {
     const params = useLocalSearchParams();
@@ -90,34 +90,3 @@ export default function UpdateTodoScreen() {
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 32,
-    },
-
-    title: {
-        fontSize: 30,
-        fontWeight: "700",
-        textAlign: "center",
-        marginBottom: 40,
-    },
-
-    input: {
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 12,
-        padding: 14,
-        fontSize: 16,
-        marginBottom: 20,
-    },
-
-    description: {
-        height: 120,
-        textAlignVertical: "top",
-    },
-
-});

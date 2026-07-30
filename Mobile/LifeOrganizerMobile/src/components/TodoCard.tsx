@@ -1,5 +1,6 @@
 import { Todo } from "@/types/todo";
-import { Pressable, View, Text, StyleSheet, useColorScheme, Image } from "react-native";
+import { Pressable, View, Text, useColorScheme, Image } from "react-native";
+import { styles } from "./TodoCard.styles";
 
 type Props = {
     todo: Todo;
@@ -22,7 +23,6 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                 },
             ]}
         >
-
             <Pressable
                 onPress={() => onComplete(todo.id)}
                 style={[
@@ -36,10 +36,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                     </Text>
                 )}
             </Pressable>
-
-
             <View style={styles.content}>
-
                 <Text
                     style={[
                         styles.title,
@@ -54,8 +51,6 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                 >
                     {todo.title}
                 </Text>
-
-
                 {
                     todo.description &&
                     <Text
@@ -71,27 +66,17 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                         {todo.description}
                     </Text>
                 }
-
             </View>
 
-
             <View style={styles.actions}>
-                <Pressable
-                    onPress={() => onEdit(todo)}
-                    hitSlop={10}
-                    style={styles.iconButton}
-                >
+                <Pressable onPress={() => onEdit(todo)} hitSlop={10} style={styles.iconButton}>
                     <Image
                         source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
                         style={styles.icon}
                     />
                 </Pressable>
 
-                <Pressable
-                    onPress={() => onDelete(todo.id)}
-                    hitSlop={10}
-                    style={styles.iconButton}
-                >
+                <Pressable onPress={() => onDelete(todo.id)} hitSlop={10} style={styles.iconButton}>
                     <Image
                         source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
                         style={styles.icon}
@@ -101,96 +86,3 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
         </View>
     );
 }
-
-
-const styles = StyleSheet.create({
-
-    card: {
-        flexDirection: "row",
-        alignItems: "center",
-
-        borderRadius: 16,
-        padding: 16,
-
-        marginBottom: 12,
-
-        shadowColor: "#f5f5f5",
-        shadowOpacity: 0.08,
-        shadowRadius: 8,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-
-        elevation: 3,
-    },
-
-
-    checkbox: {
-        width: 26,
-        height: 26,
-
-        borderRadius: 8,
-
-        borderWidth: 2,
-        borderColor: "#4F7CFF",
-
-        justifyContent: "center",
-        alignItems: "center",
-
-        marginRight: 14,
-    },
-
-
-    checked: {
-        backgroundColor: "#4F7CFF",
-    },
-
-
-    checkmark: {
-        color: "#FFFFFF",
-        fontSize: 17,
-        fontWeight: "700",
-    },
-
-
-    content: {
-        flex: 1,
-    },
-
-
-    title: {
-        fontSize: 16,
-        fontWeight: "600",
-    },
-
-
-    completedText: {
-        textDecorationLine: "line-through",
-        opacity: 0.5,
-    },
-
-
-    description: {
-        marginTop: 5,
-        fontSize: 14,
-    },
-
-
-    actions: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginLeft: 12,
-    },
-
-
-    iconButton: {
-        marginLeft: 14,
-    },
-
-    icon: {
-        width: 22,
-        height: 22,
-        resizeMode: "contain",
-    },
-})

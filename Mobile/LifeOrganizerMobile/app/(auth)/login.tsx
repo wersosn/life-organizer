@@ -2,10 +2,8 @@ import { View, Text, Button, TextInput, useColorScheme, StyleSheet, KeyboardAvoi
 import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/api/apiClient";
-import { saveToken } from "@/auth/tokenStorage";
 import { useAuth } from "@/auth/AuthContext";
-import { ThemedText } from "@/components/themed-text";
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { styles } from "../../src/styles/login.styles";
 
 export default function LoginScreen() {
     // Connection test:
@@ -53,23 +51,14 @@ export default function LoginScreen() {
     }
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <ScrollView
                 contentContainerStyle={[
                     styles.container,
                     { backgroundColor: isDark ? "#121212" : "#F5F5F5" },
                 ]}
-                keyboardShouldPersistTaps="handled"
-            >
-                <Text
-                    style={[
-                        styles.title,
-                        { color: isDark ? "#FFFFFF" : "#000000" },
-                    ]}
-                >
+                keyboardShouldPersistTaps="handled">
+                <Text style={[ styles.title, { color: isDark ? "#FFFFFF" : "#000000" }, ]}>
                     Login
                 </Text>
 
@@ -102,39 +91,3 @@ export default function LoginScreen() {
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 32,
-    },
-
-    title: {
-        fontSize: 32,
-        fontWeight: "700",
-        textAlign: "center",
-        marginBottom: 40,
-    },
-
-    input: {
-        backgroundColor: "#FFFFFF",
-        borderWidth: 1,
-        borderColor: "#CCCCCC",
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        fontSize: 16,
-        marginBottom: 20,
-    },
-
-    buttonContainer: {
-        marginTop: 10,
-        marginBottom: 30,
-    },
-
-    link: {
-        textAlign: "center",
-        fontSize: 15,
-    },
-});

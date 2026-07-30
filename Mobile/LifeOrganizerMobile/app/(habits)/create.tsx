@@ -6,8 +6,9 @@ import { DAY_LABELS, FREQUENCY_LABELS } from "@/utils/habitLabels";
 import { formatTimeDisplay, formatTimeSpan } from "@/utils/habitTime";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
+import { View, Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { styles } from "../../src/styles/createHabit.styles";
 
 export default function CreateHabitScreen() {
     const [name, setName] = useState("");
@@ -65,15 +66,15 @@ export default function CreateHabitScreen() {
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-        >
+            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+                
             <ScrollView
                 contentContainerStyle={[
                     styles.container,
                     { backgroundColor: isDark ? "#121212" : "#F5F5F5" },
                 ]}
-                keyboardShouldPersistTaps="handled"
-            >
+                keyboardShouldPersistTaps="handled">
+
                 <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>
                     New habit
                 </Text>
@@ -199,82 +200,3 @@ export default function CreateHabitScreen() {
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 32,
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: "700",
-        textAlign: "center",
-        marginBottom: 40,
-    },
-    input: {
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 12,
-        padding: 14,
-        fontSize: 16,
-        marginBottom: 20,
-    },
-    label: {
-        fontSize: 14,
-        fontWeight: "600",
-        marginBottom: 8,
-    },
-    segmentedControl: {
-        flexDirection: "row",
-        gap: 8,
-        marginBottom: 20,
-    },
-    segment: {
-        flex: 1,
-        paddingVertical: 10,
-        borderRadius: 10,
-        borderWidth: 1,
-        alignItems: "center",
-    },
-    daysRow: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-        marginBottom: 20,
-    },
-    dayChip: {
-        paddingHorizontal: 12,
-        paddingVertical: 8,
-        borderRadius: 8,
-        borderWidth: 1,
-    },
-    errorText: {
-        color: "#E53935",
-        fontSize: 13,
-        marginBottom: 12,
-        textAlign: "center",
-    },
-    deadlineRow: { 
-        flexDirection: "row", 
-        alignItems: "center", 
-        gap: 16, 
-        marginBottom: 20 
-    },
-    deadlineButton: { 
-        flex: 1, 
-        paddingVertical: 12, 
-        paddingHorizontal: 14, 
-        borderRadius: 10, 
-        borderWidth: 1 
-    },
-    clearText: { 
-        color: "#E53935", 
-        fontSize: 13, 
-        fontWeight: "600" 
-    },
-    buttonWrapper: {
-        marginTop: 8,
-    },
-});
