@@ -21,7 +21,7 @@ namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
 
             RuleFor(x => x.ScheduledDays)
                 .NotEmpty()
-                .When(x => x.Frequency is HabitFrequency.Weekly or HabitFrequency.Monthly or HabitFrequency.Custom)
+                .When(x => x.Frequency is HabitFrequency.Weekly or HabitFrequency.Custom)
                 .WithMessage("Scheduled days is required for Weekly, Monthly or Custom frequency");
 
             RuleForEach(x => x.ScheduledDays)

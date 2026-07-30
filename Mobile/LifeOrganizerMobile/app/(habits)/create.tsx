@@ -3,14 +3,18 @@ import { DayOfWeek } from "@/types/days";
 import { HabitFrequency } from "@/types/habit";
 import { ALL_DAYS, FREQUENCY_OPTIONS } from "@/types/labels";
 import { DAY_LABELS, FREQUENCY_LABELS } from "@/utils/habitLabels";
+import { formatTimeDisplay, formatTimeSpan } from "@/utils/habitTime";
 import { router } from "expo-router";
-import { useState } from "react";
+import React, { useState } from "react";
 import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function CreateHabitScreen() {
     const [name, setName] = useState("");
     const [frequency, setFrequency] = useState<HabitFrequency>(HabitFrequency.Daily);
     const [scheduledDays, setScheduledDays] = useState<DayOfWeek[]>([]);
+    const [deadline, setDeadline] = useState<Date | null>(null);
+    const [showTimePicker, setShowTimePicker] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
@@ -28,6 +32,13 @@ export default function CreateHabitScreen() {
         }
     }
 
+    function handleTimeChange(event: any, selectedDate?: Date) {
+        setShowTimePicker(Platform.OS === "ios");
+        if (selectedDate) {
+            setDeadline(selectedDate);
+        }
+    }
+
     async function handleCreate() {
         if (!name.trim()) {
             console.log("Name is required");
@@ -42,7 +53,7 @@ export default function CreateHabitScreen() {
         setError(null);
 
         try {
-            await createHabit(name, frequency, scheduledDays);
+            await createHabit(name, frequency, scheduledDays, deadline ? formatTimeSpan(deadline) : undefined);
             router.back();
         } catch (e) {
             console.log(e);
@@ -146,6 +157,39 @@ export default function CreateHabitScreen() {
                     </>
                 )}
 
+                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>
+                    Completion deadline (optional)
+                </Text>
+                <View style={styles.deadlineRow}>
+                    <Pressable
+                        onPress={() => setShowTimePicker(true)}
+                        style={[
+                            styles.deadlineButton,
+                            { backgroundColor: isDark ? "#1E1E1E" : "#fff", borderColor: isDark ? "#333" : "#ccc" },
+                        ]}
+                    >
+                        <Text style={{ color: isDark ? "#ccc" : "#333" }}>
+                            {deadline ? formatTimeDisplay(deadline) : "No deadline set"}
+                        </Text>
+                    </Pressable>
+
+                    {deadline && (
+                        <Pressable onPress={() => setDeadline(null)} hitSlop={10}>
+                            <Text style={styles.clearText}>Clear</Text>
+                        </Pressable>
+                    )}
+                </View>
+
+                {showTimePicker && (
+                    <DateTimePicker
+                        value={deadline ?? new Date()}
+                        mode="time"
+                        is24Hour
+                        display={Platform.OS === "ios" ? "spinner" : "default"}
+                        onChange={handleTimeChange}
+                    />
+                )}
+
                 {error && <Text style={styles.errorText}>{error}</Text>}
 
                 <View style={styles.buttonWrapper}>
@@ -211,6 +255,24 @@ const styles = StyleSheet.create({
         fontSize: 13,
         marginBottom: 12,
         textAlign: "center",
+    },
+    deadlineRow: { 
+        flexDirection: "row", 
+        alignItems: "center", 
+        gap: 16, 
+        marginBottom: 20 
+    },
+    deadlineButton: { 
+        flex: 1, 
+        paddingVertical: 12, 
+        paddingHorizontal: 14, 
+        borderRadius: 10, 
+        borderWidth: 1 
+    },
+    clearText: { 
+        color: "#E53935", 
+        fontSize: 13, 
+        fontWeight: "600" 
     },
     buttonWrapper: {
         marginTop: 8,

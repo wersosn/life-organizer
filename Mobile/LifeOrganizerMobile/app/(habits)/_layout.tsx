@@ -15,6 +15,12 @@ export default function HabitLayout() {
                     title: "Update habit"
                 }}
             />
+            <Stack.Screen
+                name="details"
+                options={{
+                    title: "Habit Details"
+                }}
+            />
         </Stack>
     );
 }

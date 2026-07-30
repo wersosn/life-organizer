@@ -3,8 +3,7 @@ import { DayOfWeek } from "./days";
 export enum HabitFrequency {
     Daily = 0,
     Weekly = 1,
-    Monthly = 2,
-    Custom = 3,
+    Custom = 2,
 }
 
 export enum HabitCompletionStatus {

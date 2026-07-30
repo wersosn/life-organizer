@@ -1,3 +1,272 @@
+import { createHabit, updateHabit } from "@/api/habitsApi";
+import { DayOfWeek } from "@/types/days";
+import { HabitFrequency } from "@/types/habit";
+import { ALL_DAYS, FREQUENCY_OPTIONS } from "@/types/labels";
+import { DAY_LABELS, FREQUENCY_LABELS } from "@/utils/habitLabels";
+import { formatTimeDisplay, formatTimeSpan, parseTimeSpan } from "@/utils/habitTime";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
+import { View, Text, useColorScheme, Button, TextInput, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 export default function UpdateHabitScreen() {
-    return null;
+    const params = useLocalSearchParams();
+    const id = params.id as string;
+
+    const [name, setName] = useState(params.name as string);
+    const [frequency, setFrequency] = useState<HabitFrequency>(Number(params.frequency) as HabitFrequency);
+    const [scheduledDays, setScheduledDays] = useState<DayOfWeek[]>(
+        params.scheduledDays ? JSON.parse(params.scheduledDays as string) : []
+    );
+    const [deadline, setDeadline] = useState<Date | null>(
+        parseTimeSpan(params.completionDeadline as string)
+    );
+    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const colorScheme = useColorScheme();
+    const isDark = colorScheme === "dark";
+
+    function toggleDay(day: DayOfWeek) {
+        setScheduledDays(prev =>
+            prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+        );
+    }
+
+    function handleFrequencyChange(value: HabitFrequency) {
+        setFrequency(value);
+        if (value === HabitFrequency.Daily) {
+            setScheduledDays([]);
+        }
+    }
+
+    function handleTimeChange(event: any, selectedDate?: Date) {
+        setShowTimePicker(Platform.OS === "ios");
+        if (selectedDate) {
+            setDeadline(selectedDate);
+        }
+    }
+
+    async function handleUpdate() {
+        if (!name.trim()) {
+            setError("Name is required");
+            return;
+        }
+
+        if (frequency !== HabitFrequency.Daily && scheduledDays.length === 0) {
+            setError("Select at least one day");
+            return;
+        }
+
+        setError(null);
+
+        try {
+            await updateHabit(
+                id,
+                name,
+                frequency,
+                scheduledDays,
+                deadline ? formatTimeSpan(deadline) : undefined
+            );
+            router.back();
+        } catch (e) {
+            console.log(e);
+            setError("Failed to update habit. Please try again.");
+        }
+    }
+
+    return (
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+        >
+            <ScrollView
+                contentContainerStyle={[
+                    styles.container,
+                    { backgroundColor: isDark ? "#121212" : "#F5F5F5" },
+                ]}
+                keyboardShouldPersistTaps="handled"
+            >
+                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Edit habit</Text>
+
+                <TextInput
+                    placeholder="Name"
+                    placeholderTextColor="#888"
+                    value={name}
+                    onChangeText={setName}
+                    style={styles.input}
+                />
+
+                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Frequency</Text>
+                <View style={styles.segmentedControl}>
+                    {FREQUENCY_OPTIONS.map(option => {
+                        const isSelected = frequency === option;
+                        return (
+                            <Pressable
+                                key={option}
+                                onPress={() => handleFrequencyChange(option)}
+                                style={[
+                                    styles.segment,
+                                    {
+                                        backgroundColor: isSelected ? "#4CAF50" : isDark ? "#1E1E1E" : "#fff",
+                                        borderColor: isDark ? "#333" : "#ccc",
+                                    },
+                                ]}
+                            >
+                                <Text style={{ color: isSelected ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                                    {FREQUENCY_LABELS[option]}
+                                </Text>
+                            </Pressable>
+                        );
+                    })}
+                </View>
+
+                {frequency !== HabitFrequency.Daily && (
+                    <>
+                        <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Days</Text>
+                        <View style={styles.daysRow}>
+                            {ALL_DAYS.map(day => {
+                                const isSelected = scheduledDays.includes(day);
+                                return (
+                                    <Pressable
+                                        key={day}
+                                        onPress={() => toggleDay(day)}
+                                        style={[
+                                            styles.dayChip,
+                                            {
+                                                backgroundColor: isSelected ? "#4CAF50" : isDark ? "#1E1E1E" : "#fff",
+                                                borderColor: isDark ? "#333" : "#ccc",
+                                            },
+                                        ]}
+                                    >
+                                        <Text style={{ color: isSelected ? "#fff" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
+                                            {DAY_LABELS[day]}
+                                        </Text>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                    </>
+                )}
+
+                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>
+                    Completion deadline (optional)
+                </Text>
+                <View style={styles.deadlineRow}>
+                    <Pressable
+                        onPress={() => setShowTimePicker(true)}
+                        style={[
+                            styles.deadlineButton,
+                            { backgroundColor: isDark ? "#1E1E1E" : "#fff", borderColor: isDark ? "#333" : "#ccc" },
+                        ]}
+                    >
+                        <Text style={{ color: isDark ? "#ccc" : "#333" }}>
+                            {deadline ? formatTimeDisplay(deadline) : "No deadline set"}
+                        </Text>
+                    </Pressable>
+
+                    {deadline && (
+                        <Pressable onPress={() => setDeadline(null)} hitSlop={10}>
+                            <Text style={styles.clearText}>Clear</Text>
+                        </Pressable>
+                    )}
+                </View>
+
+                {showTimePicker && (
+                    <DateTimePicker
+                        value={deadline ?? new Date()}
+                        mode="time"
+                        is24Hour
+                        display={Platform.OS === "ios" ? "spinner" : "default"}
+                        onChange={handleTimeChange}
+                    />
+                )}
+
+                {error && <Text style={styles.errorText}>{error}</Text>}
+
+                <View style={styles.buttonWrapper}>
+                    <Button title="Save" onPress={handleUpdate} />
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 32,
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: "700",
+        textAlign: "center",
+        marginBottom: 40,
+    },
+    input: {
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 12,
+        padding: 14,
+        fontSize: 16,
+        marginBottom: 20,
+    },
+    label: {
+        fontSize: 14,
+        fontWeight: "600",
+        marginBottom: 8,
+    },
+    segmentedControl: {
+        flexDirection: "row",
+        gap: 8,
+        marginBottom: 20,
+    },
+    segment: {
+        flex: 1,
+        paddingVertical: 10,
+        borderRadius: 10,
+        borderWidth: 1,
+        alignItems: "center",
+    },
+    daysRow: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 8,
+        marginBottom: 20,
+    },
+    dayChip: {
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 8,
+        borderWidth: 1,
+    },
+    errorText: {
+        color: "#E53935",
+        fontSize: 13,
+        marginBottom: 12,
+        textAlign: "center",
+    },
+    deadlineRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 16,
+        marginBottom: 20
+    },
+    deadlineButton: {
+        flex: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 14,
+        borderRadius: 10,
+        borderWidth: 1
+    },
+    clearText: {
+        color: "#E53935",
+        fontSize: 13,
+        fontWeight: "600"
+    },
+    buttonWrapper: {
+        marginTop: 8,
+    },
+});

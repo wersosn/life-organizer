@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput, useColorScheme, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { View, Text, Button, TextInput, useColorScheme, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from "react-native";
 import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/api/apiClient";
@@ -46,8 +46,9 @@ export default function LoginScreen() {
             await login(response.data.token);
             router.replace("/(tabs)/todo");
         }
-        catch (error) {
+        catch (error: any) {
             console.log(error);
+            Alert.alert("Login failed", "Invalid email or password");
         }
     }
 

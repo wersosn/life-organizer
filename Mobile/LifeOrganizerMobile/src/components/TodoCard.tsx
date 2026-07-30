@@ -76,7 +76,6 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
 
 
             <View style={styles.actions}>
-
                 <Pressable
                     onPress={() => onEdit(todo)}
                     hitSlop={10}
@@ -88,7 +87,6 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                     />
                 </Pressable>
 
-
                 <Pressable
                     onPress={() => onDelete(todo.id)}
                     hitSlop={10}
@@ -99,9 +97,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                         style={styles.icon}
                     />
                 </Pressable>
-
             </View>
-
         </View>
     );
 }

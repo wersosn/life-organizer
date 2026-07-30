@@ -10,7 +10,6 @@ namespace LifeOrganizer.Domain.Enums
     {
         Daily,
         Weekly,
-        Monthly,
         Custom
     }
 }

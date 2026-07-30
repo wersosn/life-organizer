@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Pressable, useColorScheme, FlatList, RefreshCon
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { Habit } from "@/types/habit";
-import { completeHabit, getHabits, uncompleteHabit } from "@/api/habitsApi";
+import { completeHabit, deleteHabit, getHabits, uncompleteHabit } from "@/api/habitsApi";
 import { HabitCard } from "@/components/HabitCard";
 
 export default function HabitsScreen() {
@@ -61,9 +61,34 @@ export default function HabitsScreen() {
 
     function handlePressHabit(habit: Habit) {
         router.push({
-            pathname: "../(habit)/details",
+            pathname: "../(habits)/details",
             params: { id: habit.id },
         });
+    }
+
+    async function handleEdit(habit: Habit) {
+        router.push({
+            pathname: "../(habits)/update",
+            params: {
+                id: habit.id,
+                name: habit.name,
+                frequency: String(habit.frequency),
+                scheduledDays: JSON.stringify(habit.scheduledDays),
+                completionDeadline: habit.completionDeadline ?? "",
+            },
+        });
+    }
+
+    async function handleDelete(id: string) {
+        const previous = habits;
+        setHabits(prev => prev.filter(h => h.id !== id));
+
+        try {
+            await deleteHabit(id);
+        } catch (e) {
+            console.log(e);
+            setHabits(previous);
+        }
     }
 
     return (
@@ -93,6 +118,8 @@ export default function HabitsScreen() {
                             habit={item}
                             onToggleComplete={handleToggleComplete}
                             onPress={handlePressHabit}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
                         />
                     )}
                 />
