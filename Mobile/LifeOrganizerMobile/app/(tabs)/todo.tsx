@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, useColorScheme } from "react-native";
+import { View, Text, StyleSheet, FlatList, useColorScheme, Alert } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { Todo } from "@/types/todo";
 import { completeTodo, deleteTodo, getTodos } from "@/api/todoApi";
@@ -46,8 +46,26 @@ export default function TodoScreen() {
     }
 
     async function handleDelete(id: string) {
-        await deleteTodo(id);
-        await loadTodos();
+        Alert.alert(
+            "Delete task",
+            `Are you sure you want to delete this task?`,
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            await deleteTodo(id);
+                            await loadTodos();
+                        } catch (e) {
+                            console.log(e);
+                            Alert.alert("Error", "Could not delete task.");
+                        }
+                    },
+                },
+            ]
+        );
     }
 
     function handleEdit(todo: Todo) {

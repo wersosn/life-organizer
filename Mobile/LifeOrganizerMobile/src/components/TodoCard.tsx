@@ -1,6 +1,6 @@
 import { Todo } from "@/types/todo";
 import { Pressable, View, Text, useColorScheme, Image } from "react-native";
-import { styles } from "./TodoCard.styles";
+import { styles } from "../styles/TodoCard.styles";
 
 type Props = {
     todo: Todo;

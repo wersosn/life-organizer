@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, useColorScheme, FlatList, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, Pressable, useColorScheme, FlatList, RefreshControl, Alert } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { Habit } from "@/types/habit";
@@ -95,14 +95,28 @@ export default function HabitsScreen() {
 
     async function handleDelete(id: string) {
         const previous = habits;
-        setHabits(prev => prev.filter(h => h.id !== id));
 
-        try {
-            await deleteHabit(id);
-        } catch (e) {
-            console.log(e);
-            setHabits(previous);
-        }
+        Alert.alert(
+            "Delete habit",
+            `Are you sure you want to delete this habit?`,
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            await deleteHabit(id);
+                            setHabits(prev => prev.filter(h => h.id !== id));
+                        } catch (e) {
+                            console.log(e);
+                            Alert.alert("Error", "Could not delete habit.");
+                            setHabits(previous);
+                        }
+                    },
+                },
+            ]
+        );
     }
 
     return (

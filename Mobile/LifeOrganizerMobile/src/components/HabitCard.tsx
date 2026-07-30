@@ -1,7 +1,7 @@
 import { Habit, HabitFrequency } from "@/types/habit";
 import { formatScheduledDays, FREQUENCY_LABELS } from "@/utils/habitLabels";
 import { Pressable, useColorScheme, View, Text, Image } from "react-native";
-import { styles } from "./HabitCard.styles";
+import { styles } from "../styles/HabitCard.styles";
 
 type Props = {
     habit: Habit;
