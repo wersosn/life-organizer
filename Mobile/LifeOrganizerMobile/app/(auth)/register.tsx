@@ -92,6 +92,7 @@ export default function RegisterScreen() {
                     <Button
                         title="Create account"
                         onPress={register}
+                        color="#4F7CFF"
                     />
                 </View>
 

@@ -13,7 +13,7 @@ namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class HabitsController : ControllerBase
     {
         private readonly IMediator mediator;

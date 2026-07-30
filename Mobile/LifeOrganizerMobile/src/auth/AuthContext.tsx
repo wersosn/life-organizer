@@ -41,16 +41,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             const response = await apiClient.get("/auth/me");
             setUser(response.data);
-            await saveUserProfile(response.data);
+            //await saveUserProfile(response.data);
         } catch (error: any) {
             if (error?.response?.status === 401) {
                 await removeToken();
-                await clearUserProfile();
+                //await clearUserProfile();
                 setToken(null);
                 setUser(null);
             } else {
-                const cachedUser = await getCachedUserProfile();
-                setUser(cachedUser);
+                //const cachedUser = await getCachedUserProfile();
+                //setUser(cachedUser);
             }
         } finally {
             setLoading(false);
@@ -63,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             const response = await apiClient.get("/auth/me");
             setUser(response.data);
-            await saveUserProfile(response.data);
+            //await saveUserProfile(response.data);
         } catch {
             //const cachedUser = await getCachedUserProfile();
             //setUser(cachedUser);
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     async function logout() {
         await removeToken();
-        await clearUserProfile();
+        //await clearUserProfile();
         setToken(null);
         setUser(null);
     }

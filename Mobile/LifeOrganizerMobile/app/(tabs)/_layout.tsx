@@ -127,6 +127,18 @@ export default function TabLayout() {
                 Add new task
               </Text>
             </Pressable>
+
+            <Pressable
+              style={styles.option}
+              onPress={() => {
+                setShowAddMenu(false);
+                router.push("/(habits)/create");
+              }}
+            >
+              <Text style={styles.optionText}>
+                Add new habit
+              </Text>
+            </Pressable>
           </View>
         </Pressable>
       </Modal>

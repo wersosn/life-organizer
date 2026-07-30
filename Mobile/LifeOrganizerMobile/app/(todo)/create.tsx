@@ -85,6 +85,7 @@ export default function CreateTodoScreen() {
                 <Button
                     title="Create"
                     onPress={handleCreate}
+                    color="#4F7CFF"
                 />
             </ScrollView>
         </KeyboardAvoidingView>

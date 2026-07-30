@@ -91,7 +91,7 @@ export default function LoginScreen() {
                 />
 
                 <View style={styles.buttonContainer}>
-                    <Button title="Login" onPress={handleLogin} />
+                    <Button title="Login" onPress={handleLogin} color="#4F7CFF" />
                 </View>
 
                 <Link href="../register" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>

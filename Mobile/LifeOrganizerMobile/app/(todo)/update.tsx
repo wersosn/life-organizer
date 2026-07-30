@@ -84,6 +84,7 @@ export default function UpdateTodoScreen() {
                 <Button
                     title="Save changes"
                     onPress={handleUpdate}
+                    color="#4F7CFF"
                 />
             </ScrollView>
         </KeyboardAvoidingView>

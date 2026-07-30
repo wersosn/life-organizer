@@ -11,7 +11,7 @@ import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const isOnline = useNetworkStatus();
+  /*const isOnline = useNetworkStatus();
   resetDatabase();
   initDatabase();
 
@@ -19,7 +19,7 @@ export default function RootLayout() {
     if (isOnline) {
       syncTodos();
     }
-  }, [isOnline]);
+  }, [isOnline]);*/
 
   return (
     <AuthProvider>
@@ -28,6 +28,7 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(todo)" options={{ headerShown: false }} />
+          <Stack.Screen name="(habits)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         </Stack>
         <StatusBar style="auto" />

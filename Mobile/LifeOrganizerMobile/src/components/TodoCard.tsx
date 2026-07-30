@@ -17,7 +17,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                 styles.card,
                 {
                     backgroundColor: isDark
-                        ? "#f5f5f5"
+                        ? "#1E1E1E"
                         : "#FFFFFF",
                 },
             ]}
@@ -45,7 +45,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                         styles.title,
                         {
                             color: isDark
-                                ? "#000000"
+                                ? "#FFFFFF"
                                 : "#000000",
                         },
                         todo.isCompleted &&
@@ -83,7 +83,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                     style={styles.iconButton}
                 >
                     <Image
-                        source={require("@/assets/images/edit.png")}
+                        source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
                         style={styles.icon}
                     />
                 </Pressable>
@@ -95,7 +95,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                     style={styles.iconButton}
                 >
                     <Image
-                        source={require("@/assets/images/trash.png")}
+                        source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
                         style={styles.icon}
                     />
                 </Pressable>
