@@ -14,14 +14,12 @@ export function buildLast30Days(completions: HabitCompletion[]): DayCell[] {
         const d = new Date();
         d.setDate(d.getDate() - i);
         const iso = d.toISOString().split("T")[0];
-
         days.push({
             date: iso,
             dayOfMonth: d.getDate(),
             status: statusByDate.get(iso) ?? "none",
         });
     }
-
     return days;
 }
 
@@ -32,13 +30,11 @@ export function calculateStreak(completions: HabitCompletion[]): number {
 
     let streak = 0;
     const cursor = new Date();
-
     while (true) {
         const iso = cursor.toISOString().split("T")[0];
         if (!completedDates.has(iso)) break;
         streak++;
         cursor.setDate(cursor.getDate() - 1);
     }
-
     return streak;
 }

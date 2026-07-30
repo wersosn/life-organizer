@@ -1,16 +1,27 @@
 import { View, Text, StyleSheet, Pressable, useColorScheme, FlatList, RefreshControl } from "react-native";
 import { router, useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Habit } from "@/types/habit";
 import { completeHabit, deleteHabit, getHabits, uncompleteHabit } from "@/api/habitsApi";
 import { HabitCard } from "@/components/HabitCard";
+import { isScheduledForToday } from "@/utils/habitSchedule";
+
+type ViewMode = "today" | "all";
 
 export default function HabitsScreen() {
     const [habits, setHabits] = useState<Habit[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [viewMode, setViewMode] = useState<ViewMode>("today");
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+
+    const visibleHabits = useMemo(() => {
+        if (viewMode === "all") {
+            return habits;
+        }
+        return habits.filter(isScheduledForToday);
+    }, [habits, viewMode]);
 
     async function loadHabits() {
         try {
@@ -98,6 +109,36 @@ export default function HabitsScreen() {
                     Habits
                 </Text>
             </View>
+            <View style={styles.viewToggle}>
+                <Pressable
+                    onPress={() => setViewMode("today")}
+                    style={[
+                        styles.toggleButton,
+                        {
+                            backgroundColor: viewMode === "today" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                            borderColor: isDark ? "#333" : "#ccc",
+                        },
+                    ]}
+                >
+                    <Text style={{ color: viewMode === "today" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        Today
+                    </Text>
+                </Pressable>
+                <Pressable
+                    onPress={() => setViewMode("all")}
+                    style={[
+                        styles.toggleButton,
+                        {
+                            backgroundColor: viewMode === "all" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                            borderColor: isDark ? "#333" : "#ccc",
+                        },
+                    ]}
+                >
+                    <Text style={{ color: viewMode === "all" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        All
+                    </Text>
+                </Pressable>
+            </View>
 
             {!loading && habits.length === 0 ? (
                 <View style={styles.emptyState}>
@@ -107,7 +148,7 @@ export default function HabitsScreen() {
                 </View>
             ) : (
                 <FlatList
-                    data={habits}
+                    data={visibleHabits}
                     keyExtractor={item => item.id}
                     contentContainerStyle={styles.list}
                     refreshControl={
@@ -169,5 +210,17 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         fontSize: 15,
+    },
+    viewToggle: {
+        flexDirection: "row",
+        gap: 8,
+        marginBottom: 16,
+    },
+    toggleButton: {
+        flex: 1,
+        paddingVertical: 8,
+        borderRadius: 10,
+        borderWidth: 1,
+        alignItems: "center",
     },
 });
