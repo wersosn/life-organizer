@@ -14,6 +14,9 @@ namespace LifeOrganizer.Application.Common.Interfaces
         DbSet<TodoItem> TodoItems { get; }
         DbSet<Habit> Habits { get; }
         DbSet<HabitCompletion> HabitCompletions { get; }
+        DbSet<Transaction> Transactions { get; }
+        DbSet<TransactionCategory> TransactionCategories { get; }
+        DbSet<Budget> Budgets { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

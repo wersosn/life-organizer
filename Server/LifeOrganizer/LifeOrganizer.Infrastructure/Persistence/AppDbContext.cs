@@ -16,6 +16,9 @@ namespace LifeOrganizer.Infrastructure.Persistence
         public DbSet<TodoItem> TodoItems => Set<TodoItem>();
         public DbSet<Habit> Habits => Set<Habit>();
         public DbSet<HabitCompletion> HabitCompletions => Set<HabitCompletion>();
+        public DbSet<Transaction> Transactions => Set<Transaction>();
+        public DbSet<TransactionCategory> TransactionCategories => Set<TransactionCategory>();
+        public DbSet<Budget> Budgets => Set<Budget>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

@@ -19,6 +19,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
         {
             var context = TestDbContextFactory.Create();
             var userId = Guid.NewGuid();
+            var currentUser = new FakeCurrentUserService(userId);
 
             var habit = new Habit
             {
@@ -35,7 +36,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
 
             var handler = new DeleteHabitHandler(
                 context,
-                new FakeCurrentUserService(userId)
+                currentUser
             );
 
             await handler.Handle(
