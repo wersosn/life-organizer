@@ -44,10 +44,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Transactions
             await context.SaveChangesAsync();
 
             var handler = new UpdateTransactionHandler(context,currentUser);
-            var command = new UpdateTransactionCommand(transaction.Id, foreignCategory.Id, 75, TransactionType.Expense, null, DateOnly.FromDateTime(DateTime.UtcNow))
-            {
-                Id = transaction.Id
-            };
+            var command = new UpdateTransactionCommand(transaction.Id, foreignCategory.Id, 75, TransactionType.Expense, null, DateOnly.FromDateTime(DateTime.UtcNow));
 
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
 
