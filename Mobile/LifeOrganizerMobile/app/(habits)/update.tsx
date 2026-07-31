@@ -71,7 +71,7 @@ export default function UpdateHabitScreen() {
             router.back();
         } catch (e) {
             console.log(e);
-            setError("Failed to update habit. Please try again.");
+            setError("Failed to update habit. Please try again");
         }
     }
 

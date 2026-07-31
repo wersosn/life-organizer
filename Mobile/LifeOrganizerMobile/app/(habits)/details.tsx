@@ -22,6 +22,7 @@ export default function HabitDetailsScreen() {
             const data = await getHabitById(id);
             setHabit(data);
         } catch (e) {
+            Alert.alert("Error", "Could not get habit details");
             console.log(e);
         } finally {
             setLoading(false);
@@ -50,7 +51,7 @@ export default function HabitDetailsScreen() {
             await loadHabit();
         } catch (e) {
             console.log(e);
-            Alert.alert("Error", "Could not update completion status.");
+            Alert.alert("Error", "Could not update completion status");
         }
     }
 
@@ -84,7 +85,7 @@ export default function HabitDetailsScreen() {
                             router.back();
                         } catch (e) {
                             console.log(e);
-                            Alert.alert("Error", "Could not delete habit.");
+                            Alert.alert("Error", "Could not delete habit");
                         }
                     },
                 },

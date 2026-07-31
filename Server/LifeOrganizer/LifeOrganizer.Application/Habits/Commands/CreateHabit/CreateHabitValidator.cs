@@ -28,8 +28,9 @@ namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
                 .IsInEnum();
 
             RuleFor(x => x.CompletionDeadline)
-                .Must(deadline => deadline is null || deadline.Value >= TimeSpan.Zero && deadline.Value < TimeSpan.FromDays(1))
-                .WithMessage("Completion deadline must represent a valid time of day");
+                .InclusiveBetween(TimeSpan.Zero, TimeSpan.FromHours(24).Subtract(TimeSpan.FromTicks(1)))
+                .When(x => x.CompletionDeadline.HasValue)
+                .WithMessage("CompletionDeadline must be a valid time of day (00:00–23:59:59)");
         }
     }
 }

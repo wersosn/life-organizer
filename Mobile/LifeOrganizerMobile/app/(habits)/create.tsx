@@ -58,7 +58,7 @@ export default function CreateHabitScreen() {
             router.back();
         } catch (e) {
             console.log(e);
-            setError("Failed to create habit. Please try again.");
+            setError("Failed to create habit. Please try again");
         }
     }
 
