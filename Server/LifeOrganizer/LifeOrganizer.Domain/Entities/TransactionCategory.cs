@@ -16,6 +16,7 @@ namespace LifeOrganizer.Domain.Entities
         public string? Icon { get; set; }
         public TransactionType Type { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

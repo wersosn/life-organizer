@@ -4,11 +4,6 @@ using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Users
@@ -25,7 +20,7 @@ namespace LifeOrganizer.Tests.Unit.Users
         public async Task Register_ShouldCreateUser()
         {
             var context = TestDbContextFactory.Create();
-            var handler = new RegisterUserHandler(context);
+            var handler = new RegisterUserHandler(context, new NoOpPublisher());
 
             var command = new RegisterUserCommand(
                 "test@test.com",

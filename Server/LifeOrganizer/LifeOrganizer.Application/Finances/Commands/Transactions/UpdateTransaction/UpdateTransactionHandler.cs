@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Common.Exceptions;
+﻿using FluentValidation;
+using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
@@ -28,12 +29,21 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.UpdateTransac
                 throw new NotFoundException(nameof(Transaction), request.Id);
             }
 
-            var categoryExists = await _context.TransactionCategories
-                .AnyAsync(c => c.Id == request.CategoryId && c.UserId == _currentUser.UserId, cancellationToken);
+            var category = await _context.TransactionCategories.FirstOrDefaultAsync(c => c.Id == request.CategoryId &&
+                c.UserId == _currentUser.UserId,
+                cancellationToken);
 
-            if (!categoryExists)
+            if (category is null)
             {
                 throw new NotFoundException(nameof(TransactionCategory), request.CategoryId);
+            }
+
+            if (category.Type != request.Type)
+            {
+                throw new ValidationException(new[]
+                {
+                    new FluentValidation.Results.ValidationFailure(nameof(request.Type), "Transaction type must match the category's type.")
+                });
             }
 
             transaction.CategoryId = request.CategoryId;

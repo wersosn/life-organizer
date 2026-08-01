@@ -1,13 +1,9 @@
-﻿using LifeOrganizer.Application.Common.Exceptions;
+﻿using FluentValidation;
+using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction
 {
@@ -24,10 +20,21 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransac
 
         public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
-            var categoryExists = await _context.TransactionCategories.AnyAsync(c => c.Id == request.CategoryId && c.UserId == _currentUser.UserId, cancellationToken);
-            if (!categoryExists)
+            var category = await _context.TransactionCategories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && 
+                c.UserId == _currentUser.UserId, 
+                cancellationToken);
+
+            if (category is null)
             {
                 throw new NotFoundException(nameof(TransactionCategory), request.CategoryId);
+            }
+
+            if (category.Type != request.Type)
+            {
+                throw new ValidationException(new[]
+                {
+                    new FluentValidation.Results.ValidationFailure(nameof(request.Type), "Transaction type must match the category's type.")
+                });
             }
 
             var transaction = new Transaction

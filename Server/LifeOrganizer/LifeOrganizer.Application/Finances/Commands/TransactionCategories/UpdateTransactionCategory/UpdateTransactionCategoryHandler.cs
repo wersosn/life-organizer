@@ -45,6 +45,7 @@ namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.Upda
             category.Name = request.Name;
             category.Icon = request.Icon;
             category.Type = request.Type;
+            category.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
         }
     }
