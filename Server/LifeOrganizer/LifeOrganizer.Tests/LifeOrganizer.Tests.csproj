@@ -33,6 +33,7 @@
   <ItemGroup>
     <Folder Include="Integration\" />
     <Folder Include="Unit\Chores\" />
+    <Folder Include="Unit\Finances\Budget\" />
   </ItemGroup>
 
 </Project>
