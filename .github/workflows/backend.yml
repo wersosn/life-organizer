@@ -13,6 +13,21 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: LifeOrganizerDB_Tests
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     defaults:
       run:
         working-directory: Server/LifeOrganizer
@@ -34,6 +49,8 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build
+        env:
+          ConnectionStrings__TestConnection: "Host=localhost;Port=5432;Database=LifeOrganizerDB_Tests;Username=postgres;Password=postgres"
 
       - name: Build Docker image
         run: docker build -t lifeorganizer-api -f LifeOrganizer.API/Dockerfile .

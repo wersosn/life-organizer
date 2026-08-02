@@ -134,6 +134,16 @@ export default function TabLayout() {
                         >
                             <Text style={styles.optionText}>Add new habit</Text>
                         </Pressable>
+
+                        <Pressable
+                            style={styles.option}
+                            onPress={() => {
+                                setShowAddMenu(false);
+                                router.push("/(finances)/createTransaction");
+                            }}
+                        >
+                            <Text style={styles.optionText}>Add new transaction</Text>
+                        </Pressable>
                     </View>
                 </Pressable>
             </Modal>

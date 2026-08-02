@@ -3,32 +3,90 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        paddingTop: 60,
+        paddingHorizontal: 20,
+    },
+
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 20,
     },
 
     title: {
         fontSize: 28,
-        fontWeight: "600",
-        marginTop: 60,
-        marginLeft: 24,
+        fontWeight: "700",
     },
 
-    fab: {
-        position: "absolute",
-        bottom: 35,
-        alignSelf: "center",
-        width: 68,
-        height: 68,
-        borderRadius: 34,
+    addButton: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         backgroundColor: "#4F7CFF",
-        justifyContent: "center",
         alignItems: "center",
-        elevation: 6,
+        justifyContent: "center",
     },
 
-    plus: {
-        color: "white",
-        fontSize: 38,
-        marginTop: -2,
+    addButtonText: {
+        color: "#FFFFFF",
+        fontSize: 22,
+        fontWeight: "600",
+        lineHeight: 24,
+    },
+
+    list: {
+        paddingBottom: 40,
+    },
+
+    emptyState: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        paddingBottom: 100,
+    },
+
+    emptyText: {
+        fontSize: 15,
+    },
+
+    viewToggle: {
+        flexDirection: "row",
+        gap: 8,
+        marginBottom: 16,
+    },
+    
+    toggleButton: {
+        flex: 1,
+        paddingVertical: 8,
+        borderRadius: 10,
+        borderWidth: 1,
+        alignItems: "center",
+    },
+
+    summaryCard: { 
+        borderRadius: 12, 
+        padding: 16, 
+        marginBottom: 16 
+    },
+
+    summaryRow: { 
+        flexDirection: "row", 
+        justifyContent: "space-between" 
+    },
+
+    summaryItem: { 
+        alignItems: "center", 
+        flex: 1 
+    },
+
+    summaryLabel: { 
+        fontSize: 12, 
+        marginBottom: 4 
+    },
+
+    summaryValue: { 
+        fontSize: 15, 
+        fontWeight: "700" 
     },
 });
