@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { MonthlySummary, Transaction } from "@/types/transaction";
 import { deleteTransaction, getMonthlySummary, getTransactions } from "@/api/transactionsApi";
 import { TransactionCard } from "@/components/TransactionCard";
+import { SettingsButton } from "@/components/SettingsButton";
 
 export default function FinancesScreen() {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -96,6 +97,7 @@ export default function FinancesScreen() {
                     <Pressable onPress={() => router.push("../(finances)/monthlySummary")} style={styles.summaryButton}>
                         <Text style={styles.summaryButtonText}>Monthly Summary</Text>
                     </Pressable>
+                    <SettingsButton />
                 </View>
             </View>
             {summary && (

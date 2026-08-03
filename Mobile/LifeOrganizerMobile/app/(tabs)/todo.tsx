@@ -5,6 +5,7 @@ import { completeTodo, deleteTodo, getTodos } from "@/api/todoApi";
 import { router, useFocusEffect } from "expo-router";
 import TodoCard from "@/components/TodoCard";
 import { styles } from "../../src/styles/todo.styles";
+import { SettingsButton } from "@/components/SettingsButton";
 
 export default function TodoScreen() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -85,6 +86,9 @@ export default function TodoScreen() {
                 <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
                     To-do List
                 </Text>
+                <View style={styles.headerActions}>
+                    <SettingsButton />
+                </View>
             </View>
 
             {!loading && todos.length === 0 ? (

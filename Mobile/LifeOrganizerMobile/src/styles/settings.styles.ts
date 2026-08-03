@@ -6,13 +6,6 @@ export const styles = StyleSheet.create({
         backgroundColor: "#fff",
     },
 
-    header: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 20,
-    },
-
     title: {
         fontSize: 28,
         fontWeight: "600",
@@ -37,26 +30,5 @@ export const styles = StyleSheet.create({
         color: "white",
         fontSize: 38,
         marginTop: -2,
-    },
-
-    item: {
-        padding: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
-    },
-
-    emptyState: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingBottom: 100,
-    },
-    
-    emptyText: {
-        fontSize: 15,
-    },
-
-    headerActions: {
-        flexDirection: "row", gap: 10
     },
 });

@@ -63,4 +63,9 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: "center",
     },
+
+    headerActions: {
+        flexDirection: "row", 
+        gap: 10,
+    },
 });

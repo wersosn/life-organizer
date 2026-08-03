@@ -6,6 +6,7 @@ import { completeHabit, deleteHabit, getHabits, uncompleteHabit } from "@/api/ha
 import { HabitCard } from "@/components/HabitCard";
 import { isScheduledForToday } from "@/utils/habitSchedule";
 import { styles } from "../../src/styles/habits.styles";
+import { SettingsButton } from "@/components/SettingsButton";
 
 type ViewMode = "today" | "all";
 
@@ -125,6 +126,9 @@ export default function HabitsScreen() {
                 <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
                     Habits
                 </Text>
+                <View style={styles.headerActions}>
+                    <SettingsButton />
+                </View>
             </View>
             <View style={styles.viewToggle}>
                 <Pressable
