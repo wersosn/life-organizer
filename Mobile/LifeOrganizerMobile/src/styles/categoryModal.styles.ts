@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         marginBottom: 8,
     },
-    
+
     errorText: {
         color: "#E53935",
         fontSize: 13,
@@ -51,5 +51,18 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 20,
+    },
+
+    typeRow: {
+        flexDirection: "row",
+        gap: 8,
+        marginBottom: 8,
+    },
+    
+    typeSegment: {
+        flex: 1,
+        paddingVertical: 10,
+        borderRadius: 10,
+        alignItems: "center",
     },
 });
