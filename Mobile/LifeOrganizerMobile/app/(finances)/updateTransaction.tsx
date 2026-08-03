@@ -1,21 +1,22 @@
 import { getCategories } from "@/api/transactionCategoryApi";
-import { createTransaction } from "@/api/transactionsApi";
-import { CreateCategoryModal } from "@/components/CreateCategoryModal";
-import { styles } from "@/styles/createTransaction.styles";
+import { updateTransaction } from "@/api/transactionsApi";
 import { TransactionCategory, TransactionType } from "@/types/transaction";
-import { todayIso } from "@/utils/transactionFormat";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Button, KeyboardAvoidingView, Pressable, ScrollView, TextInput, Text, View, useColorScheme, Platform } from "react-native";
+import { ActivityIndicator, Button, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, useColorScheme, View } from "react-native";
+import { styles } from "@/styles/updateTransaction.styles";
 
-export default function CreateTransactionScreen() {
-    const [type, setType] = useState<TransactionType>(TransactionType.Expense);
-    const [amount, setAmount] = useState("");
-    const [description, setDescription] = useState("");
+export default function UpdateTransactionScreen() {
+    const params = useLocalSearchParams();
+    const id = params.id as string;
+
+    const [type, setType] = useState<TransactionType>(Number(params.type) as TransactionType);
+    const [amount, setAmount] = useState(params.amount as string);
+    const [description, setDescription] = useState((params.description as string) ?? "");
+    const [date] = useState(params.date as string);
     const [categories, setCategories] = useState<TransactionCategory[]>([]);
-    const [categoryId, setCategoryId] = useState<string | null>(null);
+    const [categoryId, setCategoryId] = useState<string | null>(params.categoryId as string);
     const [loadingCategories, setLoadingCategories] = useState(true);
-    const [categoryModalVisible, setCategoryModalVisible] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
@@ -42,13 +43,7 @@ export default function CreateTransactionScreen() {
         setCategoryId(null);
     }
 
-    function handleCategoryCreated(newCategoryId: string) {
-        setCategoryModalVisible(false);
-        setCategoryId(newCategoryId);
-        loadCategories();
-    }
-
-    async function handleCreate() {
+    async function handleUpdate() {
         const parsedAmount = parseFloat(amount.replace(",", "."));
 
         if (!categoryId) {
@@ -63,11 +58,11 @@ export default function CreateTransactionScreen() {
         setError(null);
 
         try {
-            await createTransaction(categoryId, parsedAmount, type, todayIso(), description || undefined);
+            await updateTransaction(id, categoryId, parsedAmount, type, date, description || undefined);
             router.back();
         } catch (e) {
             console.log(e);
-            setError("Failed to create transaction. Please try again.");
+            setError("Failed to update transaction. Please try again.");
         }
     }
 
@@ -81,7 +76,7 @@ export default function CreateTransactionScreen() {
                 contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}
                 keyboardShouldPersistTaps="handled"
             >
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>New transaction</Text>
+                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Edit transaction</Text>
 
                 <View style={styles.segmentedControl}>
                     <Pressable
@@ -135,10 +130,6 @@ export default function CreateTransactionScreen() {
 
                 {loadingCategories ? (
                     <ActivityIndicator style={{ marginBottom: 20 }} />
-                ) : filteredCategories.length === 0 ? (
-                    <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
-                        No categories for this type yet.
-                    </Text>
                 ) : (
                     <View style={styles.categoryRow}>
                         {filteredCategories.map(category => {
@@ -164,21 +155,10 @@ export default function CreateTransactionScreen() {
                     </View>
                 )}
 
-                <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.newCategoryButton}>
-                    <Text style={styles.newCategoryText}>+ New category</Text>
-                </Pressable>
-
-                <CreateCategoryModal
-                    visible={categoryModalVisible}
-                    type={type}
-                    onClose={() => setCategoryModalVisible(false)}
-                    onCreated={handleCategoryCreated}
-                />
-
                 {error && <Text style={styles.errorText}>{error}</Text>}
 
                 <View style={styles.buttonWrapper}>
-                    <Button title="Create" onPress={handleCreate} color="#4F7CFF" />
+                    <Button title="Save" onPress={handleUpdate} color="#4F7CFF"/>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

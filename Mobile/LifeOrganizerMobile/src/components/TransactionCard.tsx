@@ -5,10 +5,11 @@ import { Image, Pressable, Text, useColorScheme, View } from "react-native";
 
 type Props = {
     transaction: Transaction;
+    onEdit: (transaction: Transaction) => void;
     onDelete: (id: string) => void;
 };
 
-export function TransactionCard({ transaction, onDelete }: Props) {
+export function TransactionCard({ transaction, onEdit, onDelete }: Props) {
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
     const isExpense = transaction.type === TransactionType.Expense;
@@ -32,6 +33,13 @@ export function TransactionCard({ transaction, onDelete }: Props) {
             <Text style={[styles.amount, { color: isExpense ? "#E53935" : "#4CAF50" }]}>
                 {formatAmount(transaction.amount, transaction.type)}
             </Text>
+
+            <Pressable onPress={() => onEdit(transaction)} hitSlop={10} style={styles.iconButton}>
+                <Image
+                    source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
+                    style={styles.icon}
+                />
+            </Pressable>
 
             <Pressable onPress={() => onDelete(transaction.id)} hitSlop={10} style={styles.iconButton}>
                 <Image

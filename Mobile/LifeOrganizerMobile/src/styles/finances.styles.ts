@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
         gap: 8,
         marginBottom: 16,
     },
-    
+
     toggleButton: {
         flex: 1,
         paddingVertical: 8,
@@ -64,29 +64,47 @@ export const styles = StyleSheet.create({
         alignItems: "center",
     },
 
-    summaryCard: { 
-        borderRadius: 12, 
-        padding: 16, 
-        marginBottom: 16 
+    summaryCard: {
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 16
     },
 
-    summaryRow: { 
-        flexDirection: "row", 
-        justifyContent: "space-between" 
+    summaryRow: {
+        flexDirection: "row",
+        justifyContent: "space-between"
     },
 
-    summaryItem: { 
+    summaryItem: {
+        alignItems: "center",
+        flex: 1
+    },
+
+    summaryLabel: {
+        fontSize: 12,
+        marginBottom: 4
+    },
+
+    summaryValue: {
+        fontSize: 15,
+        fontWeight: "700"
+    },
+
+    headerActions: {
+        flexDirection: "row", gap: 10
+    },
+
+    summaryButton: { 
+        width: 120, 
+        height: 36, 
+        borderRadius: 18, 
         alignItems: "center", 
-        flex: 1 
+        justifyContent: "center" 
     },
 
-    summaryLabel: { 
-        fontSize: 12, 
-        marginBottom: 4 
-    },
-
-    summaryValue: { 
-        fontSize: 15, 
-        fontWeight: "700" 
+    summaryButtonText: { 
+        fontSize: 14, 
+        color: "#4F7CFF",
+        fontWeight: "600"
     },
 });

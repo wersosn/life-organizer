@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme, Pressable, RefreshControl, FlatList } from "react-native";
+import { View, Text, useColorScheme, Pressable, RefreshControl, FlatList, Alert } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { styles } from "../../src/styles/finances.styles";
 import { useCallback, useState } from "react";
@@ -45,17 +45,45 @@ export default function FinancesScreen() {
         await loadData();
     }
 
+    function handleEdit(transaction: Transaction) {
+        router.push({
+            pathname: "../(finances)/updateTransaction",
+            params: {
+                id: transaction.id,
+                categoryId: transaction.categoryId,
+                amount: String(transaction.amount),
+                type: String(transaction.type),
+                description: transaction.description ?? "",
+                date: transaction.date,
+            },
+        });
+    }
+
     async function handleDelete(id: string) {
         const previous = transactions;
-        setTransactions(prev => prev.filter(t => t.id !== id));
 
-        try {
-            await deleteTransaction(id);
-            loadData();
-        } catch (e) {
-            console.log(e);
-            setTransactions(previous);
-        }
+        Alert.alert(
+            "Delete transaction",
+            `Are you sure you want to delete this transaction?`,
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            await deleteTransaction(id);
+                            setTransactions(prev => prev.filter(t => t.id !== id));
+                            loadData();
+                        } catch (e) {
+                            console.log(e);
+                            Alert.alert("Error", "Could not delete transaction.");
+                            setTransactions(previous);
+                        }
+                    },
+                },
+            ]
+        ); 
     }
 
     return (
@@ -64,13 +92,18 @@ export default function FinancesScreen() {
                 <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
                     Finances
                 </Text>
+                <View style={styles.headerActions}>
+                    <Pressable onPress={() => router.push("../(finances)/monthlySummary")} style={styles.summaryButton}>
+                        <Text style={styles.summaryButtonText}>Monthly Summary</Text>
+                    </Pressable>
+                </View>
             </View>
             {summary && (
                 <View style={[styles.summaryCard, { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }]}>
                     <View style={styles.summaryRow}>
                         <View style={styles.summaryItem}>
                             <Text style={[styles.summaryLabel, { color: isDark ? "#888" : "#999" }]}>Income</Text>
-                            <Text style={[styles.summaryValue, { color: "#4CAF50" }]}>
+                            <Text style={[styles.summaryValue, { color: "#4F7CFF" }]}>
                                 +{summary.totalIncome.toFixed(2)} zł
                             </Text>
                         </View>
@@ -103,7 +136,7 @@ export default function FinancesScreen() {
                     contentContainerStyle={styles.list}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
                     renderItem={({ item }) => (
-                        <TransactionCard transaction={item} onDelete={handleDelete} />
+                        <TransactionCard transaction={item} onEdit={handleEdit} onDelete={handleDelete} />
                     )}
                 />
             )}
