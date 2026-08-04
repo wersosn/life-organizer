@@ -40,6 +40,7 @@ The key feature is an **automation system** that connects these modules together
 - **React Native** with **Expo**
 - **SQLite** for local storage (offline mode)
 - Offline-first sync approach
+- **Jest** (tests)
 > TBA
 
 ### DevOps
@@ -209,6 +210,7 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 - **React Native** z **Expo**
 - **SQLite** do przechowywania danych lokalnych (tryb offline)
 - Podejście offline-first z synchronizacją
+- - **Jest** (testy)
 > TBA
 
 ### DevOps
