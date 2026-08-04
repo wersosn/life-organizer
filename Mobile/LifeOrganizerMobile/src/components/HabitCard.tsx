@@ -30,6 +30,7 @@ export function HabitCard({ habit, onToggleComplete, onPress, onEdit, onDelete }
         >
             <Pressable
                 onPress={() => onToggleComplete(habit.id)}
+                testID="toggle-complete-button"
                 hitSlop={8}
                 style={[
                     styles.checkbox,
@@ -80,14 +81,14 @@ export function HabitCard({ habit, onToggleComplete, onPress, onEdit, onDelete }
                 </View>
             </View>
             <View style={styles.actions}>
-                <Pressable onPress={() => onEdit(habit)} hitSlop={10} style={styles.iconButton}>
+                <Pressable onPress={() => onEdit(habit)} hitSlop={10} style={styles.iconButton} testID="edit-button">
                     <Image
                         source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
                         style={styles.icon}
                     />
                 </Pressable>
 
-                <Pressable onPress={() => onDelete(habit.id)} hitSlop={10} style={styles.iconButton}>
+                <Pressable onPress={() => onDelete(habit.id)} hitSlop={10} style={styles.iconButton} testID="delete-button">
                     <Image
                         source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
                         style={styles.icon}
