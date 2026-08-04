@@ -161,7 +161,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Navigation & tab structure (4 modules)
 - [x] Task List screen
 - [x] Habit Tracker screen
-- [ ] Finance Tracker screen
+- [x] Finance Tracker screen
 - [ ] Chore Tracker screen
 - [ ] Offline mode with SQLite
 - [ ] Sync mechanism (local ↔ server)
@@ -329,7 +329,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Nawigacja i struktura zakładek (4 moduły)
 - [x] Ekran listy zadań
 - [x] Ekran Habit Tracker
-- [ ] Ekran Finance Tracker
+- [x] Ekran Finance Tracker
 - [ ] Ekran Chore Tracker
 - [ ] Tryb offline z SQLite
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
