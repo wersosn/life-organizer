@@ -170,7 +170,6 @@ export default function CreateTransactionScreen() {
 
                 <CreateCategoryModal
                     visible={categoryModalVisible}
-                    type={type}
                     onClose={() => setCategoryModalVisible(false)}
                     onCreated={handleCategoryCreated}
                 />

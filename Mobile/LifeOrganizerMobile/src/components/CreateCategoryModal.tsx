@@ -6,13 +6,13 @@ import { styles } from "@/styles/categoryModal.styles";
 
 type Props = {
     visible: boolean;
-    type: TransactionType;
     onClose: () => void;
     onCreated: (categoryId: string) => void;
 };
 
-export function CreateCategoryModal({ visible, type, onClose, onCreated }: Props) {
+export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
     const [name, setName] = useState("");
+    const [type, setType] = useState<TransactionType>(TransactionType.Expense);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
@@ -63,6 +63,31 @@ export function CreateCategoryModal({ visible, type, onClose, onCreated }: Props
                             { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#fff" : "#000" },
                         ]}
                     />
+
+                    <View style={styles.typeRow}>
+                        <Pressable
+                            onPress={() => setType(TransactionType.Expense)}
+                            style={[
+                                styles.typeSegment,
+                                { backgroundColor: type === TransactionType.Expense ? "#E53935" : isDark ? "#2A2A2A" : "#F5F5F5" },
+                            ]}
+                        >
+                            <Text style={{ color: type === TransactionType.Expense ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                                Expense
+                            </Text>
+                        </Pressable>
+                        <Pressable
+                            onPress={() => setType(TransactionType.Income)}
+                            style={[
+                                styles.typeSegment,
+                                { backgroundColor: type === TransactionType.Income ? "#4F7CFF" : isDark ? "#2A2A2A" : "#F5F5F5" },
+                            ]}
+                        >
+                            <Text style={{ color: type === TransactionType.Income ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                                Income
+                            </Text>
+                        </Pressable>
+                    </View>
 
                     {error && <Text style={styles.errorText}>{error}</Text>}
 

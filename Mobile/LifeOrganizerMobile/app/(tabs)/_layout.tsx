@@ -144,6 +144,16 @@ export default function TabLayout() {
                         >
                             <Text style={styles.optionText}>Add new transaction</Text>
                         </Pressable>
+
+                        <Pressable
+                            style={styles.option}
+                            onPress={() => {
+                                setShowAddMenu(false);
+                                router.push("/(finances)/createBudget");
+                            }}
+                        >
+                            <Text style={styles.optionText}>Add new budget</Text>
+                        </Pressable>
                     </View>
                 </Pressable>
             </Modal>

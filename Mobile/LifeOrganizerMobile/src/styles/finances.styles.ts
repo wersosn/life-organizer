@@ -94,17 +94,31 @@ export const styles = StyleSheet.create({
         flexDirection: "row", gap: 10
     },
 
-    summaryButton: { 
-        width: 120, 
-        height: 36, 
-        borderRadius: 18, 
-        alignItems: "center", 
-        justifyContent: "center" 
+    summaryButton: {
+        width: 120,
+        height: 36,
+        borderRadius: 18,
+        alignItems: "center",
+        justifyContent: "center"
     },
 
-    summaryButtonText: { 
-        fontSize: 14, 
+    summaryButtonText: {
+        fontSize: 14,
         color: "#4F7CFF",
         fontWeight: "600"
+    },
+
+    segmentedControl: {
+        flexDirection: "row",
+        gap: 8,
+        marginBottom: 16,
+    },
+    
+    segment: {
+        flex: 1,
+        paddingVertical: 10,
+        borderRadius: 10,
+        borderWidth: 1,
+        alignItems: "center",
     },
 });

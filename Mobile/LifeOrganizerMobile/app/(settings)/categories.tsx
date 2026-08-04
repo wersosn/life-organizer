@@ -1,4 +1,5 @@
 import { deleteCategory, getCategories } from "@/api/transactionCategoryApi";
+import { CreateCategoryModal } from "@/components/CreateCategoryModal";
 import { EditCategoryModal } from "@/components/EditCategoryModal";
 import { styles } from "@/styles/settingsCategories.styles";
 import { TransactionCategory, TransactionType } from "@/types/transaction";
@@ -8,8 +9,11 @@ import { Alert, FlatList, Image, Pressable, useColorScheme, Text, View } from "r
 
 export default function CategoriesScreen() {
     const [categories, setCategories] = useState<TransactionCategory[]>([]);
+    const [createType, setCreateType] = useState<TransactionType>(TransactionType.Expense);
     const [editingCategory, setEditingCategory] = useState<TransactionCategory | null>(null);
     const [loading, setLoading] = useState(true);
+    const [categoryId, setCategoryId] = useState<string | null>(null);
+    const [categoryModalVisible, setCategoryModalVisible] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
@@ -29,6 +33,12 @@ export default function CategoriesScreen() {
             loadCategories();
         }, [])
     );
+
+    function handleCreate(newCategoryId: string) {
+        setCategoryModalVisible(false);
+        setCategoryId(newCategoryId);
+        loadCategories();
+    }
 
     function handleEdit(category: TransactionCategory) {
         setEditingCategory(category);
@@ -66,6 +76,9 @@ export default function CategoriesScreen() {
         <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
             <View style={styles.header}>
                 <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Categories</Text>
+                <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.addButton}>
+                    <Text style={styles.addButtonText}>+</Text>
+                </Pressable>
             </View>
 
             {!loading && categories.length === 0 ? (
@@ -114,6 +127,13 @@ export default function CategoriesScreen() {
                     )}
                 />
             )}
+
+            <CreateCategoryModal
+                visible={categoryModalVisible}
+                onClose={() => setCategoryModalVisible(false)}
+                onCreated={handleCreate}
+            />
+
             <EditCategoryModal
                 visible={editingCategory !== null}
                 category={editingCategory}
