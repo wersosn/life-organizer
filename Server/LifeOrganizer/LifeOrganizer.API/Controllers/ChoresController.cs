@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.CreateChore;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleChore;
+using LifeOrganizer.Application.Chores.Commands.Chore.CreateChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.GetAllChores;
 using LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById;
+using LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -52,6 +54,20 @@ namespace LifeOrganizer.API.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             await mediator.Send(new DeleteChoreCommand(id));
+            return NoContent();
+        }
+
+        [HttpPatch("{id:guid}/complete")]
+        public async Task<IActionResult> Complete(Guid id, [FromBody] CompleteChoreRequest? body) // FromBody because of "Notes" (optional long string) 
+        {
+            var completionId = await mediator.Send(new CompleteChoreCommand(id, body?.CompletedAt, body?.Notes));
+            return Ok(completionId);
+        }
+
+        [HttpPatch("{id:guid}/uncomplete")]
+        public async Task<IActionResult> Uncomplete(Guid id)
+        {
+            await mediator.Send(new UncompleteChoreCommand(id));
             return NoContent();
         }
     }

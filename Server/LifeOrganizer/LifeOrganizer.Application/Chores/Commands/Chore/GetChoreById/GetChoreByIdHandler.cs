@@ -44,8 +44,15 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById
             var isOverdue = ChoreOverdueCalculator.IsOverdue(chore.LastCompletedAt, chore.FrequencyUnit, chore.FrequencyValue, now);
 
             return new ChoreDto(
-                chore.Id, chore.Name, chore.Description, chore.CategoryId, chore.CategoryName,
-                chore.FrequencyUnit, chore.FrequencyValue, chore.LastCompletedAt, chore.IsAutomationEnabled,
+                chore.Id, 
+                chore.Name, 
+                chore.Description, 
+                chore.CategoryId, 
+                chore.CategoryName,
+                chore.FrequencyUnit, 
+                chore.FrequencyValue, 
+                chore.LastCompletedAt, 
+                chore.IsAutomationEnabled,
                 isOverdue
             );
         }
