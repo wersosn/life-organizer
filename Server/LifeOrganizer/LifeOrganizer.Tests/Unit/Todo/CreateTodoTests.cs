@@ -1,9 +1,4 @@
-﻿using LifeOrganizer.Application.Todo.Commands.CompleteTodo;
-using LifeOrganizer.Application.Todo.Commands.CreateTodo;
-using LifeOrganizer.Application.Todo.Commands.DeleteTodo;
-using LifeOrganizer.Application.Todo.Commands.GetAllTodo;
-using LifeOrganizer.Application.Todo.Commands.UpdateTodo;
-using LifeOrganizer.Domain.Entities;
+﻿using LifeOrganizer.Application.Todo.Commands.CreateTodo;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;

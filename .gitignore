@@ -47,6 +47,8 @@ data/
 logs/
 Logs/
 
+tmp/
+
 publish/
 *.publishsettings
 

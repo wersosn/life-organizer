@@ -3,11 +3,6 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LifeOrganizer.Application.Users.Commands.LoginUser
 {

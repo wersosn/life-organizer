@@ -1,11 +1,9 @@
-﻿using BCrypt.Net;
-using LifeOrganizer.Application.Common.Events;
+﻿using LifeOrganizer.Application.Common.Events;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace LifeOrganizer.Application.Users.Commands.RegisterUser
 {

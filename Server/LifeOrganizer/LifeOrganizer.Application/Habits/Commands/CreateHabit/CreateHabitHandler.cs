@@ -1,12 +1,6 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Application.Todo.Commands.CreateTodo;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
 {

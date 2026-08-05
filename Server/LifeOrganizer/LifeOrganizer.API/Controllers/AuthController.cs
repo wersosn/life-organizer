@@ -1,9 +1,7 @@
 ﻿using LifeOrganizer.Application.Users.Commands.LoginUser;
 using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace LifeOrganizer.API.Controllers
 {

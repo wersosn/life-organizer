@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
 using LifeOrganizer.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LifeOrganizer.Application.Habits.Commands.UpdateHabit
 {

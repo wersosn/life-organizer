@@ -1,5 +1,4 @@
-﻿using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Infrastructure.Persistence;
+﻿using LifeOrganizer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace LifeOrganizer.Tests.Helpers

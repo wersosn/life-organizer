@@ -1,15 +1,9 @@
 ﻿using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Application.Habits.Commands.CompleteHabit;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LifeOrganizer.Application.Habits.Commands.UncompleteHabit
 {
