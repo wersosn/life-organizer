@@ -12,6 +12,9 @@ namespace LifeOrganizer.Application.Common.Interfaces
         DbSet<Transaction> Transactions { get; }
         DbSet<TransactionCategory> TransactionCategories { get; }
         DbSet<Budget> Budgets { get; }
+        DbSet<Chore> Chores { get; }
+        DbSet<ChoreCategory> ChoreCategories { get; }
+        DbSet<ChoreCompletion> ChoreCompletions { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

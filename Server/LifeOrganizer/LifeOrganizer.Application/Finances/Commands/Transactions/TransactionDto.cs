@@ -1,6 +1,6 @@
 ﻿using LifeOrganizer.Domain.Enums;
 
-namespace LifeOrganizer.Application.Finances.Commands.Transactions.GetMonthlySummary
+namespace LifeOrganizer.Application.Finances.Commands.Transactions
 {
     public record TransactionDto(
         Guid Id,

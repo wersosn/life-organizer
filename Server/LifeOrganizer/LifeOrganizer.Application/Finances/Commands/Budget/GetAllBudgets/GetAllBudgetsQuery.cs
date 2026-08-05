@@ -1,5 +1,4 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
-using MediatR;
+﻿using MediatR;
 
 namespace LifeOrganizer.Application.Finances.Commands.Budget.GetAllBudgets
 {

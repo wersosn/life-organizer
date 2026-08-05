@@ -1,5 +1,4 @@
-﻿using LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetAllTransactionCategories;
-using MediatR;
+﻿using MediatR;
 
 namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetTransactionCategoryById
 {

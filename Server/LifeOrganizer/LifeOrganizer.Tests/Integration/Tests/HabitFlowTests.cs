@@ -1,5 +1,5 @@
-﻿using LifeOrganizer.Application.Habits.Commands.CreateHabit;
-using LifeOrganizer.Application.Habits.Commands.GetAllHabits;
+﻿using LifeOrganizer.Application.Habits.Commands;
+using LifeOrganizer.Application.Habits.Commands.CreateHabit;
 using LifeOrganizer.Application.Habits.Commands.GetHabitById;
 using LifeOrganizer.Domain.Enums;
 using System.Net.Http.Json;

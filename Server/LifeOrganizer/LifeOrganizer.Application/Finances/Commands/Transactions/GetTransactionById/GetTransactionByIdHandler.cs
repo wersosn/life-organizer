@@ -1,6 +1,5 @@
 ﻿using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Application.Finances.Commands.Transactions.GetMonthlySummary;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

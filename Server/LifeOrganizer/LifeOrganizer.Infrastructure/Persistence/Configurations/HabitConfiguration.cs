@@ -25,13 +25,4 @@ namespace LifeOrganizer.Infrastructure.Persistence.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
-
-    public class HabitCompletionConfiguration : IEntityTypeConfiguration<HabitCompletion>
-    {
-        public void Configure(EntityTypeBuilder<HabitCompletion> builder)
-        {
-            builder.HasKey(c => c.Id);
-            builder.HasIndex(c => new { c.HabitId, c.Date }).IsUnique();
-        }
-    }
 }

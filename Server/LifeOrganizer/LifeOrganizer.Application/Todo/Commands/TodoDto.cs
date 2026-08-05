@@ -1,4 +1,4 @@
-﻿namespace LifeOrganizer.Application.Todo.Commands.GetAllTodo
+﻿namespace LifeOrganizer.Application.Todo.Commands
 {
     public record TodoDto
     (

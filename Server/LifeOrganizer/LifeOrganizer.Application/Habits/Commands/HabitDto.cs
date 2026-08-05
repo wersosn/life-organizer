@@ -1,6 +1,6 @@
 ﻿using LifeOrganizer.Domain.Enums;
 
-namespace LifeOrganizer.Application.Habits.Commands.GetAllHabits
+namespace LifeOrganizer.Application.Habits.Commands
 {
     public record HabitDto
     (

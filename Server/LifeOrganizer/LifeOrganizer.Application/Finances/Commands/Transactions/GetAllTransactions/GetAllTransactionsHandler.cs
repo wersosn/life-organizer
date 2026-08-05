@@ -1,5 +1,4 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Application.Finances.Commands.Transactions.GetMonthlySummary;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
