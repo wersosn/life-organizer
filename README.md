@@ -39,7 +39,7 @@ The key feature is an **automation system** that connects these modules together
 ### Mobile App
 - **React Native** with **Expo**
 - **SQLite** for local storage (offline mode)
-- Offline-first sync approach
+- **Offline-first** sync approach
 - **Jest** (tests)
 > TBA
 
@@ -163,7 +163,8 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Task List screen
 - [x] Habit Tracker screen
 - [x] Finance Tracker screen
-- [ ] Chore Tracker screen
+- [x] Chore Tracker screen
+- [ ] Automation
 - [ ] Offline mode with SQLite
 - [ ] Sync mechanism (local ↔ server)
 - [ ] Push notifications
@@ -209,7 +210,7 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 ### Mobile App
 - **React Native** z **Expo**
 - **SQLite** do przechowywania danych lokalnych (tryb offline)
-- Podejście offline-first z synchronizacją
+- Podejście **offline-first** z synchronizacją
 - - **Jest** (testy)
 > TBA
 
@@ -332,7 +333,8 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Ekran listy zadań
 - [x] Ekran Habit Tracker
 - [x] Ekran Finance Tracker
-- [ ] Ekran Chore Tracker
+- [x] Ekran Chore Tracker
+- [ ] Automatyzacja
 - [ ] Tryb offline z SQLite
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
 - [ ] Powiadomienia push
