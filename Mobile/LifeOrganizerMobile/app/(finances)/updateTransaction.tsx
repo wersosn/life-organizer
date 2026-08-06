@@ -1,4 +1,4 @@
-import { getCategories } from "@/api/transactionCategoryApi";
+import { getCategories } from "@/api/transactionCategoriesApi";
 import { updateTransaction } from "@/api/transactionsApi";
 import { TransactionCategory, TransactionType } from "@/types/transaction";
 import { router, useLocalSearchParams } from "expo-router";

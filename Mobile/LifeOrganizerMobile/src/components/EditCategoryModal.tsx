@@ -2,7 +2,7 @@ import { TransactionCategory, TransactionType } from "@/types/transaction";
 import { useEffect, useState } from "react";
 import { Alert, KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, useColorScheme, View } from "react-native";
 import { styles } from "@/styles/categoryModal.styles";
-import { updateCategory } from "@/api/transactionCategoryApi";
+import { updateCategory } from "@/api/transactionCategoriesApi";
 
 type Props = {
     visible: boolean;

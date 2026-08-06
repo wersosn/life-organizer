@@ -1,8 +1,7 @@
-import { createCategory } from "@/api/transactionCategoriesApi";
-import { TransactionType } from "@/types/transaction";
 import { useState } from "react";
 import { KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, useColorScheme, View } from "react-native";
 import { styles } from "@/styles/categoryModal.styles";
+import { createChoreCategory } from "@/api/choreCategoriesApi";
 
 type Props = {
     visible: boolean;
@@ -10,9 +9,8 @@ type Props = {
     onCreated: (categoryId: string) => void;
 };
 
-export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
+export function CreateChoreCategoryModal({ visible, onClose, onCreated }: Props) {
     const [name, setName] = useState("");
-    const [type, setType] = useState<TransactionType>(TransactionType.Expense);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
@@ -26,7 +24,7 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
         setError(null);
 
         try {
-            const categoryId = await createCategory(name, type);
+            const categoryId = await createChoreCategory(name);
             setName("");
             onCreated(categoryId);
         } catch (e) {
@@ -48,9 +46,7 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
                 <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }]}>
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>
-                        New {type === TransactionType.Expense ? "expense" : "income"} category
-                    </Text>
+                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>New category</Text>
 
                     <TextInput
                         placeholder="Category name"
@@ -63,31 +59,6 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                             { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#fff" : "#000" },
                         ]}
                     />
-
-                    <View style={styles.typeRow}>
-                        <Pressable
-                            onPress={() => setType(TransactionType.Expense)}
-                            style={[
-                                styles.typeSegment,
-                                { backgroundColor: type === TransactionType.Expense ? "#E53935" : isDark ? "#2A2A2A" : "#F5F5F5" },
-                            ]}
-                        >
-                            <Text style={{ color: type === TransactionType.Expense ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                                Expense
-                            </Text>
-                        </Pressable>
-                        <Pressable
-                            onPress={() => setType(TransactionType.Income)}
-                            style={[
-                                styles.typeSegment,
-                                { backgroundColor: type === TransactionType.Income ? "#4F7CFF" : isDark ? "#2A2A2A" : "#F5F5F5" },
-                            ]}
-                        >
-                            <Text style={{ color: type === TransactionType.Income ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                                Income
-                            </Text>
-                        </Pressable>
-                    </View>
 
                     {error && <Text style={styles.errorText}>{error}</Text>}
 

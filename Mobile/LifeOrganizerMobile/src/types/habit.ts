@@ -20,6 +20,7 @@ export type Habit = {
     isActive: boolean;
     createdAt: string;
     isCompletedToday?: boolean;
+    isAutomationEnabled?: boolean;
 }
 
 export type HabitCompletion = {

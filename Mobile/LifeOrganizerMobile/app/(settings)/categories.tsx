@@ -1,4 +1,4 @@
-import { deleteCategory, getCategories } from "@/api/transactionCategoryApi";
+import { deleteCategory, getCategories } from "@/api/transactionCategoriesApi";
 import { CreateCategoryModal } from "@/components/CreateCategoryModal";
 import { EditCategoryModal } from "@/components/EditCategoryModal";
 import { styles } from "@/styles/settingsCategories.styles";

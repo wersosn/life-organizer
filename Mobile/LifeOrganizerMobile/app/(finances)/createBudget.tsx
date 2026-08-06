@@ -1,4 +1,4 @@
-import { getCategories } from "@/api/transactionCategoryApi";
+import { getCategories } from "@/api/transactionCategoriesApi";
 import { TransactionCategory, TransactionType } from "@/types/transaction";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Button, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, useColorScheme, View } from "react-native";

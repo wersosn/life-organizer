@@ -1,21 +1,27 @@
-import { getCategories } from "@/api/transactionCategoriesApi";
-import { createTransaction } from "@/api/transactionsApi";
-import { CreateCategoryModal } from "@/components/CreateCategoryModal";
-import { styles } from "@/styles/createTransaction.styles";
-import { TransactionCategory, TransactionType } from "@/types/transaction";
-import { todayIso } from "@/utils/transactionFormat";
+import { getChoreCategories } from "@/api/choreCategoriesApi";
+import { createChore } from "@/api/choresApi";
+import { ChoreCategory, ChoreFrequency } from "@/types/chore";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Button, KeyboardAvoidingView, Pressable, ScrollView, TextInput, Text, View, useColorScheme, Platform } from "react-native";
+import { ActivityIndicator, Button, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, useColorScheme, View } from "react-native";
+import { styles } from "../../src/styles/createChore.styles";
+import { CreateChoreCategoryModal } from "@/components/CreateChoreCaregoryModal";
 
-export default function CreateTransactionScreen() {
-    const [type, setType] = useState<TransactionType>(TransactionType.Expense);
-    const [amount, setAmount] = useState("");
+const FREQUENCY_UNITS = [
+    { value: ChoreFrequency.Days, label: "Days" },
+    { value: ChoreFrequency.Weeks, label: "Weeks" },
+    { value: ChoreFrequency.Months, label: "Months" },
+];
+
+export default function CreateChoreScreen() {
+    const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [categories, setCategories] = useState<TransactionCategory[]>([]);
+    const [frequencyUnit, setFrequencyUnit] = useState<ChoreFrequency>(ChoreFrequency.Days);
+    const [frequencyValue, setFrequencyValue] = useState("7");
+    const [categories, setCategories] = useState<ChoreCategory[]>([]);
     const [categoryId, setCategoryId] = useState<string | null>(null);
-    const [loadingCategories, setLoadingCategories] = useState(true);
     const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+    const [loadingCategories, setLoadingCategories] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
@@ -26,20 +32,13 @@ export default function CreateTransactionScreen() {
 
     async function loadCategories() {
         try {
-            const data = await getCategories();
+            const data = await getChoreCategories();
             setCategories(data);
         } catch (e) {
             console.log(e);
         } finally {
             setLoadingCategories(false);
         }
-    }
-
-    const filteredCategories = categories.filter(c => c.type === type);
-
-    function handleTypeChange(value: TransactionType) {
-        setType(value);
-        setCategoryId(null);
     }
 
     function handleCategoryCreated(newCategoryId: string) {
@@ -49,25 +48,29 @@ export default function CreateTransactionScreen() {
     }
 
     async function handleCreate() {
-        const parsedAmount = parseFloat(amount.replace(",", "."));
+        const parsedValue = parseInt(frequencyValue, 10);
 
+        if (!name.trim()) {
+            setError("Name is required");
+            return;
+        }
         if (!categoryId) {
             setError("Select a category");
             return;
         }
-        if (!amount || isNaN(parsedAmount) || parsedAmount <= 0) {
-            setError("Enter a valid amount");
+        if (!frequencyValue || isNaN(parsedValue) || parsedValue <= 0) {
+            setError("Enter a valid frequency");
             return;
         }
 
         setError(null);
 
         try {
-            await createTransaction(categoryId, parsedAmount, type, todayIso(), description || undefined);
+            await createChore(name, categoryId, frequencyUnit, parsedValue, description || undefined);
             router.back();
         } catch (e) {
             console.log(e);
-            setError("Failed to create transaction. Please try again.");
+            setError("Failed to create chore. Please try again.");
         }
     }
 
@@ -81,45 +84,13 @@ export default function CreateTransactionScreen() {
                 contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}
                 keyboardShouldPersistTaps="handled"
             >
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>New transaction</Text>
-
-                <View style={styles.segmentedControl}>
-                    <Pressable
-                        onPress={() => handleTypeChange(TransactionType.Expense)}
-                        style={[
-                            styles.segment,
-                            {
-                                backgroundColor: type === TransactionType.Expense ? "#E53935" : isDark ? "#1E1E1E" : "#fff",
-                                borderColor: isDark ? "#333" : "#ccc",
-                            },
-                        ]}
-                    >
-                        <Text style={{ color: type === TransactionType.Expense ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                            Expense
-                        </Text>
-                    </Pressable>
-                    <Pressable
-                        onPress={() => handleTypeChange(TransactionType.Income)}
-                        style={[
-                            styles.segment,
-                            {
-                                backgroundColor: type === TransactionType.Income ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
-                                borderColor: isDark ? "#333" : "#ccc",
-                            },
-                        ]}
-                    >
-                        <Text style={{ color: type === TransactionType.Income ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                            Income
-                        </Text>
-                    </Pressable>
-                </View>
+                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>New chore</Text>
 
                 <TextInput
-                    placeholder="Amount"
+                    placeholder="Name"
                     placeholderTextColor="#888"
-                    value={amount}
-                    onChangeText={setAmount}
-                    keyboardType="decimal-pad"
+                    value={name}
+                    onChangeText={setName}
                     style={styles.input}
                 />
 
@@ -135,20 +106,20 @@ export default function CreateTransactionScreen() {
 
                 {loadingCategories ? (
                     <ActivityIndicator style={{ marginBottom: 20 }} />
-                ) : filteredCategories.length === 0 ? (
+                ) : categories.length === 0 ? (
                     <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
-                        No categories for this type yet.
+                        No categories yet. Create one in Settings first.
                     </Text>
                 ) : (
-                    <View style={styles.categoryRow}>
-                        {filteredCategories.map(category => {
+                    <View style={styles.chipRow}>
+                        {categories.map(category => {
                             const isSelected = categoryId === category.id;
                             return (
                                 <Pressable
                                     key={category.id}
                                     onPress={() => setCategoryId(category.id)}
                                     style={[
-                                        styles.categoryChip,
+                                        styles.chip,
                                         {
                                             backgroundColor: isSelected ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
                                             borderColor: isDark ? "#333" : "#ccc",
@@ -168,11 +139,43 @@ export default function CreateTransactionScreen() {
                     <Text style={styles.newCategoryText}>+ New category</Text>
                 </Pressable>
 
-                <CreateCategoryModal
+                <CreateChoreCategoryModal
                     visible={categoryModalVisible}
                     onClose={() => setCategoryModalVisible(false)}
                     onCreated={handleCategoryCreated}
                 />
+
+                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Repeat every</Text>
+                <View style={styles.frequencyRow}>
+                    <TextInput
+                        value={frequencyValue}
+                        onChangeText={setFrequencyValue}
+                        keyboardType="number-pad"
+                        style={[styles.input, styles.frequencyInput]}
+                    />
+                    <View style={styles.unitRow}>
+                        {FREQUENCY_UNITS.map(unit => {
+                            const isSelected = frequencyUnit === unit.value;
+                            return (
+                                <Pressable
+                                    key={unit.value}
+                                    onPress={() => setFrequencyUnit(unit.value)}
+                                    style={[
+                                        styles.unitChip,
+                                        {
+                                            backgroundColor: isSelected ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                            borderColor: isDark ? "#333" : "#ccc",
+                                        },
+                                    ]}
+                                >
+                                    <Text style={{ color: isSelected ? "#fff" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
+                                        {unit.label}
+                                    </Text>
+                                </Pressable>
+                            );
+                        })}
+                    </View>
+                </View>
 
                 {error && <Text style={styles.errorText}>{error}</Text>}
 

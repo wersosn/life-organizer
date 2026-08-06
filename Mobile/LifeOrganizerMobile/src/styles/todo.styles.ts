@@ -3,6 +3,8 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 60,
+        paddingHorizontal: 20,
         backgroundColor: "#fff",
     },
 
@@ -16,8 +18,6 @@ export const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: "600",
-        marginTop: 60,
-        marginLeft: 24,
     },
 
     fab: {

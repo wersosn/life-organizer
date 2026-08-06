@@ -154,6 +154,16 @@ export default function TabLayout() {
                         >
                             <Text style={styles.optionText}>Add new budget</Text>
                         </Pressable>
+
+                        <Pressable
+                            style={styles.option}
+                            onPress={() => {
+                                setShowAddMenu(false);
+                                router.push("/(chores)/createChore");
+                            }}
+                        >
+                            <Text style={styles.optionText}>Add new chore</Text>
+                        </Pressable>
                     </View>
                 </Pressable>
             </Modal>
