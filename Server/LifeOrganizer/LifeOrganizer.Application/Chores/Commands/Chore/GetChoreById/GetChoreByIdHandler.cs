@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById
 {
-    public class GetChoreByIdHandler : IRequestHandler<GetChoreByIdQuery, ChoreDto>
+    public class GetChoreByIdHandler : IRequestHandler<GetChoreByIdQuery, ChoreDetailsDto>
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
@@ -17,7 +17,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById
             _currentUser = currentUser;
         }
 
-        public async Task<ChoreDto> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ChoreDetailsDto> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
         {
             var chore = await _context.Chores
                 .Where(c => c.Id == request.Id && c.UserId == _currentUser.UserId)
@@ -40,20 +40,28 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById
                 throw new NotFoundException(nameof(Chore), request.Id);
             }
 
-            var now = DateTime.UtcNow;
-            var isOverdue = ChoreOverdueCalculator.IsOverdue(chore.LastCompletedAt, chore.FrequencyUnit, chore.FrequencyValue, now);
+            var recentCompletions = await _context.ChoreCompletions
+                .Where(c => c.ChoreId == chore.Id)
+                .OrderByDescending(c => c.CompletedAt)
+                .Take(20)
+                .Select(c => new ChoreCompletionDto(c.Id, c.CompletedAt, c.Notes))
+                .ToListAsync(cancellationToken);
 
-            return new ChoreDto(
-                chore.Id, 
-                chore.Name, 
-                chore.Description, 
-                chore.CategoryId, 
+            var now = DateTime.UtcNow;
+            var isOverdue = ChoreOverdueCalculator.IsOverdue(chore.LastCompletedAt, chore.FrequencyUnit, chore.FrequencyValue, now); 
+
+            return new ChoreDetailsDto(
+                chore.Id,
+                chore.Name,
+                chore.Description,
+                chore.CategoryId,
                 chore.CategoryName,
-                chore.FrequencyUnit, 
-                chore.FrequencyValue, 
-                chore.LastCompletedAt, 
+                chore.FrequencyUnit,
+                chore.FrequencyValue,
+                chore.LastCompletedAt,
                 chore.IsAutomationEnabled,
-                isOverdue
+                isOverdue,
+                recentCompletions
             );
         }
     }

@@ -48,5 +48,47 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
 
             output.WriteLine("Correctly hid existence of another user's chore");
         }
+
+        [Fact]
+        public async Task GetChoreById_ShouldReturnRecentCompletionsOrderedByMostRecentFirst()
+        {
+            var context = TestDbContextFactory.Create();
+            var userId = Guid.NewGuid();
+
+            var category = new ChoreCategory 
+            { 
+                Id = Guid.NewGuid(), 
+                UserId = userId, 
+                Name = "Kitchen" 
+            };
+            context.ChoreCategories.Add(category);
+
+            var chore = new Chore
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                CategoryId = category.Id,
+                Name = "Wash dishes",
+                FrequencyUnit = ChoreFrequency.Days,
+                FrequencyValue = 1,
+                LastCompletedAt = DateTime.UtcNow.AddDays(-1),
+                IsActive = true
+            };
+            context.Chores.Add(chore);
+
+            context.ChoreCompletions.AddRange(
+                new ChoreCompletion { Id = Guid.NewGuid(), ChoreId = chore.Id, CompletedAt = DateTime.UtcNow.AddDays(-1), Notes = "Recent" },
+                new ChoreCompletion { Id = Guid.NewGuid(), ChoreId = chore.Id, CompletedAt = DateTime.UtcNow.AddDays(-5), Notes = "Older" }
+            );
+            await context.SaveChangesAsync();
+
+            var handler = new GetChoreByIdHandler(context, new FakeCurrentUserService(userId));
+            var result = await handler.Handle(new GetChoreByIdQuery(chore.Id), CancellationToken.None);
+            Assert.Equal(2, result.RecentCompletions.Count);
+            Assert.Equal("Recent", result.RecentCompletions[0].Notes);
+            Assert.Equal("Older", result.RecentCompletions[1].Notes);
+
+            output.WriteLine("Recent completions correctly ordered, most recent first");
+        }
     }
 }
