@@ -32,7 +32,12 @@ export default function SettingsScreen() {
 
             <Text style={[styles.sectionHeader, { color: isDark ? "#888" : "#999" }]}>Finance</Text>
             <View style={[styles.section, { backgroundColor: isDark ? "#1E1E1E" : "#fff" }]}>
-                <SettingsRow label="Transaction categories" onPress={() => router.push("../categories")} />
+                <SettingsRow label="Transaction categories" onPress={() => router.push("../transactionCategories")} />
+            </View>
+
+            <Text style={[styles.sectionHeader, { color: isDark ? "#888" : "#999" }]}>Chores</Text>
+            <View style={[styles.section, { backgroundColor: isDark ? "#1E1E1E" : "#fff" }]}> 
+                <SettingsRow label="Chore categories" onPress={() => router.push("../choreCategories")} />
             </View>
 
             <Text style={[styles.sectionHeader, { color: isDark ? "#888" : "#999" }]}>Preferences</Text>

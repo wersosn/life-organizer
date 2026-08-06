@@ -1,25 +1,24 @@
-import { deleteCategory, getCategories } from "@/api/transactionCategoriesApi";
-import { CreateCategoryModal } from "@/components/CreateCategoryModal";
-import { EditCategoryModal } from "@/components/EditCategoryModal";
-import { styles } from "@/styles/settingsCategories.styles";
-import { TransactionCategory, TransactionType } from "@/types/transaction";
-import { router, useFocusEffect } from "expo-router";
+import { ChoreCategory } from "@/types/chore";
+import { deleteChoreCategory, getChoreCategories } from "@/api/choreCategoriesApi";
 import { useCallback, useState } from "react";
-import { Alert, FlatList, Image, Pressable, useColorScheme, Text, View } from "react-native";
+import { Alert, FlatList, Image, Pressable, Text, useColorScheme, View } from "react-native";
+import { styles } from "@/styles/settingsCategories.styles";
+import { useFocusEffect } from "expo-router";
+import { CreateChoreCategoryModal } from "@/components/CreateChoreCaregoryModal";
+import { EditChoreCategoryModal } from "@/components/EditChoreCategoryModal";
 
-export default function CategoriesScreen() {
-    const [categories, setCategories] = useState<TransactionCategory[]>([]);
-    const [createType, setCreateType] = useState<TransactionType>(TransactionType.Expense);
-    const [editingCategory, setEditingCategory] = useState<TransactionCategory | null>(null);
-    const [loading, setLoading] = useState(true);
+export default function ChoreCategoriesScreen() {
+    const [categories, setCategories] = useState<ChoreCategory[]>([]);
     const [categoryId, setCategoryId] = useState<string | null>(null);
+    const [editingCategory, setEditingCategory] = useState<ChoreCategory | null>(null);
+    const [loading, setLoading] = useState(true);
     const [categoryModalVisible, setCategoryModalVisible] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
     async function loadCategories() {
         try {
-            const data = await getCategories();
+            const data = await getChoreCategories();
             setCategories(data);
         } catch (e) {
             console.log(e);
@@ -40,7 +39,7 @@ export default function CategoriesScreen() {
         loadCategories();
     }
 
-    function handleEdit(category: TransactionCategory) {
+    function handleEdit(category: ChoreCategory) {
         setEditingCategory(category);
     }
 
@@ -49,10 +48,10 @@ export default function CategoriesScreen() {
         loadCategories();
     }
 
-    function handleDelete(category: TransactionCategory) {
+    function handleDelete(category: ChoreCategory) {
         Alert.alert(
             "Delete category",
-            `Delete "${category.name}"? This is only possible if no transactions use it.`,
+            `Delete "${category.name}"? This is only possible if no chores use it.`,
             [
                 { text: "Cancel", style: "cancel" },
                 {
@@ -60,11 +59,11 @@ export default function CategoriesScreen() {
                     style: "destructive",
                     onPress: async () => {
                         try {
-                            await deleteCategory(category.id);
+                            await deleteChoreCategory(category.id);
                             loadCategories();
                         } catch (e) {
                             console.log(e);
-                            Alert.alert("Error", "This category has transactions assigned to it and can't be deleted.");
+                            Alert.alert("Error", "This category has chores assigned to it and can't be deleted.");
                         }
                     },
                 },
@@ -75,7 +74,7 @@ export default function CategoriesScreen() {
     return (
         <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
             <View style={styles.header}>
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Categories</Text>
+                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Chore categories</Text>
                 <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
                 </Pressable>
@@ -92,21 +91,6 @@ export default function CategoriesScreen() {
                         <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#fff" }]}>
                             <View style={styles.rowContent}>
                                 <Text style={[styles.name, { color: isDark ? "#fff" : "#000" }]}>{item.name}</Text>
-                                <View
-                                    style={[
-                                        styles.badge,
-                                        { backgroundColor: item.type === TransactionType.Expense ? "#E5393520" : "#4CAF5020" },
-                                    ]}
-                                >
-                                    <Text
-                                        style={[
-                                            styles.badgeText,
-                                            { color: item.type === TransactionType.Expense ? "#E53935" : "#4CAF50" },
-                                        ]}
-                                    >
-                                        {item.type === TransactionType.Expense ? "Expense" : "Income"}
-                                    </Text>
-                                </View>
                             </View>
 
                             <View style={styles.actions}>
@@ -128,13 +112,13 @@ export default function CategoriesScreen() {
                 />
             )}
 
-            <CreateCategoryModal
+            <CreateChoreCategoryModal
                 visible={categoryModalVisible}
                 onClose={() => setCategoryModalVisible(false)}
                 onCreated={handleCreate}
             />
 
-            <EditCategoryModal
+            <EditChoreCategoryModal
                 visible={editingCategory !== null}
                 category={editingCategory}
                 onClose={() => setEditingCategory(null)}
