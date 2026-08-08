@@ -30,18 +30,18 @@ export function TransactionCard({ transaction, onEdit, onDelete }: Props) {
                 </Text>
             </View>
 
-            <Text style={[styles.amount, { color: isExpense ? "#E53935" : "#4CAF50" }]}>
+            <Text style={[styles.amount, { color: isExpense ? "#E53935" : "#4F7CFF" }]}>
                 {formatAmount(transaction.amount, transaction.type)}
             </Text>
 
-            <Pressable onPress={() => onEdit(transaction)} hitSlop={10} style={styles.iconButton}>
+            <Pressable onPress={() => onEdit(transaction)} hitSlop={10} style={styles.iconButton} testID="edit-button">
                 <Image
                     source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
                     style={styles.icon}
                 />
             </Pressable>
 
-            <Pressable onPress={() => onDelete(transaction.id)} hitSlop={10} style={styles.iconButton}>
+            <Pressable onPress={() => onDelete(transaction.id)} hitSlop={10} style={styles.iconButton} testID="delete-button">
                 <Image
                     source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
                     style={styles.icon}

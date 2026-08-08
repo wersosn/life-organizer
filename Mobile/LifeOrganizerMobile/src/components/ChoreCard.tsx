@@ -53,16 +53,16 @@ export function ChoreCard({ chore, onComplete, onPress, onEdit, onDelete }: Prop
             </View>
 
             <View style={styles.actions}>
-                <Pressable onPress={() => onComplete(chore.id)} style={styles.completeButton}>
+                <Pressable onPress={() => onComplete(chore.id)} style={styles.completeButton} testID="complete-button">
                     <Text style={styles.completeButtonText}>✓</Text>
                 </Pressable>
-                <Pressable onPress={() => onEdit(chore)} hitSlop={10} style={styles.iconButton}>
+                <Pressable onPress={() => onEdit(chore)} hitSlop={10} style={styles.iconButton} testID="edit-button">
                     <Image
                         source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
                         style={styles.icon}
                     />
                 </Pressable>
-                <Pressable onPress={() => onDelete(chore.id)} hitSlop={10} style={styles.iconButton}>
+                <Pressable onPress={() => onDelete(chore.id)} hitSlop={10} style={styles.iconButton} testID="delete-button">
                     <Image
                         source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
                         style={styles.icon}

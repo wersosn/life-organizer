@@ -25,6 +25,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
         >
             <Pressable
                 onPress={() => onComplete(todo.id)}
+                testID="complete-button"
                 style={[
                     styles.checkbox,
                     todo.isCompleted && styles.checked,
@@ -69,14 +70,14 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
             </View>
 
             <View style={styles.actions}>
-                <Pressable onPress={() => onEdit(todo)} hitSlop={10} style={styles.iconButton}>
+                <Pressable onPress={() => onEdit(todo)} hitSlop={10} style={styles.iconButton} testID="edit-button">
                     <Image
                         source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
                         style={styles.icon}
                     />
                 </Pressable>
 
-                <Pressable onPress={() => onDelete(todo.id)} hitSlop={10} style={styles.iconButton}>
+                <Pressable onPress={() => onDelete(todo.id)} hitSlop={10} style={styles.iconButton} testID="delete-button">
                     <Image
                         source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
                         style={styles.icon}

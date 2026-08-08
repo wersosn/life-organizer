@@ -22,13 +22,13 @@ export function BudgetCard({ budget, onEdit, onDelete }: Props) {
                     {budget.categoryName}
                 </Text>
                 <View style={styles.actions}>
-                    <Pressable onPress={() => onEdit(budget)} hitSlop={10} style={styles.iconButton}>
+                    <Pressable onPress={() => onEdit(budget)} hitSlop={10} style={styles.iconButton} testID="edit-button">
                         <Image
                             source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
                             style={styles.icon}
                         />
                     </Pressable>
-                    <Pressable onPress={() => onDelete(budget.id)} hitSlop={10} style={styles.iconButton}>
+                    <Pressable onPress={() => onDelete(budget.id)} hitSlop={10} style={styles.iconButton} testID="delete-button">
                         <Image
                             source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
                             style={styles.icon}
