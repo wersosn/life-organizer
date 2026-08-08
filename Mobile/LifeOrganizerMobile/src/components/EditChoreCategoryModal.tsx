@@ -75,10 +75,10 @@ export function EditChoreCategoryModal({ visible, category, onClose, onUpdated }
                     {error && <Text style={styles.errorText}>{error}</Text>}
 
                     <View style={styles.buttonRow}>
-                        <Pressable onPress={handleClose} style={styles.cancelButton}>
+                        <Pressable onPress={handleClose} style={styles.cancelButton} testID="cancel-button">
                             <Text style={{ color: isDark ? "#ccc" : "#666", fontWeight: "600" }}>Cancel</Text>
                         </Pressable>
-                        <Pressable onPress={handleUpdate} style={styles.createButton}>
+                        <Pressable onPress={handleUpdate} style={styles.createButton} testID="save-button">
                             <Text style={{ color: "#fff", fontWeight: "600" }}>Save</Text>
                         </Pressable>
                     </View>

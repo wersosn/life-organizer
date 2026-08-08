@@ -13,5 +13,5 @@ export function formatTimeSpan(date: Date): string {
 }
 
 export function formatTimeDisplay(date: Date): string {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return date.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
 }

@@ -7,7 +7,7 @@ export function SettingsButton() {
     const isDark = colorScheme === "dark";
 
     return (
-        <Pressable onPress={() => router.push("/(settings)/settings")} hitSlop={10} style={styles.button}>
+        <Pressable onPress={() => router.push("/(settings)/settings")} hitSlop={10} style={styles.button} testID="settings-button">
             <Image
                 source={isDark ? require("@/assets/images/setting-light.png") : require("@/assets/images/setting-dark.png")}
                 style={styles.icon}

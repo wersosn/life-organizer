@@ -74,7 +74,7 @@ export function TransactionsView() {
                         try {
                             await deleteTransaction(id);
                             setTransactions(prev => prev.filter(t => t.id !== id));
-                            loadData();
+                            await loadData();
                         } catch (e) {
                             console.log(e);
                             Alert.alert("Error", "Could not delete transaction.");
