@@ -169,6 +169,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [ ] Sync mechanism (local ↔ server)
 - [ ] Push notifications
 - [ ] Settings (automation toggle, history retention)
+- [ ] API, unit & components tests
 
 # Aplikacja do organizacji życia
 > **Status:** Wczesna faza rozwoju - projekt jest aktywnie rozwijany. Ten README pełni jednocześnie rolę dokumentacji projektu i osobistej listy postępu prac.
@@ -339,3 +340,4 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
 - [ ] Powiadomienia push
 - [ ] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
+- [ ] Testy API, jednostkowe oraz komponentów
