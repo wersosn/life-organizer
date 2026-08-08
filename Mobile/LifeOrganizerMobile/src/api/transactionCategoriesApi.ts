@@ -6,6 +6,11 @@ export async function getCategories() {
     return response.data;
 }
 
+export async function getCategoryById(id: string) {
+    const response = await apiClient.get<TransactionCategory>(`/transactioncategories/${id}`);
+    return response.data;
+}
+
 export async function createCategory(name: string, type: TransactionType, icon?: string) {
     const response = await apiClient.post("/transactioncategories", { name, type, icon });
     return response.data;
