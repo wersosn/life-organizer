@@ -33,6 +33,7 @@ The key feature is an **automation system** that connects these modules together
 - **MediatR** (CQRS pattern)
 - **JWT** authentication
 - **Background Services** (for automation checks, notifications, history cleanup)
+- **Serilog** (logs)
 - **xUnit** (tests)
 > TBA
 
@@ -205,6 +206,7 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 - **MediatR** (wzorzec CQRS)
 - **JWT** do uwierzytelniania
 - **Background Services** (do sprawdzania automatyzacji, powiadomień, czyszczenia historii)
+- **Serilog** (logi)
 - **xUnit** (testy)
 > TBA
 
