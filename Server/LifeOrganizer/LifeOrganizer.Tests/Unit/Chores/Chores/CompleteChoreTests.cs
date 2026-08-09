@@ -1,8 +1,10 @@
 ﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleChore;
+using LifeOrganizer.Application.Chores.Commands.ChoreCategories.DeleteChoreCategory;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.Chores
@@ -32,7 +34,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             await context.SaveChangesAsync();
 
             var completedAt = DateTime.UtcNow.AddHours(-1);
-            var handler = new CompleteChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CompleteChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<CompleteChoreHandler>.Instance);
             var command = new CompleteChoreCommand(chore.Id, completedAt, "Finished");
             var result = await handler.Handle(command, CancellationToken.None);
             var completion = await context.ChoreCompletions.FirstAsync();
@@ -65,7 +67,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.Chores.Add(chore);
             await context.SaveChangesAsync();
 
-            var handler = new CompleteChoreHandler(context, new FakeCurrentUserService(ownerId));
+            var handler = new CompleteChoreHandler(context, new FakeCurrentUserService(ownerId), NullLogger<CompleteChoreHandler>.Instance);
             var command = new CompleteChoreCommand(chore.Id, DateTime.UtcNow, null);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
 
@@ -91,7 +93,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             await context.SaveChangesAsync();
 
             var olderCompletion = lastCompleted.AddDays(-2);
-            var handler = new CompleteChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CompleteChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<CompleteChoreHandler>.Instance);
 
             var command = new CompleteChoreCommand(chore.Id, olderCompletion, null);
             await handler.Handle(command, CancellationToken.None);

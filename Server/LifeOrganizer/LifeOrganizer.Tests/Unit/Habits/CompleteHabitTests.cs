@@ -1,8 +1,10 @@
 ﻿using LifeOrganizer.Application.Habits.Commands.CompleteHabit;
+using LifeOrganizer.Application.Todo.Commands.CompleteTodo;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Habits
@@ -31,7 +33,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             context.Habits.Add(habit);
             await context.SaveChangesAsync();
 
-            var handler = new CompleteHabitHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CompleteHabitHandler(context, new FakeCurrentUserService(userId), NullLogger<CompleteHabitHandler>.Instance);
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
             var completionId = await handler.Handle(
@@ -76,7 +78,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             });
             await context.SaveChangesAsync();
 
-            var handler = new CompleteHabitHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CompleteHabitHandler(context, new FakeCurrentUserService(userId), NullLogger<CompleteHabitHandler>.Instance);
             await handler.Handle(new CompleteHabitCommand(habit.Id, null), CancellationToken.None);
             var completion = await context.HabitCompletions.FirstAsync();
 
@@ -103,7 +105,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             context.Habits.Add(habit);
             await context.SaveChangesAsync();
 
-            var handler = new CompleteHabitHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CompleteHabitHandler(context, new FakeCurrentUserService(userId), NullLogger<CompleteHabitHandler>.Instance);
             var firstId = await handler.Handle(new CompleteHabitCommand(habit.Id, null), CancellationToken.None);
             var secondId = await handler.Handle(new CompleteHabitCommand(habit.Id, null), CancellationToken.None);
 

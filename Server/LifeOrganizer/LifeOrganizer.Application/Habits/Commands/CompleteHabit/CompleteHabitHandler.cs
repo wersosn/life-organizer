@@ -4,6 +4,7 @@ using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Habits.Commands.CompleteHabit
 {
@@ -11,11 +12,13 @@ namespace LifeOrganizer.Application.Habits.Commands.CompleteHabit
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<CompleteHabitHandler> _logger;
 
-        public CompleteHabitHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public CompleteHabitHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<CompleteHabitHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<Guid> Handle(CompleteHabitCommand request, CancellationToken cancellationToken)
@@ -26,6 +29,7 @@ namespace LifeOrganizer.Application.Habits.Commands.CompleteHabit
 
             if (habit is null)
             {
+                _logger.LogWarning("Habit not found.");
                 throw new NotFoundException(nameof(Habit), request.Id);
             }
 
@@ -51,6 +55,7 @@ namespace LifeOrganizer.Application.Habits.Commands.CompleteHabit
             }
 
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Habit completed successfully. HabitId: {HabitId}, CompletionId: {CompletionId}, Date: {Date}", habit.Id, completion.Id, targetDate);
             return completion.Id;
         }
     }

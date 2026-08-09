@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
+using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
 using LifeOrganizer.Application.Finances.Commands.TransactionCategories.DeleteTransactionCategory;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
@@ -44,7 +46,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
             context.Transactions.Add(transaction);
             await context.SaveChangesAsync();
 
-            var handler = new DeleteTransactionCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new DeleteTransactionCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<DeleteTransactionCategoryHandler>.Instance);
 
             await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(new DeleteTransactionCategoryCommand(category.Id), CancellationToken.None));
 

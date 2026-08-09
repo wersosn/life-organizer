@@ -1,7 +1,9 @@
 ﻿using LifeOrganizer.Application.Todo.Commands.CompleteTodo;
+using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Todo
@@ -32,7 +34,8 @@ namespace LifeOrganizer.Tests.Unit.Todo
 
             var handler = new CompleteTodoHandler(
                 context,
-                new FakeCurrentUserService(userId)
+                new FakeCurrentUserService(userId),
+                NullLogger<CompleteTodoHandler>.Instance
             );
 
             await handler.Handle(

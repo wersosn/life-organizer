@@ -1,10 +1,12 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.CreateChore;
+using LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.GetAllChores;
 using LifeOrganizer.Application.Chores.Commands.ChoreCategories.DeleteChoreCategory;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.Chores
@@ -43,7 +45,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.Chores.Add(chore);
             await context.SaveChangesAsync();
 
-            var handler = new DeleteChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new DeleteChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<DeleteChoreHandler>.Instance);
             await handler.Handle(new DeleteChoreCommand(chore.Id), CancellationToken.None);
             Assert.Empty(await context.Chores.ToListAsync());
 
@@ -86,7 +88,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.ChoreCompletions.Add(completion);
             await context.SaveChangesAsync();
 
-            var handler = new DeleteChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new DeleteChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<DeleteChoreHandler>.Instance);
             await handler.Handle(new DeleteChoreCommand(chore.Id), CancellationToken.None);
             Assert.Empty(await context.ChoreCompletions.ToListAsync());
 

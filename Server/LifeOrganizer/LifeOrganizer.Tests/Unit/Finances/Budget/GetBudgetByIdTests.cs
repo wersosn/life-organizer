@@ -1,8 +1,10 @@
 ﻿using LifeOrganizer.Application.Common.Exceptions;
+using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
 using LifeOrganizer.Application.Finances.Commands.Budget.GetBudgetById;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Budget
@@ -41,7 +43,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Budget
             context.Budgets.Add(budget);
             await context.SaveChangesAsync();
 
-            var handler = new GetBudgetByIdHandler(context, new FakeCurrentUserService(otherUserId));
+            var handler = new GetBudgetByIdHandler(context, new FakeCurrentUserService(otherUserId), NullLogger<GetBudgetByIdHandler>.Instance);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new GetBudgetByIdQuery(budget.Id), CancellationToken.None));
 
             output.WriteLine("Correctly hid existence of another user's budget");

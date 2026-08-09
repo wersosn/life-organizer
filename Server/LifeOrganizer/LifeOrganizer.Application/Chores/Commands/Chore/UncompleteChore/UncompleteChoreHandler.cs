@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore
 {
@@ -9,11 +10,13 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<UncompleteChoreHandler> _logger;
 
-        public UncompleteChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public UncompleteChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<UncompleteChoreHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task Handle(UncompleteChoreCommand request, CancellationToken cancellationToken)
@@ -24,6 +27,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore
 
             if (chore is null)
             {
+                _logger.LogWarning("Chore not found.");
                 throw new NotFoundException(nameof(Chore), request.Id);
             }
 
@@ -47,6 +51,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore
             chore.LastCompletedAt = newLastCompletion?.CompletedAt;
             chore.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Chore marked as incomplete. ChoreId: {ChoreId}, CompletionId: {CompletionId}", chore.Id, lastCompletion.Id);
         }
     }
 }

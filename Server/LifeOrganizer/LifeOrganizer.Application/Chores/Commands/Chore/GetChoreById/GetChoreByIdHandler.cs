@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Infrastructure.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById
 {
@@ -10,11 +11,13 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<GetChoreByIdHandler> _logger;
 
-        public GetChoreByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public GetChoreByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<GetChoreByIdHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<ChoreDetailsDto> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
@@ -37,6 +40,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById
 
             if (chore is null)
             {
+                _logger.LogWarning("Chore not found.");
                 throw new NotFoundException(nameof(Chore), request.Id);
             }
 

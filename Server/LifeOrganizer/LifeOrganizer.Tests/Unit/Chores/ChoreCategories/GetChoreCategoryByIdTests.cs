@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Chores.Commands.ChoreCategories.GetChoreCategoryById;
+﻿using LifeOrganizer.Application.Chores.Commands.ChoreCategories.DeleteChoreCategory;
+using LifeOrganizer.Application.Chores.Commands.ChoreCategories.GetChoreCategoryById;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
@@ -30,7 +32,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
             context.ChoreCategories.Add(category);
             await context.SaveChangesAsync();
 
-            var handler = new GetChoreCategoryByIdHandler(context, new FakeCurrentUserService(otherUserId));
+            var handler = new GetChoreCategoryByIdHandler(context, new FakeCurrentUserService(otherUserId), NullLogger<GetChoreCategoryByIdHandler>.Instance);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new GetChoreCategoryByIdQuery(category.Id), CancellationToken.None));
 
             output.WriteLine("Correctly hid existence of another user's chore category");

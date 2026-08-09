@@ -1,8 +1,10 @@
 ﻿using LifeOrganizer.Application.Common.Exceptions;
+using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
 using LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetTransactionCategoryById;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
@@ -33,7 +35,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
             context.TransactionCategories.Add(category);
             await context.SaveChangesAsync();
 
-            var handler = new GetTransactionCategoryByIdHandler(context, new FakeCurrentUserService(otherUserId));
+            var handler = new GetTransactionCategoryByIdHandler(context, new FakeCurrentUserService(otherUserId), NullLogger<GetTransactionCategoryByIdHandler>.Instance);
 
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new GetTransactionCategoryByIdQuery(category.Id), CancellationToken.None));
 

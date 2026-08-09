@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
+﻿using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
+using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
@@ -20,7 +22,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
         {
             var context = TestDbContextFactory.Create();
             var userId = Guid.NewGuid();
-            var handler = new CreateTransactionCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CreateTransactionCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateTransactionCategoryHandler>.Instance);
 
             var command = new CreateTransactionCategoryCommand("Groceries", "cart-icon", TransactionType.Expense);
 

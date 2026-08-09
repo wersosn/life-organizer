@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Habits.Commands.GetHabitById;
+﻿using LifeOrganizer.Application.Habits.Commands.CreateHabit;
+using LifeOrganizer.Application.Habits.Commands.GetHabitById;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Habits
@@ -50,7 +52,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             );
             await context.SaveChangesAsync();
 
-            var handler = new GetHabitByIdHandler(context, new FakeCurrentUserService(userId));
+            var handler = new GetHabitByIdHandler(context, new FakeCurrentUserService(userId), NullLogger<GetHabitByIdHandler>.Instance);
             var result = await handler.Handle(new GetHabitByIdQuery(habit.Id), CancellationToken.None);
 
             Assert.Equal(habit.Id, result.Id);

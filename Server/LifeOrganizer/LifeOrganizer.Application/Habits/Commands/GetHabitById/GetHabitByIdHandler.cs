@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Habits.Commands.GetHabitById
 {
@@ -9,11 +10,13 @@ namespace LifeOrganizer.Application.Habits.Commands.GetHabitById
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<GetHabitByIdHandler> _logger;
 
-        public GetHabitByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public GetHabitByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<GetHabitByIdHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<HabitDetailsDto> Handle(GetHabitByIdQuery request, CancellationToken cancellationToken)
@@ -22,6 +25,7 @@ namespace LifeOrganizer.Application.Habits.Commands.GetHabitById
 
             if (habit is null)
             {
+                _logger.LogWarning("Habit not found.");
                 throw new NotFoundException(nameof(habit), request.Id);
             }
 

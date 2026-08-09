@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleChore
 {
@@ -10,11 +11,13 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleChore
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<CompleteChoreHandler> _logger;
 
-        public CompleteChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public CompleteChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<CompleteChoreHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<Guid> Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
@@ -25,6 +28,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleChore
 
             if (chore is null)
             {
+                _logger.LogWarning("Chore not found.");
                 throw new NotFoundException(nameof(Chore), request.ChoreId);
             }
 
@@ -45,6 +49,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleChore
             }
 
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Chore completed successfully. ChoreId: {ChoreId}, CompletionId: {CompletionId}", chore.Id, completion.Id);
             return completion.Id;
         }
     }

@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
+using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
 using LifeOrganizer.Application.Finances.Commands.TransactionCategories.UpdateTransactionCategory;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
@@ -45,7 +47,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
             context.Transactions.Add(transaction);
             await context.SaveChangesAsync();
 
-            var handler = new UpdateTransactionCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UpdateTransactionCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<UpdateTransactionCategoryHandler>.Instance);
             var command = new UpdateTransactionCategoryCommand(category.Id, "Food", null, TransactionType.Income);
 
             await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
@@ -71,7 +73,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
             context.TransactionCategories.Add(category);
             await context.SaveChangesAsync();
 
-            var handler = new UpdateTransactionCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UpdateTransactionCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<UpdateTransactionCategoryHandler>.Instance);
             var command = new UpdateTransactionCategoryCommand(category.Id, "Freelance", null, TransactionType.Income);
 
             await handler.Handle(command, CancellationToken.None);

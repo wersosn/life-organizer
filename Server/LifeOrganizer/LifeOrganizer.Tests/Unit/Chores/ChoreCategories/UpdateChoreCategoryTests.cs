@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Chores.Commands.ChoreCategories.UpdateChoreCategory;
+﻿using LifeOrganizer.Application.Chores.Commands.ChoreCategories.DeleteChoreCategory;
+using LifeOrganizer.Application.Chores.Commands.ChoreCategories.UpdateChoreCategory;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
@@ -23,7 +25,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
             context.ChoreCategories.Add(category);
             await context.SaveChangesAsync();
 
-            var handler = new UpdateChoreCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UpdateChoreCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<UpdateChoreCategoryHandler>.Instance);
             var command = new UpdateChoreCategoryCommand(category.Id, "Kitchen & Dining", "new-icon");
 
             await handler.Handle(command, CancellationToken.None);

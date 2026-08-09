@@ -4,6 +4,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Users.Commands.RegisterUser
 {
@@ -11,10 +12,13 @@ namespace LifeOrganizer.Application.Users.Commands.RegisterUser
     {
         private readonly IApplicationDbContext _context;
         private readonly IPublisher _publisher;
-        public RegisterUserHandler(IApplicationDbContext context, IPublisher publisher)
+        private readonly ILogger<RegisterUserHandler> _logger;
+
+        public RegisterUserHandler(IApplicationDbContext context, IPublisher publisher, ILogger<RegisterUserHandler> logger)
         {
             _context = context;
             _publisher = publisher;
+            _logger = logger;
         }
 
         public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -22,6 +26,7 @@ namespace LifeOrganizer.Application.Users.Commands.RegisterUser
             var userExists = await _context.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
             if (userExists)
             {
+                _logger.LogWarning("User registration failed: user already exists.");
                 throw new ConflictException("User with this email already exists");
             }
 
@@ -36,9 +41,9 @@ namespace LifeOrganizer.Application.Users.Commands.RegisterUser
 
             await _context.Users.AddAsync(user, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-
             await _publisher.Publish(new UserRegisteredEvent(user.Id), cancellationToken);
 
+            _logger.LogInformation("User registered successfully. UserId: {UserId}", user.Id);
             return user.Id;
         }
     }

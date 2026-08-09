@@ -1,6 +1,8 @@
 ﻿using LifeOrganizer.Application.Todo.Commands.GetTodoById;
+using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Todo
@@ -31,7 +33,7 @@ namespace LifeOrganizer.Tests.Unit.Todo
             context.TodoItems.Add(todo);
             await context.SaveChangesAsync();
 
-            var handler = new GetTodoByIdHandler(context, new FakeCurrentUserService(userId));
+            var handler = new GetTodoByIdHandler(context, new FakeCurrentUserService(userId), NullLogger<GetTodoByIdHandler>.Instance);
             var result = await handler.Handle(new GetTodoByIdQuery(todo.Id), CancellationToken.None);
 
             Assert.Equal(todo.Id, result.Id);

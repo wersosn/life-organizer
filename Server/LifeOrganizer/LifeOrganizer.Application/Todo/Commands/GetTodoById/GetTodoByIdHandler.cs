@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Todo.Commands.GetTodoById
 {
@@ -9,11 +10,13 @@ namespace LifeOrganizer.Application.Todo.Commands.GetTodoById
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<GetTodoByIdHandler> _logger;
 
-        public GetTodoByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public GetTodoByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<GetTodoByIdHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<TodoDetailsDto> Handle(GetTodoByIdQuery request, CancellationToken cancellationToken)
@@ -22,6 +25,7 @@ namespace LifeOrganizer.Application.Todo.Commands.GetTodoById
 
             if (todo is null)
             {
+                _logger.LogWarning("Todo item not found.");
                 throw new NotFoundException(nameof(todo), request.Id);
             }
 

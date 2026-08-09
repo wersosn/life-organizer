@@ -4,6 +4,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Finances.Commands.Transactions.UpdateTransaction
 {
@@ -11,11 +12,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.UpdateTransac
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<UpdateTransactionHandler> _logger;
 
-        public UpdateTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public UpdateTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<UpdateTransactionHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task Handle(UpdateTransactionCommand request, CancellationToken cancellationToken)
@@ -26,6 +29,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.UpdateTransac
 
             if (transaction is null)
             {
+                _logger.LogWarning("Transaction not found.");
                 throw new NotFoundException(nameof(Transaction), request.Id);
             }
 
@@ -35,11 +39,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.UpdateTransac
 
             if (category is null)
             {
+                _logger.LogWarning("Transaction update failed: category not found.");
                 throw new NotFoundException(nameof(TransactionCategory), request.CategoryId);
             }
 
             if (category.Type != request.Type)
             {
+                _logger.LogWarning("Transaction update failed: transaction type does not match category type.");
                 throw new ValidationException(new[]
                 {
                     new FluentValidation.Results.ValidationFailure(nameof(request.Type), "Transaction type must match the category's type.")
@@ -53,6 +59,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.UpdateTransac
             transaction.Date = request.Date;
             transaction.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Transaction updated successfully. TransactionId: {TransactionId}", transaction.Id);
         }
     }
 }

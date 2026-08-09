@@ -4,6 +4,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
 {
@@ -11,11 +12,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<CreateBudgetHandler> _logger;
 
-        public CreateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public CreateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<CreateBudgetHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<Guid> Handle(CreateBudgetCommand request, CancellationToken cancellationToken)
@@ -25,6 +28,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
 
             if (!categoryExists)
             {
+                _logger.LogWarning("Budget creation failed: transaction category not found.");
                 throw new NotFoundException(nameof(TransactionCategory), request.CategoryId);
             }
 
@@ -34,6 +38,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
 
             if (alreadyExists)
             {
+                _logger.LogWarning("Budget creation failed: budget for the category already exists.");
                 throw new ValidationException(new[]
                 {
                     new FluentValidation.Results.ValidationFailure(nameof(request.CategoryId), "A budget for this category already exists.")
@@ -52,6 +57,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
 
             _context.Budgets.Add(budget);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Budget created successfully. BudgetId: {BudgetId}", budget.Id);
             return budget.Id;
         }
     }

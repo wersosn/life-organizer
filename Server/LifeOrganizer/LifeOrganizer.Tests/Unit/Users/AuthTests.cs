@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Users
@@ -19,7 +20,7 @@ namespace LifeOrganizer.Tests.Unit.Users
         public async Task Register_ShouldCreateUser()
         {
             var context = TestDbContextFactory.Create();
-            var handler = new RegisterUserHandler(context, new NoOpPublisher());
+            var handler = new RegisterUserHandler(context, new NoOpPublisher(), NullLogger<RegisterUserHandler>.Instance);
 
             var command = new RegisterUserCommand(
                 "test@test.com",
@@ -54,7 +55,8 @@ namespace LifeOrganizer.Tests.Unit.Users
 
             var handler = new LoginUserHandler(
                 context,
-                new FakeJwtTokenService()
+                new FakeJwtTokenService(),
+                NullLogger<LoginUserHandler>.Instance
             );
 
             var command = new LoginUserCommand(

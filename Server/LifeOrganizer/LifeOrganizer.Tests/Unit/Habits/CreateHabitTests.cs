@@ -1,6 +1,8 @@
-﻿using LifeOrganizer.Application.Habits.Commands.CreateHabit;
+﻿using LifeOrganizer.Application.Habits.Commands.CompleteHabit;
+using LifeOrganizer.Application.Habits.Commands.CreateHabit;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Habits
@@ -22,7 +24,8 @@ namespace LifeOrganizer.Tests.Unit.Habits
 
             var handler = new CreateHabitHandler(
                 context,
-                currentUser
+                currentUser,
+                NullLogger<CreateHabitHandler>.Instance
             );
 
             var command = new CreateHabitCommand(
@@ -55,7 +58,8 @@ namespace LifeOrganizer.Tests.Unit.Habits
             var userId = Guid.NewGuid();
             var handler = new CreateHabitHandler(
                 context,
-                new FakeCurrentUserService(userId)
+                new FakeCurrentUserService(userId),
+                NullLogger<CreateHabitHandler>.Instance
             );
 
             var command = new CreateHabitCommand(

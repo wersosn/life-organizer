@@ -1,8 +1,10 @@
-﻿using LifeOrganizer.Application.Habits.Commands.UncompleteHabit;
+﻿using LifeOrganizer.Application.Habits.Commands.CreateHabit;
+using LifeOrganizer.Application.Habits.Commands.UncompleteHabit;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Habits
@@ -41,7 +43,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             });
             await context.SaveChangesAsync();
 
-            var handler = new UncompleteHabitHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UncompleteHabitHandler(context, new FakeCurrentUserService(userId), NullLogger<UncompleteHabitHandler>.Instance);
             await handler.Handle(new UncompleteHabitCommand(habit.Id, null), CancellationToken.None);
 
             Assert.Empty(await context.HabitCompletions.ToListAsync());
@@ -65,7 +67,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             context.Habits.Add(habit);
             await context.SaveChangesAsync();
 
-            var handler = new UncompleteHabitHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UncompleteHabitHandler(context, new FakeCurrentUserService(userId), NullLogger<UncompleteHabitHandler>.Instance);
             await handler.Handle(new UncompleteHabitCommand(habit.Id, null), CancellationToken.None);
 
             Assert.Empty(await context.HabitCompletions.ToListAsync());

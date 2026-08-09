@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
+using LifeOrganizer.Application.Chores.Commands.ChoreCategories.CreateChoreCategory;
 using LifeOrganizer.Application.Chores.Commands.ChoreCategories.DeleteChoreCategory;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
@@ -44,7 +46,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
             context.Chores.Add(chore);
             await context.SaveChangesAsync();
 
-            var handler = new DeleteChoreCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new DeleteChoreCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<DeleteChoreCategoryHandler>.Instance);
             await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(new DeleteChoreCategoryCommand(category.Id), CancellationToken.None));
             Assert.Equal(1, await context.ChoreCategories.CountAsync());
 
@@ -66,7 +68,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
             context.ChoreCategories.Add(category);
             await context.SaveChangesAsync();
 
-            var handler = new DeleteChoreCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new DeleteChoreCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<DeleteChoreCategoryHandler>.Instance);
             await handler.Handle(new DeleteChoreCategoryCommand(category.Id), CancellationToken.None);
             Assert.Empty(await context.ChoreCategories.ToListAsync());
 

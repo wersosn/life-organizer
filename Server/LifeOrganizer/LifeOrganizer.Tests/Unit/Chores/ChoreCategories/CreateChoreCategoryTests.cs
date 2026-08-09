@@ -1,6 +1,8 @@
 ﻿using LifeOrganizer.Application.Chores.Commands.ChoreCategories.CreateChoreCategory;
+using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
@@ -18,7 +20,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
         {
             var context = TestDbContextFactory.Create();
             var userId = Guid.NewGuid();
-            var handler = new CreateChoreCategoryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CreateChoreCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateChoreCategoryHandler>.Instance);
             var command = new CreateChoreCategoryCommand("Kitchen", "kitchen-icon");
             var result = await handler.Handle(command, CancellationToken.None);
 

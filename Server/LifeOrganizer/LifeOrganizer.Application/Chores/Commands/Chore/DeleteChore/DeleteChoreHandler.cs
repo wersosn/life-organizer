@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore
 {
@@ -9,11 +10,13 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<DeleteChoreHandler> _logger;
 
-        public DeleteChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public DeleteChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<DeleteChoreHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task Handle(DeleteChoreCommand request, CancellationToken cancellationToken)
@@ -24,6 +27,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore
 
             if (chore is null)
             {
+                _logger.LogWarning("Chore not found.");
                 throw new NotFoundException(nameof(Chore), request.Id);
             }
 
@@ -33,6 +37,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore
 
             _context.Chores.Remove(chore);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Chore deleted successfully. ChoreId: {ChoreId}", chore.Id);
         }
     }
 }

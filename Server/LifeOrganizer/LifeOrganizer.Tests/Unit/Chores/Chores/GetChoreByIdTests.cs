@@ -1,8 +1,10 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore;
+using LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.Chores
@@ -43,7 +45,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.Chores.Add(chore);
             await context.SaveChangesAsync();
 
-            var handler = new GetChoreByIdHandler(context, new FakeCurrentUserService(otherUserId));
+            var handler = new GetChoreByIdHandler(context, new FakeCurrentUserService(otherUserId), NullLogger<GetChoreByIdHandler>.Instance);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new GetChoreByIdQuery(chore.Id), CancellationToken.None));
 
             output.WriteLine("Correctly hid existence of another user's chore");
@@ -82,7 +84,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             );
             await context.SaveChangesAsync();
 
-            var handler = new GetChoreByIdHandler(context, new FakeCurrentUserService(userId));
+            var handler = new GetChoreByIdHandler(context, new FakeCurrentUserService(userId), NullLogger<GetChoreByIdHandler>.Instance);
             var result = await handler.Handle(new GetChoreByIdQuery(chore.Id), CancellationToken.None);
             Assert.Equal(2, result.RecentCompletions.Count);
             Assert.Equal("Recent", result.RecentCompletions[0].Notes);

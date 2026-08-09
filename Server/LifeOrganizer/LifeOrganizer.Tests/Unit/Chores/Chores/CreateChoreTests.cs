@@ -1,9 +1,11 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.CreateChore;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleChore;
+using LifeOrganizer.Application.Chores.Commands.Chore.CreateChore;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.Chores
@@ -31,7 +33,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.ChoreCategories.Add(category);
             await context.SaveChangesAsync();
 
-            var handler = new CreateChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CreateChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateChoreHandler>.Instance);
             var command = new CreateChoreCommand("Change bedsheets", null, category.Id, ChoreFrequency.Weeks, 3);
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -62,7 +64,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.ChoreCategories.Add(foreignCategory);
             await context.SaveChangesAsync();
 
-            var handler = new CreateChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new CreateChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateChoreHandler>.Instance);
             var command = new CreateChoreCommand("Vacuum", null, foreignCategory.Id, ChoreFrequency.Days, 7);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
 

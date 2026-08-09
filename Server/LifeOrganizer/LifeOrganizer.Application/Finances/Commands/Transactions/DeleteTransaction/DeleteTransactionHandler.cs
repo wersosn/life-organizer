@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransaction
 {
@@ -10,11 +11,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransac
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<DeleteTransactionHandler> _logger;
 
-        public DeleteTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public DeleteTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<DeleteTransactionHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task Handle(DeleteTransactionCommand request, CancellationToken cancellationToken)
@@ -25,11 +28,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransac
 
             if (transaction is null)
             {
+                _logger.LogWarning("Transaction not found.");
                 throw new NotFoundException(nameof(Transaction), request.Id);
             }
 
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Transaction deleted successfully. TransactionId: {TransactionId}", transaction.Id);
         }
     }
 }

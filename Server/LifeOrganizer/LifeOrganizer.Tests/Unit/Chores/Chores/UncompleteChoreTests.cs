@@ -1,8 +1,10 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById;
+using LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.Chores
@@ -48,7 +50,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.ChoreCompletions.AddRange(olderCompletion, newerCompletion);
             await context.SaveChangesAsync();
 
-            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<UncompleteChoreHandler>.Instance);
             await handler.Handle(new UncompleteChoreCommand(chore.Id), CancellationToken.None);
             Assert.Single(context.ChoreCompletions);
 
@@ -87,7 +89,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.ChoreCompletions.Add(completion);
             await context.SaveChangesAsync();
 
-            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<UncompleteChoreHandler>.Instance);
 
             await handler.Handle(new UncompleteChoreCommand(chore.Id), CancellationToken.None);
             Assert.Empty(context.ChoreCompletions);
@@ -114,7 +116,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.Chores.Add(chore);
             await context.SaveChangesAsync();
 
-            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<UncompleteChoreHandler>.Instance);
             await handler.Handle(new UncompleteChoreCommand(chore.Id), CancellationToken.None);
             Assert.Empty(context.ChoreCompletions);
 
@@ -141,7 +143,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.Chores.Add(chore);
             await context.SaveChangesAsync();
 
-            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(ownerId));           
+            var handler = new UncompleteChoreHandler(context, new FakeCurrentUserService(ownerId), NullLogger<UncompleteChoreHandler>.Instance);           
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new UncompleteChoreCommand(chore.Id), CancellationToken.None));
 
             output.WriteLine("Correctly rejected uncompletion for another user's chore.");

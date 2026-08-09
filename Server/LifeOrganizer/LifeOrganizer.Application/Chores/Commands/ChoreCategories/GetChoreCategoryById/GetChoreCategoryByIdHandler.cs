@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Chores.Commands.ChoreCategories.GetChoreCategoryById
 {
@@ -10,11 +11,13 @@ namespace LifeOrganizer.Application.Chores.Commands.ChoreCategories.GetChoreCate
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<GetChoreCategoryByIdHandler> _logger;
 
-        public GetChoreCategoryByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public GetChoreCategoryByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<GetChoreCategoryByIdHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<ChoreCategoryDto> Handle(GetChoreCategoryByIdQuery request, CancellationToken cancellationToken)
@@ -26,6 +29,7 @@ namespace LifeOrganizer.Application.Chores.Commands.ChoreCategories.GetChoreCate
 
             if (category is null)
             {
+                _logger.LogWarning("Chore category not found.");
                 throw new NotFoundException(nameof(ChoreCategory), request.Id);
             }
             return category;

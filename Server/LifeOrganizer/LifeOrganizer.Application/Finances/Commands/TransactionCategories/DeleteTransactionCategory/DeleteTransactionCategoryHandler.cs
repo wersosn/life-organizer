@@ -4,6 +4,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.DeleteTransactionCategory
 {
@@ -11,11 +12,13 @@ namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.Dele
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<DeleteTransactionCategoryHandler> _logger;
 
-        public DeleteTransactionCategoryHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public DeleteTransactionCategoryHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<DeleteTransactionCategoryHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task Handle(DeleteTransactionCategoryCommand request, CancellationToken cancellationToken)
@@ -26,12 +29,14 @@ namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.Dele
 
             if (category is null)
             {
+                _logger.LogWarning("Transaction category not found.");
                 throw new NotFoundException(nameof(TransactionCategory), request.Id);
             }
 
             var hasTransactions = await _context.Transactions.AnyAsync(t => t.CategoryId == category.Id, cancellationToken);
             if (hasTransactions)
             {
+                _logger.LogWarning("Transaction category deletion failed: category has assigned transactions. CategoryId: {CategoryId}", category.Id);
                 throw new ValidationException(new[]
                 {
                     new FluentValidation.Results.ValidationFailure(nameof(request.Id), "Cannot delete a category that has transactions assigned to it")
@@ -47,6 +52,7 @@ namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.Dele
 
             _context.TransactionCategories.Remove(category);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Transaction category deleted successfully. CategoryId: {CategoryId}", category.Id);
         }
     }
 }

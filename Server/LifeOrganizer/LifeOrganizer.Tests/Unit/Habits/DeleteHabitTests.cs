@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Habits.Commands.DeleteHabit;
+﻿using LifeOrganizer.Application.Habits.Commands.CreateHabit;
+using LifeOrganizer.Application.Habits.Commands.DeleteHabit;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Habits
@@ -36,7 +38,8 @@ namespace LifeOrganizer.Tests.Unit.Habits
 
             var handler = new DeleteHabitHandler(
                 context,
-                currentUser
+                currentUser,
+                NullLogger<DeleteHabitHandler>.Instance
             );
 
             await handler.Handle(

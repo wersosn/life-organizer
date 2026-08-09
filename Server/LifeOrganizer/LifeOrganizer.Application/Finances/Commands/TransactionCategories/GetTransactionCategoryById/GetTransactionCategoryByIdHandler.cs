@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetTransactionCategoryById
 {
@@ -10,11 +11,13 @@ namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetT
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<GetTransactionCategoryByIdHandler> _logger;
 
-        public GetTransactionCategoryByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public GetTransactionCategoryByIdHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<GetTransactionCategoryByIdHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<TransactionCategoryDto> Handle(GetTransactionCategoryByIdQuery request, CancellationToken cancellationToken)
@@ -26,6 +29,7 @@ namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetT
 
             if (category is null)
             {
+                _logger.LogWarning("Transaction category not found.");
                 throw new NotFoundException(nameof(TransactionCategory), request.Id);
             }
             return category;

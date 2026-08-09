@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Finances.Commands.Budget.UpdateBudget
 {
@@ -9,11 +10,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.UpdateBudget
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<UpdateBudgetHandler> _logger;
 
-        public UpdateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public UpdateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<UpdateBudgetHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task Handle(UpdateBudgetCommand request, CancellationToken cancellationToken)
@@ -24,12 +27,14 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.UpdateBudget
 
             if (budget is null)
             {
+                _logger.LogWarning("Budget not found.");
                 throw new NotFoundException(nameof(Budget), request.Id);
             }
 
             budget.MonthlyLimit = request.MonthlyLimit;
             budget.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Budget updated successfully. BudgetId: {BudgetId}", budget.Id);
         }
     }
 }

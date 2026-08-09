@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Habits.Commands.UpdateHabit;
+﻿using LifeOrganizer.Application.Habits.Commands.UncompleteHabit;
+using LifeOrganizer.Application.Habits.Commands.UpdateHabit;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Habits
@@ -36,7 +38,8 @@ namespace LifeOrganizer.Tests.Unit.Habits
 
             var handler = new UpdateHabitHandler(
                 context,
-                currentUser
+                currentUser,
+                NullLogger<UpdateHabitHandler>.Instance
             );
 
             await handler.Handle(

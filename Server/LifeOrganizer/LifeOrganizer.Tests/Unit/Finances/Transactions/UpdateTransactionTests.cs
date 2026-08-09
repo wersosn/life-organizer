@@ -1,8 +1,10 @@
 ﻿using LifeOrganizer.Application.Common.Exceptions;
+using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
 using LifeOrganizer.Application.Finances.Commands.Transactions.UpdateTransaction;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Transactions
@@ -38,7 +40,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Transactions
             context.Transactions.Add(transaction);
             await context.SaveChangesAsync();
 
-            var handler = new UpdateTransactionHandler(context,currentUser);
+            var handler = new UpdateTransactionHandler(context,currentUser, NullLogger<UpdateTransactionHandler>.Instance);
             var command = new UpdateTransactionCommand(transaction.Id, foreignCategory.Id, 75, TransactionType.Expense, null, DateOnly.FromDateTime(DateTime.UtcNow));
 
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));

@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore
 {
@@ -10,11 +11,13 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<UpdateChoreHandler> _logger;
 
-        public UpdateChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public UpdateChoreHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<UpdateChoreHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task Handle(UpdateChoreCommand request, CancellationToken cancellationToken)
@@ -25,6 +28,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore
 
             if (chore is null)
             {
+                _logger.LogWarning("Chore not found.");
                 throw new NotFoundException(nameof(Chore), request.Id);
             }
 
@@ -34,6 +38,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore
 
             if (!categoryExists)
             {
+                _logger.LogWarning("Chore update failed: category not found.");
                 throw new NotFoundException(nameof(ChoreCategory), request.CategoryId);
             }
 
@@ -45,6 +50,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore
             chore.IsAutomationEnabled = request.IsAutomationEnabled;
             chore.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Chore updated successfully. ChoreId: {ChoreId}", chore.Id);
         }
     }
 }

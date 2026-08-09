@@ -4,6 +4,7 @@ using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction
 {
@@ -11,11 +12,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransac
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ILogger<CreateTransactionHandler> _logger;
 
-        public CreateTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser)
+        public CreateTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<CreateTransactionHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _logger = logger;
         }
 
         public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
@@ -26,11 +29,13 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransac
 
             if (category is null)
             {
+                _logger.LogWarning("Transaction creation failed: category not found.");
                 throw new NotFoundException(nameof(TransactionCategory), request.CategoryId);
             }
 
             if (category.Type != request.Type)
             {
+                _logger.LogWarning("Transaction creation failed: transaction type does not match category type.");
                 throw new ValidationException(new[]
                 {
                     new FluentValidation.Results.ValidationFailure(nameof(request.Type), "Transaction type must match the category's type.")
@@ -52,6 +57,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransac
 
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Transaction created successfully. TransactionId: {TransactionId}", transaction.Id);
             return transaction.Id;
         }
     }

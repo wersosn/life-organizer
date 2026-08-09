@@ -1,6 +1,8 @@
 ﻿using LifeOrganizer.Application.Todo.Commands.CreateTodo;
+using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Todo
@@ -22,7 +24,8 @@ namespace LifeOrganizer.Tests.Unit.Todo
 
             var handler = new CreateTodoHandler(
                 context,
-                currentUser
+                currentUser,
+                NullLogger<CreateTodoHandler>.Instance
             );
 
             var command = new CreateTodoCommand(

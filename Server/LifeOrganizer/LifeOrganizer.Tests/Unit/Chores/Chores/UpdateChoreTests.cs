@@ -1,8 +1,10 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.UncompleteChore;
+using LifeOrganizer.Application.Chores.Commands.Chore.UpdateChore;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Chores.Chores
@@ -49,7 +51,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             context.Chores.Add(chore);
             await context.SaveChangesAsync();
 
-            var handler = new UpdateChoreHandler(context, new FakeCurrentUserService(userId));
+            var handler = new UpdateChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<UpdateChoreHandler>.Instance);
             var command = new UpdateChoreCommand(chore.Id, "Wash dishes", null, foreignCategory.Id, ChoreFrequency.Days, 1, true);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
 
