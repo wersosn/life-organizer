@@ -38,6 +38,7 @@ namespace LifeOrganizer.Application.Habits.Commands.GetHabitById
                 habit.Frequency,
                 habit.ScheduledDays,
                 habit.CompletionDeadline,
+                habit.IsAutomationEnabled,
                 recentCompletions
             );
         }

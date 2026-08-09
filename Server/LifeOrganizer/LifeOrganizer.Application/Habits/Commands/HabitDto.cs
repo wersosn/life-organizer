@@ -11,6 +11,7 @@ namespace LifeOrganizer.Application.Habits.Commands
         TimeSpan? CompletionDeadline,
         bool IsActive,
         DateTime CreatedAt,
+        bool IsAutomationEnabled,
         bool IsCompletedToday
     );
 }

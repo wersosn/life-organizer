@@ -11,6 +11,7 @@ namespace LifeOrganizer.Domain.Entities
         public HabitFrequency Frequency { get; set; }
         public List<DayOfWeek> ScheduledDays { get; set; } = new();
         public TimeSpan? CompletionDeadline { get; set; }
+        public bool IsAutomationEnabled { get; set; } = true;
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<HabitCompletion> Completions { get; set; } = new List<HabitCompletion>();

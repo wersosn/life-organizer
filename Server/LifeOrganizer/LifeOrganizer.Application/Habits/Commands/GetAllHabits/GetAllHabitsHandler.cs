@@ -28,9 +28,10 @@ namespace LifeOrganizer.Application.Habits.Commands.GetAllHabits
                     x.Name,
                     x.Frequency,
                     x.ScheduledDays,
-                    x.CompletionDeadline,
+                    x.CompletionDeadline,                    
                     x.IsActive,
                     x.CreatedAt,
+                    x.IsAutomationEnabled,
                     x.Completions.Any(c => c.Date == today && c.Status == HabitCompletionStatus.Completed)
                 ))
                 .ToListAsync(cancellationToken);

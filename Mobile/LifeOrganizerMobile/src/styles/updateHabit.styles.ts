@@ -89,4 +89,11 @@ export const styles = StyleSheet.create({
     buttonWrapper: {
         marginTop: 8,
     },
+
+    switchRow: { 
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        marginBottom: 24 
+    },
 });

@@ -20,7 +20,7 @@ export type Habit = {
     isActive: boolean;
     createdAt: string;
     isCompletedToday?: boolean;
-    isAutomationEnabled?: boolean;
+    isAutomationEnabled: boolean;
 }
 
 export type HabitCompletion = {
@@ -34,5 +34,6 @@ export type HabitDetails = {
     frequency: HabitFrequency;
     scheduledDays: DayOfWeek[];
     completionDeadline?: string;
+    isAutomationEnabled: boolean;
     recentCompletions: HabitCompletion[];
 };

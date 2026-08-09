@@ -22,11 +22,12 @@ export async function createHabit(name: string, frequency: HabitFrequency, sched
     return response.data;
 }
 
-export async function updateHabit(id: string, name: string, frequency: HabitFrequency, scheduledDays: DayOfWeek[], completionDeadline?: string) {
+export async function updateHabit(id: string, name: string, frequency: HabitFrequency, scheduledDays: DayOfWeek[], isAutomationEnabled: boolean, completionDeadline?: string) {
     const response = await apiClient.put(`/habits/${id}`, {
         name,
         frequency,
         scheduledDays,
+        isAutomationEnabled,
         completionDeadline,
     });
     return response.data;

@@ -25,6 +25,7 @@ namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
                 Frequency = request.Frequency,
                 ScheduledDays = request.ScheduledDays,
                 CompletionDeadline = request.CompletionDeadline,
+                IsAutomationEnabled = true,
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow
             };

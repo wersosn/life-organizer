@@ -9,6 +9,7 @@ namespace LifeOrganizer.Application.Habits.Commands.GetHabitById
         HabitFrequency Frequency,
         List<DayOfWeek> ScheduledDays,
         TimeSpan? CompletionDeadline,
+        bool IsAutomationEnabled,
         List<HabitCompletionDto> RecentCompletions
     );
     public record HabitCompletionDto(DateOnly Date, HabitCompletionStatus Status);

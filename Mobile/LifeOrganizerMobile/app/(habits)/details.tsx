@@ -64,6 +64,7 @@ export default function HabitDetailsScreen() {
                 name: habit.name,
                 frequency: String(habit.frequency),
                 scheduledDays: JSON.stringify(habit.scheduledDays),
+                isAutomationEnabled: String(habit.isAutomationEnabled),
                 completionDeadline: habit.completionDeadline ?? "",
             },
         });

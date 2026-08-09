@@ -6,7 +6,7 @@ import { DAY_LABELS, FREQUENCY_LABELS } from "@/utils/habitLabels";
 import { formatTimeDisplay, formatTimeSpan, parseTimeSpan } from "@/utils/habitTime";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
+import { View, Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, Pressable, Switch } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from "../../src/styles/updateHabit.styles";
 
@@ -22,6 +22,7 @@ export default function UpdateHabitScreen() {
     const [deadline, setDeadline] = useState<Date | null>(
         parseTimeSpan(params.completionDeadline as string)
     );
+    const [isAutomationEnabled, setIsAutomationEnabled] = useState(params.isAutomationEnabled === "true");
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
@@ -66,6 +67,7 @@ export default function UpdateHabitScreen() {
                 name,
                 frequency,
                 scheduledDays,
+                isAutomationEnabled,
                 deadline ? formatTimeSpan(deadline) : undefined
             );
             router.back();
@@ -180,6 +182,13 @@ export default function UpdateHabitScreen() {
                         onChange={handleTimeChange}
                     />
                 )}
+
+                <View style={styles.switchRow}>
+                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444", marginBottom: 0 }]}>
+                        Automation enabled
+                    </Text>
+                    <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} />
+                </View>
 
                 {error && <Text style={styles.errorText}>{error}</Text>}
 

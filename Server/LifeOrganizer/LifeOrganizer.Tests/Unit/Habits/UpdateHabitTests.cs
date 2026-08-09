@@ -45,7 +45,8 @@ namespace LifeOrganizer.Tests.Unit.Habits
                     "New",
                     Domain.Enums.HabitFrequency.Daily,
                     new List<DayOfWeek>(),
-                    null
+                    null,
+                    true
                 ),
                 CancellationToken.None
             );

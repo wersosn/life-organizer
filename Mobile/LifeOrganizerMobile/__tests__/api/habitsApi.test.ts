@@ -67,13 +67,14 @@ describe("habitsApi", () => {
     it("updateHabit sends a PUT request to the correct endpoint with the payload", async () => {
         (apiClient.put as jest.Mock).mockResolvedValue({ data: undefined });
 
-        await updateHabit("habit-id", "Gym", HabitFrequency.Custom, [DayOfWeek.Tuesday, DayOfWeek.Thursday], "07:00:00");
+        await updateHabit("habit-id", "Gym", HabitFrequency.Custom, [DayOfWeek.Tuesday, DayOfWeek.Thursday], true, "07:00:00");
 
         expect(apiClient.put).toHaveBeenCalledWith("/habits/habit-id", {
             name: "Gym",
             frequency: HabitFrequency.Custom,
             scheduledDays: [DayOfWeek.Tuesday, DayOfWeek.Thursday],
             completionDeadline: "07:00:00",
+            isAutomationEnabled: true,
         });
     });
 
