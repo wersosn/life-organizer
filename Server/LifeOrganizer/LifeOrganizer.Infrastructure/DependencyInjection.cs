@@ -1,5 +1,7 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Application.Interfaces;
+using LifeOrganizer.Infrastructure.BackgroundServices;
 using LifeOrganizer.Infrastructure.Persistence;
 using LifeOrganizer.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +16,15 @@ namespace LifeOrganizer.Infrastructure
         {
             services.AddHttpContextAccessor();
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddScoped<IApplicationDbContext, AppDbContext>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.Configure<AutomationSettings>(configuration.GetSection("Automation"));
+            services.AddHostedService<HabitAutomationService>();
+            services.AddHostedService<ChoreAutomationService>();
+
             return services;
         }
     }
