@@ -2,6 +2,7 @@ import { AutomationSettings } from "@/types/automation";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Switch, Text, useColorScheme, View } from "react-native";
 import { styles } from "../../src/styles/automation.styles";
+import { getAutomationSettings, updateAutomationSettings } from "@/api/automationApi";
 
 export default function AutomationScreen() {
     const [settings, setSettings] = useState<AutomationSettings | null>(null);
@@ -9,12 +10,12 @@ export default function AutomationScreen() {
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
-    /*useEffect(() => {
+    useEffect(() => {
         getAutomationSettings()
             .then(setSettings)
             .catch(e => console.log(e))
             .finally(() => setLoading(false));
-    }, []);*/
+    }, []);
 
     async function handleToggle(key: keyof AutomationSettings, value: boolean) {
         if (!settings) return;
@@ -24,20 +25,20 @@ export default function AutomationScreen() {
         setSettings(updated);
 
         try {
-            //await updateAutomationSettings(updated);
+            await updateAutomationSettings(updated);
         } catch (e) {
             console.log(e);
             setSettings(previous);
         }
     }
 
-    /*if (loading || !settings) {
+    if (loading || !settings) {
         return (
             <View style={[styles.container, styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
                 <ActivityIndicator size="large" color="#4F7CFF" />
             </View>
         );
-    }*/
+    }
 
     return (
         <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
@@ -50,10 +51,10 @@ export default function AutomationScreen() {
                         Missed habits will automatically appear in your task list.
                     </Text>
                 </View>
-                {/*<Switch
+                <Switch
                     value={settings.habitAutomationEnabled}
                     onValueChange={value => handleToggle("habitAutomationEnabled", value)}
-                />*/}
+                />
             </View>
 
             <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#fff" }]}>
@@ -63,10 +64,10 @@ export default function AutomationScreen() {
                         Overdue chores will automatically appear in your task list.
                     </Text>
                 </View>
-                {/*<Switch
+                <Switch
                     value={settings.choreAutomationEnabled}
                     onValueChange={value => handleToggle("choreAutomationEnabled", value)}
-                />*/}
+                />
             </View>
         </View>
     );

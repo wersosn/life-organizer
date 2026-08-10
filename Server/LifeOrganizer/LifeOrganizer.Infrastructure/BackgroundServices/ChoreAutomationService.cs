@@ -44,9 +44,11 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-            var activeCount = await context.Chores.CountAsync(h => h.IsActive && h.IsAutomationEnabled, cancellationToken);
+            var chores = await context.Chores
+                .Where(c => c.IsActive && c.IsAutomationEnabled && c.User.ChoreAutomationEnabled)
+                .ToListAsync(cancellationToken);
 
-            _logger.LogInformation("Chore automation check completed at {time}. Active Chores with automation: {count}", DateTime.UtcNow, activeCount);
+            _logger.LogInformation("Chore automation check completed at {time}. Active Chores with automation: {count}", DateTime.UtcNow, chores);
         }
     }
 }

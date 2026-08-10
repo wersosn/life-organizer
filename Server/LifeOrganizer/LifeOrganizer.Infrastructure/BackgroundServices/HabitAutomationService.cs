@@ -50,7 +50,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             var now = DateTime.UtcNow;
 
-            var habits = await context.Habits.Where(h => h.IsActive && h.IsAutomationEnabled).ToListAsync(cancellationToken);
+            var habits = await context.Habits.Where(h => h.IsActive && h.IsAutomationEnabled && h.User.HabitAutomationEnabled).ToListAsync(cancellationToken);
 
             if (habits.Count == 0)
             {

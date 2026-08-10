@@ -9,5 +9,7 @@
         public DateTime CreatedAt { get; set; }
         public bool EmailConfirmed { get; set; } = false;
         public ICollection<TodoItem> TodoItems { get; set; } = [];
+        public bool HabitAutomationEnabled { get; set; } = true;
+        public bool ChoreAutomationEnabled { get; set; } = true;
     }
 }
