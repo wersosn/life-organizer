@@ -150,7 +150,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Habit Tracker module
 - [x] Finance Tracker module
 - [x] Chore Tracker module
-- [ ] Automation engine (habits → tasks)
+- [x] Automation engine (habits → tasks)
 - [ ] Automation engine (chores → tasks)
 - [ ] Notifications system
 - [ ] Task history + configurable retention/cleanup
@@ -322,7 +322,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Moduł Habit Tracker
 - [x] Moduł Finance Tracker
 - [x] Moduł Chore Tracker
-- [ ] Silnik automatyzacji (nawyki → zadania)
+- [x] Silnik automatyzacji (nawyki → zadania)
 - [ ] Silnik automatyzacji (obowiązki → zadania)
 - [ ] System powiadomień
 - [ ] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
