@@ -41,12 +41,13 @@ describe("habitsApi", () => {
     it("createHabit sends the correct payload", async () => {
         (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
 
-        await createHabit("Meditation", HabitFrequency.Weekly, [DayOfWeek.Monday], "20:00:00");
+        await createHabit("Meditation", HabitFrequency.Weekly, [DayOfWeek.Monday], false, "20:00:00");
 
         expect(apiClient.post).toHaveBeenCalledWith("/habits", {
             name: "Meditation",
             frequency: HabitFrequency.Weekly,
             scheduledDays: [DayOfWeek.Monday],
+            isAutomationEnabled: false,
             completionDeadline: "20:00:00",
         });
     });
@@ -54,12 +55,13 @@ describe("habitsApi", () => {
     it("createHabit sends undefined completionDeadline when not provided", async () => {
         (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
 
-        await createHabit("Meditation", HabitFrequency.Daily, []);
+        await createHabit("Meditation", HabitFrequency.Daily, [], false);
 
         expect(apiClient.post).toHaveBeenCalledWith("/habits", {
             name: "Meditation",
             frequency: HabitFrequency.Daily,
             scheduledDays: [],
+            isAutomationEnabled: false,
             completionDeadline: undefined,
         });
     });

@@ -6,7 +6,7 @@ import { DAY_LABELS, FREQUENCY_LABELS } from "@/utils/habitLabels";
 import { formatTimeDisplay, formatTimeSpan } from "@/utils/habitTime";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, Pressable } from "react-native";
+import { View, Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, Pressable, Switch } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from "../../src/styles/createHabit.styles";
 
@@ -15,6 +15,7 @@ export default function CreateHabitScreen() {
     const [frequency, setFrequency] = useState<HabitFrequency>(HabitFrequency.Daily);
     const [scheduledDays, setScheduledDays] = useState<DayOfWeek[]>([]);
     const [deadline, setDeadline] = useState<Date | null>(null);
+    const [isAutomationEnabled, setIsAutomationEnabled] = useState(true);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
@@ -54,7 +55,7 @@ export default function CreateHabitScreen() {
         setError(null);
 
         try {
-            await createHabit(name, frequency, scheduledDays, deadline ? formatTimeSpan(deadline) : undefined);
+            await createHabit(name, frequency, scheduledDays, isAutomationEnabled, deadline ? formatTimeSpan(deadline) : undefined);
             router.back();
         } catch (e) {
             console.log(e);
@@ -67,7 +68,7 @@ export default function CreateHabitScreen() {
             style={{ flex: 1 }}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-                
+
             <ScrollView
                 contentContainerStyle={[
                     styles.container,
@@ -190,6 +191,13 @@ export default function CreateHabitScreen() {
                         onChange={handleTimeChange}
                     />
                 )}
+
+                <View style={styles.switchRow}>
+                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444", marginBottom: 0 }]}>
+                        Automation enabled
+                    </Text>
+                    <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} />
+                </View>
 
                 {error && <Text style={styles.errorText}>{error}</Text>}
 

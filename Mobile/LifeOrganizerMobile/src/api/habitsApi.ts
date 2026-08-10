@@ -12,11 +12,12 @@ export async function getHabitById(id: string) {
     return response.data;
 }
 
-export async function createHabit(name: string, frequency: HabitFrequency, scheduledDays: DayOfWeek[], completionDeadline?: string) {
+export async function createHabit(name: string, frequency: HabitFrequency, scheduledDays: DayOfWeek[], isAutomationEnabled: boolean, completionDeadline?: string) {
     const response = await apiClient.post("/habits", {
         name,
         frequency,
         scheduledDays,
+        isAutomationEnabled,
         completionDeadline,
     });
     return response.data;
