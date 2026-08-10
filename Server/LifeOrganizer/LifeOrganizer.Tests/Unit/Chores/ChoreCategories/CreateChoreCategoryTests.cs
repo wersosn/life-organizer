@@ -1,5 +1,4 @@
 ﻿using LifeOrganizer.Application.Chores.Commands.ChoreCategories.CreateChoreCategory;
-using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;

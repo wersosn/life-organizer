@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react-native";
 import TodoCard from "@/components/TodoCard";
-import { Todo } from "@/types/todo";
+import { TaskSource, Todo } from "@/types/todo";
 
 const baseTodo: Todo = {
     id: "1",
@@ -8,6 +8,7 @@ const baseTodo: Todo = {
     description: undefined,
     isCompleted: false,
     createdAt: "2026-01-01",
+    source: TaskSource.Manual,
 };
 
 describe("TodoCard", () => {

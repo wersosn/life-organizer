@@ -1,4 +1,6 @@
-﻿namespace LifeOrganizer.Application.Todo.Commands
+﻿using LifeOrganizer.Domain.Enums;
+
+namespace LifeOrganizer.Application.Todo.Commands
 {
     public record TodoDto
     (
@@ -7,6 +9,7 @@
         string? Description,
         bool IsCompleted,
         DateTime CreatedAt,
-        DateTime? CompletedAt
+        DateTime? CompletedAt,
+        TaskSource Source
     );
 }

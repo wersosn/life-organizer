@@ -72,4 +72,29 @@ export const styles = StyleSheet.create({
         height: 22,
         resizeMode: "contain",
     },
+
+    titleRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        flexWrap: "wrap",
+        gap: 8,
+    },
+
+    automationBorder: {
+        borderLeftWidth: 3,
+        borderLeftColor: "#4F7CFF",
+    },
+
+    automationBadge: {
+        backgroundColor: "#4F7CFF20",
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        borderRadius: 6,
+    },
+    
+    automationBadgeText: {
+        color: "#4F7CFF",
+        fontSize: 11,
+        fontWeight: "700",
+    },
 })

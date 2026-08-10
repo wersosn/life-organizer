@@ -23,7 +23,7 @@ namespace LifeOrganizer.Infrastructure
 
             services.Configure<AutomationSettings>(configuration.GetSection("Automation"));
             services.AddHostedService<HabitAutomationService>();
-            services.AddHostedService<ChoreAutomationService>();
+            //services.AddHostedService<ChoreAutomationService>();
 
             return services;
         }

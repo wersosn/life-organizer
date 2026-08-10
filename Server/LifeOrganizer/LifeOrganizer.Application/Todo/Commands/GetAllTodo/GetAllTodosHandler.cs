@@ -28,7 +28,8 @@ namespace LifeOrganizer.Application.Todo.Commands.GetAllTodo
                     x.Description,
                     x.IsCompleted,
                     x.CreatedAt,
-                    x.CompletedAt
+                    x.CompletedAt,
+                    x.Source
                 ))
                 .ToListAsync(cancellationToken);
         }

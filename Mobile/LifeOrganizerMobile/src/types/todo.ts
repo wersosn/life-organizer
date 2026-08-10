@@ -5,6 +5,12 @@ export type Todo = {
     isCompleted: boolean;
     createdAt: string;
     completedAt?: string;
-    isSynced?: boolean;
-    serverId?: string; 
+    source: TaskSource; 
 };
+
+export enum TaskSource {
+    Manual = 0,
+    HabitAutomation = 1,
+    FinanceAutomation = 2,
+    ChoreAutomation = 3,
+}

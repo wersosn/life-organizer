@@ -1,4 +1,4 @@
-import { Todo } from "@/types/todo";
+import { TaskSource, Todo } from "@/types/todo";
 import { Pressable, View, Text, useColorScheme, Image } from "react-native";
 import { styles } from "../styles/TodoCard.styles";
 
@@ -9,9 +9,24 @@ type Props = {
     onEdit: (todo: Todo) => void;
 };
 
+function getAutomationLabel(source: TaskSource): string | null {
+    switch (source) {
+        case TaskSource.HabitAutomation:
+            return "Missed habit";
+        case TaskSource.ChoreAutomation:
+            return "Overdue chore";
+        case TaskSource.FinanceAutomation:
+            return "Overdue payment";
+        default:
+            return null;
+    }
+}
+
 export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props) {
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const automationLabel = getAutomationLabel(todo.source);
+
     return (
         <View
             style={[
@@ -38,20 +53,28 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                 )}
             </Pressable>
             <View style={styles.content}>
-                <Text
-                    style={[
-                        styles.title,
-                        {
-                            color: isDark
-                                ? "#FFFFFF"
-                                : "#000000",
-                        },
-                        todo.isCompleted &&
-                        styles.completedText,
-                    ]}
-                >
-                    {todo.title}
-                </Text>
+                <View style={styles.titleRow}>
+                    <Text
+                        style={[
+                            styles.title,
+                            {
+                                color: isDark
+                                    ? "#FFFFFF"
+                                    : "#000000",
+                            },
+                            todo.isCompleted &&
+                            styles.completedText,
+                        ]}
+                    >
+                        {todo.title}
+                    </Text>
+
+                    {automationLabel && (
+                        <View style={styles.automationBadge} testID="automation-badge">
+                            <Text style={styles.automationBadgeText}>{automationLabel}</Text>
+                        </View>
+                    )}
+                </View>
                 {
                     todo.description &&
                     <Text
