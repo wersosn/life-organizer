@@ -69,10 +69,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             foreach (var habit in habits)
             {
                 todaysCompletions.TryGetValue(habit.Id, out var existingStatus);
-                if (!HabitScheduleCalculator.IsMissed(habit, today, now, existingStatus))
-                {
-                    continue;
-                }
 
                 // if habit has not been marked for today, mark it as Missed
                 if (!todaysCompletions.ContainsKey(habit.Id))
@@ -94,7 +90,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                     t.CreatedAt.Date == now.Date,
                     cancellationToken);
 
-                if (taskAlreadyExists)
+                if (!HabitTaskDecider.ShouldCreateTask(habit, today, now, existingStatus, taskAlreadyExists))
                 {
                     continue;
                 }

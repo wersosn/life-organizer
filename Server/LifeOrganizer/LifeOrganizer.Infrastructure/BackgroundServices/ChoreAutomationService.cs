@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
+using LifeOrganizer.Domain.Services;
 using LifeOrganizer.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,12 +63,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
 
             foreach (var chore in chores)
             {
-                var isOverdue = ChoreOverdueCalculator.IsOverdue(chore.LastCompletedAt, chore.FrequencyUnit, chore.FrequencyValue, now);
-                if (!isOverdue)
-                {
-                    continue;
-                }
-
                 // do not create a second task on the same day for the same chore
                 var taskAlreadyExists = await context.TodoItems.AnyAsync(t =>
                     t.Source == TaskSource.ChoreAutomation &&
@@ -75,7 +70,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                     !t.IsCompleted,
                     cancellationToken);
 
-                if (taskAlreadyExists)
+                if (!ChoreTaskDecider.ShouldCreateTask(chore, now, taskAlreadyExists))
                 {
                     continue;
                 }
