@@ -151,7 +151,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Finance Tracker module
 - [x] Chore Tracker module
 - [x] Automation engine (habits → tasks)
-- [ ] Automation engine (chores → tasks)
+- [x] Automation engine (chores → tasks)
 - [ ] Notifications system
 - [ ] Task history + configurable retention/cleanup
 - [ ] Background services for scheduled checks
@@ -165,7 +165,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Habit Tracker screen
 - [x] Finance Tracker screen
 - [x] Chore Tracker screen
-- [ ] Automation
+- [x] Automation
 - [ ] Offline mode with SQLite
 - [ ] Sync mechanism (local ↔ server)
 - [ ] Push notifications
@@ -323,7 +323,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Moduł Finance Tracker
 - [x] Moduł Chore Tracker
 - [x] Silnik automatyzacji (nawyki → zadania)
-- [ ] Silnik automatyzacji (obowiązki → zadania)
+- [x] Silnik automatyzacji (obowiązki → zadania)
 - [ ] System powiadomień
 - [ ] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
 - [ ] Background services do zaplanowanych sprawdzeń
@@ -337,7 +337,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Ekran Habit Tracker
 - [x] Ekran Finance Tracker
 - [x] Ekran Chore Tracker
-- [ ] Automatyzacja
+- [x] Automatyzacja
 - [ ] Tryb offline z SQLite
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
 - [ ] Powiadomienia push
