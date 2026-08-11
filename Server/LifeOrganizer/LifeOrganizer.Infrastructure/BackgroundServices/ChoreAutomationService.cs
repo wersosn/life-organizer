@@ -1,5 +1,8 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Common.Settings;
+using LifeOrganizer.Domain.Entities;
+using LifeOrganizer.Domain.Enums;
+using LifeOrganizer.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -48,7 +51,53 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                 .Where(c => c.IsActive && c.IsAutomationEnabled && c.User.ChoreAutomationEnabled)
                 .ToListAsync(cancellationToken);
 
-            _logger.LogInformation("Chore automation check completed at {time}. Active Chores with automation: {count}", DateTime.UtcNow, chores);
+            if (chores.Count == 0)
+            {
+                _logger.LogInformation("Chore automation check found no active chores with automation enabled.");
+                return;
+            }
+
+            var now = DateTime.UtcNow;
+            var tasksCreated = 0;
+
+            foreach (var chore in chores)
+            {
+                var isOverdue = ChoreOverdueCalculator.IsOverdue(chore.LastCompletedAt, chore.FrequencyUnit, chore.FrequencyValue, now);
+                if (!isOverdue)
+                {
+                    continue;
+                }
+
+                // do not create a second task on the same day for the same chore
+                var taskAlreadyExists = await context.TodoItems.AnyAsync(t =>
+                    t.Source == TaskSource.ChoreAutomation &&
+                    t.SourceId == chore.Id &&
+                    !t.IsCompleted,
+                    cancellationToken);
+
+                if (taskAlreadyExists)
+                {
+                    continue;
+                }
+
+                context.TodoItems.Add(new TodoItem
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = chore.UserId,
+                    Title = chore.Name,
+                    Source = TaskSource.ChoreAutomation,
+                    SourceId = chore.Id,
+                    CreatedAt = now,
+                    IsCompleted = false,
+                });
+                tasksCreated++;
+            }
+
+            if (tasksCreated > 0)
+            {
+                await context.SaveChangesAsync(cancellationToken);
+                _logger.LogInformation("Chore automation created {count} new tasks from overdue chores.", tasksCreated);
+            }
         }
     }
 }

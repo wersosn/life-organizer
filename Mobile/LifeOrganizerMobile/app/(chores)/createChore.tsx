@@ -3,7 +3,7 @@ import { createChore } from "@/api/choresApi";
 import { ChoreCategory, ChoreFrequency } from "@/types/chore";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Button, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Button, KeyboardAvoidingView, Platform, Pressable, ScrollView, Switch, Text, TextInput, useColorScheme, View } from "react-native";
 import { styles } from "../../src/styles/createChore.styles";
 import { CreateChoreCategoryModal } from "@/components/CreateChoreCaregoryModal";
 
@@ -22,6 +22,7 @@ export default function CreateChoreScreen() {
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [categoryModalVisible, setCategoryModalVisible] = useState(false);
     const [loadingCategories, setLoadingCategories] = useState(true);
+    const [isAutomationEnabled, setIsAutomationEnabled] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
@@ -66,7 +67,7 @@ export default function CreateChoreScreen() {
         setError(null);
 
         try {
-            await createChore(name, categoryId, frequencyUnit, parsedValue, description || undefined);
+            await createChore(name, categoryId, frequencyUnit, parsedValue, isAutomationEnabled, description || undefined);
             router.back();
         } catch (e) {
             console.log(e);
@@ -175,6 +176,13 @@ export default function CreateChoreScreen() {
                             );
                         })}
                     </View>
+                </View>
+
+                <View style={styles.switchRow}>
+                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444", marginBottom: 0 }]}>
+                        Automation enabled
+                    </Text>
+                    <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} />
                 </View>
 
                 {error && <Text style={styles.errorText}>{error}</Text>}

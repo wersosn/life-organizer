@@ -45,12 +45,11 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         private async Task CheckHabitsAsync(CancellationToken cancellationToken)
         {
             using var scope = _scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+            var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>(); 
 
-            var today = DateOnly.FromDateTime(DateTime.UtcNow);
-            var now = DateTime.UtcNow;
-
-            var habits = await context.Habits.Where(h => h.IsActive && h.IsAutomationEnabled && h.User.HabitAutomationEnabled).ToListAsync(cancellationToken);
+            var habits = await context.Habits
+                .Where(h => h.IsActive && h.IsAutomationEnabled && h.User.HabitAutomationEnabled)
+                .ToListAsync(cancellationToken);
 
             if (habits.Count == 0)
             {
@@ -58,6 +57,8 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                 return;
             }
 
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+            var now = DateTime.UtcNow;
             var habitIds = habits.Select(h => h.Id).ToList();
 
             var todaysCompletions = await context.HabitCompletions
@@ -68,14 +69,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             foreach (var habit in habits)
             {
                 todaysCompletions.TryGetValue(habit.Id, out var existingStatus);
-
-                // debug:
-                var deadline = HabitScheduleCalculator.GetDeadlineMoment(habit, today);
-                var isMissed = HabitScheduleCalculator.IsMissed(habit, today, now, existingStatus);
-                _logger.LogInformation(
-                    "Habit {Name}: deadline={Deadline}, now={Now}, isScheduled={Scheduled}, existingStatus={Status}, isMissed={Missed}",
-                    habit.Name, deadline, now, HabitScheduleCalculator.IsScheduledFor(habit, today), existingStatus, isMissed);
-                
                 if (!HabitScheduleCalculator.IsMissed(habit, today, now, existingStatus))
                 {
                     continue;

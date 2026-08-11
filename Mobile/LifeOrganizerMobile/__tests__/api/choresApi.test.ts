@@ -40,7 +40,7 @@ describe("choreCategoriesApi", () => {
     it("createChore sends the correct payload", async () => {
         (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
 
-        await createChore("Wash dishes", "category-id", ChoreFrequency.Days, 1, "Kitchen sink");
+        await createChore("Wash dishes", "category-id", ChoreFrequency.Days, 1, true, "Kitchen sink");
 
         expect(apiClient.post).toHaveBeenCalledWith("/chores", {
             name: "Wash dishes",
@@ -48,13 +48,14 @@ describe("choreCategoriesApi", () => {
             categoryId: "category-id",
             frequencyUnit: ChoreFrequency.Days,
             frequencyValue: 1,
+            isAutomationEnabled: true,
         });
     });
 
     it("createChore sends undefined description when not provided", async () => {
         (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
 
-        await createChore("Wash dishes", "category-id", ChoreFrequency.Days, 1);
+        await createChore("Wash dishes", "category-id", ChoreFrequency.Days, 1, true);
 
         expect(apiClient.post).toHaveBeenCalledWith("/chores", {
             name: "Wash dishes",
@@ -62,6 +63,7 @@ describe("choreCategoriesApi", () => {
             categoryId: "category-id",
             frequencyUnit: ChoreFrequency.Days,
             frequencyValue: 1,
+            isAutomationEnabled: true,
         });
     });
 

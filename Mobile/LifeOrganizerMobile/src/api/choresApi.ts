@@ -11,13 +11,14 @@ export async function getChoreById(id: string) {
     return response.data;
 }
 
-export async function createChore(name: string, categoryId: string, frequencyUnit: ChoreFrequency, frequencyValue: number, description?: string) {
+export async function createChore(name: string, categoryId: string, frequencyUnit: ChoreFrequency, frequencyValue: number, isAutomationEnabled: boolean, description?: string) {
     const response = await apiClient.post("/chores", {
         name,
         description,
         categoryId,
         frequencyUnit,
         frequencyValue,
+        isAutomationEnabled,
     });
     return response.data;
 }
