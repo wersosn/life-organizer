@@ -4,34 +4,45 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { AuthProvider, useAuth } from "@/auth/AuthContext";
+import { useEffect } from 'react';
+import { registerForPushNotificationsAsync } from '@/utils/pushNotifications';
+import { registerPushToken } from '@/api/notificationsApi';
 
-export default function RootLayout() {
+function AppContent() {
     const colorScheme = useColorScheme();
-    /*const isOnline = useNetworkStatus();
-    resetDatabase();
-    initDatabase();
+    /*const { token } = useAuth();
 
     useEffect(() => {
-      if (isOnline) {
-        syncTodos();
-      }
-    }, [isOnline]);*/
+        if (token) {
+            registerForPushNotificationsAsync().then(pushToken => {
+                if (pushToken) {
+                    registerPushToken(pushToken).catch(e => console.log(e));
+                }
+            });
+        }
+    }, [token]);*/
 
     return (
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack>
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="(todo)" options={{ headerShown: false }} />
+                <Stack.Screen name="(habits)" options={{ headerShown: false }} />
+                <Stack.Screen name="(finances)" options={{ headerShown: false }} />
+                <Stack.Screen name="(chores)" options={{ headerShown: false }} />
+                <Stack.Screen name="(settings)" options={{ headerShown: false }} />
+                <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+            </Stack>
+            <StatusBar style="auto" />
+        </ThemeProvider>
+    );
+}
+
+export default function RootLayout() {
+    return (
         <AuthProvider>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                <Stack>
-                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(todo)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(habits)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(finances)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(chores)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(settings)" options={{ headerShown: false }} />
-                    <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-                </Stack>
-                <StatusBar style="auto" />
-            </ThemeProvider>
+            <AppContent />
         </AuthProvider>
     );
 }

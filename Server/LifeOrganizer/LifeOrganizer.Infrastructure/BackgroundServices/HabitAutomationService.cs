@@ -3,6 +3,7 @@ using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
+using LifeOrganizer.Infrastructure.Notifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -45,7 +46,8 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         private async Task CheckHabitsAsync(CancellationToken cancellationToken)
         {
             using var scope = _scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>(); 
+            var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+            var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
 
             var habits = await context.Habits
                 .Where(h => h.IsActive && h.IsAutomationEnabled && h.User.HabitAutomationEnabled)
@@ -106,6 +108,18 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                     IsCompleted = false,
                 });
                 tasksCreated++;
+
+                if (!string.IsNullOrEmpty(habit.User.PushToken))
+                {
+                    try
+                    {
+                        await pushSender.SendAsync(habit.User.PushToken, "Habit missed", $"You missed: {habit.Name}", cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to send push notification for habit {HabitId}", habit.Id);
+                    }
+                }
             }
 
             if (tasksCreated > 0)

@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Application.Interfaces;
 using LifeOrganizer.Infrastructure.BackgroundServices;
+using LifeOrganizer.Infrastructure.Notifications;
 using LifeOrganizer.Infrastructure.Persistence;
 using LifeOrganizer.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace LifeOrganizer.Infrastructure
             services.Configure<AutomationSettings>(configuration.GetSection("Automation"));
             services.AddHostedService<HabitAutomationService>();
             services.AddHostedService<ChoreAutomationService>();
+
+            services.AddHttpClient<PushNotificationSender>();
 
             return services;
         }

@@ -5,9 +5,9 @@ namespace LifeOrganizer.Domain.Services
 {
     public class ChoreTaskDecider
     {
-        public static bool ShouldCreateTask(Chore chore, DateTime now, bool hasOpenAutomationTask)
+        public static bool ShouldCreateTask(Chore chore, DateTime now, bool hasIncompleteAutomationTask)
         {
-            if (hasOpenAutomationTask)
+            if (hasIncompleteAutomationTask)
             {
                 return false;
             }

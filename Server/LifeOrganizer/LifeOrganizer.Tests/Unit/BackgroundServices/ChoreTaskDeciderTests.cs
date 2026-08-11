@@ -14,7 +14,7 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         }
 
         [Fact]
-        public void ShouldCreateTask_ShouldReturnFalse_WhenPendingTaskAlreadyExists()
+        public void ShouldCreateTask_ShouldReturnFalse_WhenIncompleteTaskAlreadyExists()
         {
             var chore = new Chore 
             { 
@@ -24,15 +24,15 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
             };
             var now = DateTime.UtcNow;
 
-            var result = ChoreTaskDecider.ShouldCreateTask(chore, now, hasOpenAutomationTask: true);
+            var result = ChoreTaskDecider.ShouldCreateTask(chore, now, hasIncompleteAutomationTask: true);
 
             Assert.False(result);
 
-            output.WriteLine("Verified that a task is not created when a pending task already exists.");
+            output.WriteLine("Verified that a task is not created when an incomplete task already exists.");
         }
 
         [Fact]
-        public void ShouldCreateTask_ShouldReturnTrue_WhenOverdueAndNoPendingTask()
+        public void ShouldCreateTask_ShouldReturnTrue_WhenOverdueAndNoIncompleteTask()
         {
             var chore = new Chore
             {
@@ -41,11 +41,11 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
                 LastCompletedAt = DateTime.UtcNow.AddDays(-10)
             };
 
-            var result = ChoreTaskDecider.ShouldCreateTask(chore, DateTime.UtcNow, hasOpenAutomationTask: false);
+            var result = ChoreTaskDecider.ShouldCreateTask(chore, DateTime.UtcNow, hasIncompleteAutomationTask: false);
 
             Assert.True(result);
 
-            output.WriteLine("Verified that a task is created when the chore is overdue and no pending task exists.");
+            output.WriteLine("Verified that a task is created when the chore is overdue and no incomplete task exists.");
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
                 LastCompletedAt = DateTime.UtcNow.AddDays(-2)
             };
 
-            var result = ChoreTaskDecider.ShouldCreateTask(chore, DateTime.UtcNow, hasOpenAutomationTask: false);
+            var result = ChoreTaskDecider.ShouldCreateTask(chore, DateTime.UtcNow, hasIncompleteAutomationTask: false);
 
             Assert.False(result);
 

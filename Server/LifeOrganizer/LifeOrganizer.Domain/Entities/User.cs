@@ -11,5 +11,6 @@
         public ICollection<TodoItem> TodoItems { get; set; } = [];
         public bool HabitAutomationEnabled { get; set; } = true;
         public bool ChoreAutomationEnabled { get; set; } = true;
+        public string? PushToken { get; set; }
     }
 }

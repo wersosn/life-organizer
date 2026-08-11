@@ -3,7 +3,7 @@ using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
-using LifeOrganizer.Infrastructure.Services;
+using LifeOrganizer.Infrastructure.Notifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,6 +47,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+            var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
 
             var chores = await context.Chores
                 .Where(c => c.IsActive && c.IsAutomationEnabled && c.User.ChoreAutomationEnabled)
@@ -86,6 +87,8 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                     IsCompleted = false,
                 });
                 tasksCreated++;
+
+
             }
 
             if (tasksCreated > 0)
