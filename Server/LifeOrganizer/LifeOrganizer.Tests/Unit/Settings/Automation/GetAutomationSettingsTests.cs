@@ -1,9 +1,9 @@
-﻿using LifeOrganizer.Application.Automation;
+﻿using LifeOrganizer.Application.Automation.GetAutomationSettings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Xunit.Abstractions;
 
-namespace LifeOrganizer.Tests.Unit.AutomationSettings
+namespace LifeOrganizer.Tests.Unit.Settings.Automation
 {
     public class GetAutomationSettingsTests
     {

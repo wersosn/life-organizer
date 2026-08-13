@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace LifeOrganizer.Application.Automation
+namespace LifeOrganizer.Application.Automation.UpdateAutomationSettings
 {
     public class UpdateAutomationSettingsHandler : IRequestHandler<UpdateAutomationSettingsCommand>
     {

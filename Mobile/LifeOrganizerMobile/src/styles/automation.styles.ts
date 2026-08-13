@@ -41,4 +41,22 @@ export const styles = StyleSheet.create({
     rowSubtitle: { 
         fontSize: 13 
     },
+
+    subtitle: { 
+        fontSize: 14, 
+        marginBottom: 24 
+    },
+
+    input: { 
+        padding: 14, 
+        borderRadius: 12, 
+        fontSize: 16, 
+        marginBottom: 16 
+    },
+
+    errorText: { 
+        color: "#E53935", 
+        fontSize: 13, 
+        marginBottom: 12 
+    },
 });

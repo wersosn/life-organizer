@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LifeOrganizer.Application.Automation
+namespace LifeOrganizer.Application.Automation.GetAutomationSettings
 {
     public class GetAutomationSettingsHandler : IRequestHandler<GetAutomationSettingsQuery, AutomationSettingsDto>
     {

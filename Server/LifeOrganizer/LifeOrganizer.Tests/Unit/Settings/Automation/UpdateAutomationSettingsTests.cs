@@ -1,12 +1,11 @@
-﻿using LifeOrganizer.Application.Automation;
-using LifeOrganizer.Application.Chores.Commands.ChoreCategories.CreateChoreCategory;
+﻿using LifeOrganizer.Application.Automation.UpdateAutomationSettings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
-namespace LifeOrganizer.Tests.Unit.AutomationSettings
+namespace LifeOrganizer.Tests.Unit.Settings.Automation
 {
     public class UpdateAutomationSettingsTests
     {

@@ -88,7 +88,17 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                 });
                 tasksCreated++;
 
-
+                if (!string.IsNullOrEmpty(chore.User.PushToken))
+                {
+                    try
+                    {
+                        await pushSender.SendAsync(chore.User.PushToken, "Habit overdue", $"You missed: {chore.Name}", cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to send push notification for chore {ChoreId}",chore.Id);
+                    }
+                }
             }
 
             if (tasksCreated > 0)
