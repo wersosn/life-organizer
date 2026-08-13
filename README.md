@@ -153,7 +153,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Automation engine (habits → tasks)
 - [x] Automation engine (chores → tasks)
 - [ ] Notifications system
-- [ ] Task history + configurable retention/cleanup
+- [x] Task history + configurable retention/cleanup
 - [ ] Background services for scheduled checks
 - [ ] Unit & integration tests
 - [x] API documentation (Swagger/OpenAPI)
@@ -169,7 +169,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [ ] Offline mode with SQLite
 - [ ] Sync mechanism (local ↔ server)
 - [ ] Push notifications
-- [ ] Settings (automation toggle, history retention)
+- [x] Settings (automation toggle, history retention)
 - [ ] API, unit & components tests
 
 # Aplikacja do organizacji życia
@@ -325,7 +325,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Silnik automatyzacji (nawyki → zadania)
 - [x] Silnik automatyzacji (obowiązki → zadania)
 - [ ] System powiadomień
-- [ ] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
+- [x] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
 - [ ] Background services do zaplanowanych sprawdzeń
 - [ ] Testy jednostkowe i integracyjne
 - [x] Dokumentacja API (Swagger/OpenAPI)
@@ -341,5 +341,5 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [ ] Tryb offline z SQLite
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
 - [ ] Powiadomienia push
-- [ ] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
+- [x] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
 - [ ] Testy API, jednostkowe oraz komponentów
