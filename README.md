@@ -155,6 +155,8 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [ ] Notifications system
 - [x] Task history + configurable retention/cleanup
 - [ ] Background services for scheduled checks
+- [ ] Data export (csv, json)
+- [ ] Statistics
 - [ ] Unit & integration tests
 - [x] API documentation (Swagger/OpenAPI)
 
@@ -214,7 +216,7 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 - **React Native** z **Expo**
 - **SQLite** do przechowywania danych lokalnych (tryb offline)
 - Podejście **offline-first** z synchronizacją
-- - **Jest** (testy)
+- **Jest** (testy)
 > TBA
 
 ### DevOps
@@ -327,6 +329,8 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [ ] System powiadomień
 - [x] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
 - [ ] Background services do zaplanowanych sprawdzeń
+- [ ] Eksport danych (csv, json)
+- [ ] Statystyki
 - [ ] Testy jednostkowe i integracyjne
 - [x] Dokumentacja API (Swagger/OpenAPI)
 
