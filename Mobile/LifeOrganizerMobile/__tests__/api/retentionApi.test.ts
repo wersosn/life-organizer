@@ -8,7 +8,7 @@ jest.mock("@/api/apiClient", () => ({
     },
 }));
 
-describe("settingsApi — retention", () => {
+describe("retentionApi", () => {
     afterEach(() => {
         jest.clearAllMocks();
     });

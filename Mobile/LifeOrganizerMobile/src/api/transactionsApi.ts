@@ -46,3 +46,11 @@ export async function getMonthlySummary(year: number, month: number) {
     });
     return response.data;
 }
+
+export async function exportTransactions(from?: string, to?: string): Promise<string> {
+    const response = await apiClient.get("/transactions/export", {
+        params: { from, to },
+        responseType: "text",
+    });
+    return response.data;
+}

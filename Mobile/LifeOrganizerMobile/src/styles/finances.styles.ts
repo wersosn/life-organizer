@@ -96,14 +96,28 @@ export const styles = StyleSheet.create({
 
     summaryButton: {
         width: 120,
-        height: 36,
+        height: 45,
         borderRadius: 18,
         alignItems: "center",
         justifyContent: "center"
     },
 
     summaryButtonText: {
-        fontSize: 14,
+        fontSize: 12,
+        color: "#4F7CFF",
+        fontWeight: "600"
+    },
+
+    exportButton: {
+        width: 45,
+        height: 45,
+        borderRadius: 18,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+
+    exportButtonText: {
+        fontSize: 12,
         color: "#4F7CFF",
         fontWeight: "600"
     },

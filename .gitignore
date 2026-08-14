@@ -49,6 +49,10 @@ Logs/
 
 tmp/
 
+android/
+
+.idea/
+
 publish/
 *.publishsettings
 

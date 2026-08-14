@@ -8,7 +8,7 @@ jest.mock("@/api/apiClient", () => ({
     },
 }));
 
-describe("settingsApi — automation", () => {
+describe("automationApi", () => {
     afterEach(() => {
         jest.clearAllMocks();
     });

@@ -1,10 +1,12 @@
-import { View, Text, useColorScheme, Pressable } from "react-native";
+import { View, Text, useColorScheme, Pressable, Alert } from "react-native";
 import { router } from "expo-router";
 import { styles } from "../../src/styles/finances.styles";
 import React, { useState } from "react";
 import { SettingsButton } from "@/components/SettingsButton";
 import { BudgetsView } from "@/components/BudgetsView";
 import { TransactionsView } from "@/components/TransactionView";
+import { exportTransactions } from "@/api/transactionsApi";
+import { saveAndShareCsv } from "@/utils/exportFile";
 
 type FinanceView = "transactions" | "budgets";
 
@@ -12,6 +14,16 @@ export default function FinancesScreen() {
     const [view, setView] = useState<FinanceView>("transactions");
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+
+    async function handleExport() {
+        try {
+            const csv = await exportTransactions();
+            await saveAndShareCsv(csv, `transactions_${new Date().toISOString().split("T")[0]}.csv`);
+        } catch (e) {
+            console.log(e);
+            Alert.alert("Error", "Could not export transactions.");
+        }
+    }
 
     return (
         <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
@@ -22,6 +34,9 @@ export default function FinancesScreen() {
                 <View style={styles.headerActions}>
                     <Pressable onPress={() => router.push("../(finances)/monthlySummary")} style={styles.summaryButton}>
                         <Text style={styles.summaryButtonText}>Monthly Summary</Text>
+                    </Pressable>
+                    <Pressable onPress={handleExport} style={styles.exportButton}>
+                        <Text style={styles.exportButtonText}>Export</Text>
                     </Pressable>
                     <SettingsButton />
                 </View>

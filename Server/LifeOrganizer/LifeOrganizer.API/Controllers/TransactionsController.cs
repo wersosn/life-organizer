@@ -1,5 +1,6 @@
 ﻿using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
 using LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransaction;
+using LifeOrganizer.Application.Finances.Commands.Transactions.ExportTransaction;
 using LifeOrganizer.Application.Finances.Commands.Transactions.GetAllTransactions;
 using LifeOrganizer.Application.Finances.Commands.Transactions.GetMonthlySummary;
 using LifeOrganizer.Application.Finances.Commands.Transactions.GetTransactionById;
@@ -61,6 +62,14 @@ namespace LifeOrganizer.API.Controllers
         {
             await mediator.Send(new DeleteTransactionCommand(id));
             return NoContent();
+        }
+
+        [HttpGet("export")]
+        public async Task<IActionResult> Export([FromQuery] DateOnly? from, [FromQuery] DateOnly? to)
+        {
+            var csvBytes = await mediator.Send(new ExportTransactionsQuery(from, to));
+            var fileName = $"transactions_{DateTime.UtcNow:yyyyMMdd}.csv";
+            return File(csvBytes, "text/csv", fileName);
         }
     }
 }
