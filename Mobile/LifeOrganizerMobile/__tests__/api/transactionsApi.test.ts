@@ -1,5 +1,5 @@
 import { apiClient } from "@/api/apiClient";
-import { createTransaction, deleteTransaction, getMonthlySummary, getTransactionById, getTransactions, updateTransaction } from "@/api/transactionsApi";
+import { createTransaction, deleteTransaction, exportTransactions, getMonthlySummary, getTransactionById, getTransactions, updateTransaction } from "@/api/transactionsApi";
 import { TransactionType } from "@/types/transaction";
 
 jest.mock("@/api/apiClient", () => ({
@@ -109,5 +109,17 @@ describe("transactionsApi", () => {
             params: { year: 2026, month: 7 },
         });
         expect(result).toEqual(mockSummary);
+    });
+
+    it("exportTransactionsCsv sends date range as query params with text responseType", async () => {
+        (apiClient.get as jest.Mock).mockResolvedValue({ data: "Date,Category,Type,Amount,Description" });
+
+        const result = await exportTransactions("2026-07-01", "2026-07-31");
+
+        expect(apiClient.get).toHaveBeenCalledWith("/transactions/export", {
+            params: { from: "2026-07-01", to: "2026-07-31" },
+            responseType: "text",
+        });
+        expect(result).toBe("Date,Category,Type,Amount,Description");
     });
 });
