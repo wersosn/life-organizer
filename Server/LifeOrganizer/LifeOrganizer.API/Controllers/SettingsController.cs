@@ -46,7 +46,7 @@ namespace LifeOrganizer.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("exportfull")]
+        [HttpGet("fullexport")]
         public async Task<IActionResult> ExportFull()
         {
             var bytes = await mediator.Send(new GetFullExportQuery());
