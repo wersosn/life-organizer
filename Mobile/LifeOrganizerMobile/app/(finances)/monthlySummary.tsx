@@ -4,6 +4,7 @@ import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, useColorScheme, Text, View } from "react-native";
 import { styles } from "@/styles/monthlySummary.styles";
+import { ExpenseBreakdownChart } from "@/components/ExpenseBreakdownChart";
 
 const MONTH_NAMES = [
     "January", "February", "March", "April", "May", "June",
@@ -115,6 +116,8 @@ export default function MonthlySummaryScreen() {
                     <Text style={[styles.sectionTitle, { color: isDark ? "#fff" : "#000" }]}>
                         Expenses by category
                     </Text>
+
+                    <ExpenseBreakdownChart breakdown={summary.expensesByCategory} />
 
                     {summary.expensesByCategory.length === 0 ? (
                         <Text style={{ color: isDark ? "#888" : "#999" }}>No expenses this month.</Text>

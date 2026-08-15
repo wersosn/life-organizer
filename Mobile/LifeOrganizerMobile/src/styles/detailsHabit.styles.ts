@@ -153,4 +153,11 @@ export const styles = StyleSheet.create({
         height: 22,
         resizeMode: "contain",
     },
+
+    barChartContainer: {
+        borderRadius: 12,
+        overflow: "hidden",
+        marginTop: 20,
+        marginBottom: 20,
+    },
 });

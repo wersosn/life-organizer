@@ -7,6 +7,7 @@ import { formatTimeDisplay, parseTimeSpan } from "@/utils/habitTime";
 import { buildLast30Days, calculateStreak } from "@/utils/habitCalendar";
 import { formatScheduledDays, FREQUENCY_LABELS } from "@/utils/habitLabels";
 import { styles } from "../../src/styles/detailsHabit.styles";
+import { HabitWeeklyChart } from "@/components/HabitWeeklyChart";
 
 export default function HabitDetailsScreen() {
     const params = useLocalSearchParams();
@@ -161,10 +162,10 @@ export default function HabitDetailsScreen() {
             </View>
 
             <Pressable onPress={handleToggleToday} style={[
-                    styles.completeButton,
-                    { backgroundColor: isCompletedToday ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff" },
-                    { borderColor: isCompletedToday ? "#4F7CFF" : isDark ? "#333" : "#ccc" },
-                ]}>
+                styles.completeButton,
+                { backgroundColor: isCompletedToday ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff" },
+                { borderColor: isCompletedToday ? "#4F7CFF" : isDark ? "#333" : "#ccc" },
+            ]}>
                 <Text style={[styles.completeButtonText, { color: isCompletedToday ? "#fff" : isDark ? "#ccc" : "#333" },]}>
                     {isCompletedToday ? "✓ Completed today" : "Mark as done today"}
                 </Text>
@@ -220,6 +221,10 @@ export default function HabitDetailsScreen() {
                     <View style={[styles.legendDot, { backgroundColor: "#E5393555" }]} />
                     <Text style={[styles.legendText, { color: isDark ? "#888" : "#999" }]}>Missed</Text>
                 </View>
+            </View>
+
+            <View style={styles.barChartContainer}>
+                <HabitWeeklyChart completions={habit.recentCompletions} />
             </View>
         </ScrollView>
     );
