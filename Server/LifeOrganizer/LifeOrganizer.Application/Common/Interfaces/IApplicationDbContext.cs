@@ -15,6 +15,7 @@ namespace LifeOrganizer.Application.Common.Interfaces
         DbSet<Chore> Chores { get; }
         DbSet<ChoreCategory> ChoreCategories { get; }
         DbSet<ChoreCompletion> ChoreCompletions { get; }
+        DbSet<RefreshToken> RefreshTokens { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -9,5 +9,10 @@ namespace LifeOrganizer.Tests.Helpers
         {
             return "fake-jwt-token";
         }
+
+        public string GenerateRefreshToken()
+        {
+            return "fake-refresh-jwt-token";
+        }
     }
 }
