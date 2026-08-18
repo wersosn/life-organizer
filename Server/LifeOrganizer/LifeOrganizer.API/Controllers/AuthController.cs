@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace LifeOrganizer.API.Controllers
 {
@@ -23,6 +24,7 @@ namespace LifeOrganizer.API.Controllers
         }
 
         [HttpPost("login")]
+        [EnableRateLimiting("login")]
         public async Task<IActionResult> Login(LoginUserCommand command)
         {
             var result = await mediator.Send(command);
