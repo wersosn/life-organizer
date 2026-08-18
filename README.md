@@ -156,7 +156,6 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [x] Task history + configurable retention/cleanup
 - [ ] Background services for scheduled checks
 - [x] Data export (csv, json)
-- [ ] Statistics
 - [ ] Unit & integration tests
 - [x] API documentation (Swagger/OpenAPI)
 
@@ -171,6 +170,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 - [ ] Offline mode with SQLite
 - [ ] Sync mechanism (local ↔ server)
 - [ ] Push notifications
+- [x] Statistics
 - [x] Settings (automation toggle, history retention)
 - [ ] API, unit & components tests
 
@@ -330,7 +330,6 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [x] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
 - [ ] Background services do zaplanowanych sprawdzeń
 - [x] Eksport danych (csv, json)
-- [ ] Statystyki
 - [ ] Testy jednostkowe i integracyjne
 - [x] Dokumentacja API (Swagger/OpenAPI)
 
@@ -345,5 +344,6 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 - [ ] Tryb offline z SQLite
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
 - [ ] Powiadomienia push
+- [x] Statystyki
 - [x] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
 - [ ] Testy API, jednostkowe oraz komponentów
