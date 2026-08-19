@@ -1,4 +1,5 @@
 ﻿using LifeOrganizer.Application.Users.Commands.LoginUser;
+using LifeOrganizer.Application.Users.Commands.LogoutUser;
 using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
@@ -56,6 +57,7 @@ namespace LifeOrganizer.Tests.Unit.Users
             var handler = new LoginUserHandler(
                 context,
                 new FakeJwtTokenService(),
+                TestConfigurationFactory.Create(new Dictionary<string, string> { ["Jwt:RefreshTokenDays"] = "60" }),
                 NullLogger<LoginUserHandler>.Instance
             );
 
@@ -72,7 +74,67 @@ namespace LifeOrganizer.Tests.Unit.Users
             Assert.NotNull(result);
             Assert.Equal("fake-jwt-token", result.Token);
             Assert.Equal(user.Id, result.UserId);
+
+            var refreshToken = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == result.RefreshToken);
+            Assert.NotNull(refreshToken);
+            Assert.True(refreshToken!.IsActive);
+
             output.WriteLine("User loged in successfully");
+        }
+
+        [Fact]
+        public async Task Logout_ShouldRevokeRefreshToken()
+        {
+            var context = TestDbContextFactory.Create();
+
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "test@test.com",
+                Name = "Test",
+                PasswordHash = "hash"
+            };
+
+            var refreshToken = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Token = "refresh-token",
+                ExpiresAt = DateTime.UtcNow.AddDays(30)
+            };
+
+            context.Users.Add(user);
+            context.RefreshTokens.Add(refreshToken);
+            await context.SaveChangesAsync();
+
+            var handler = new LogoutUserHandler(context);
+            await handler.Handle(
+                new LogoutUserCommand("refresh-token"),
+                CancellationToken.None);
+
+            var revokedToken = await context.RefreshTokens.FirstAsync(t => t.Token == "refresh-token");
+
+            Assert.NotNull(revokedToken.RevokedAt);
+            Assert.False(revokedToken.IsActive);
+
+            output.WriteLine("Refresh token was successfully revoked during logout");
+        }
+
+        [Fact]
+        public async Task Logout_ShouldDoNothing_WhenRefreshTokenDoesNotExist()
+        {
+            var context = TestDbContextFactory.Create();
+            var handler = new LogoutUserHandler(context);
+
+            await handler.Handle(
+                new LogoutUserCommand("non-existent-token"),
+                CancellationToken.None);
+
+            var tokens = await context.RefreshTokens.ToListAsync();
+
+            Assert.Empty(tokens);
+
+            output.WriteLine("Logout correctly ignored a non-existent refresh token");
         }
     }
 }

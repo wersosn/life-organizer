@@ -1,4 +1,6 @@
 ﻿using LifeOrganizer.Application.Users.Commands.LoginUser;
+using LifeOrganizer.Application.Users.Commands.LogoutUser;
+using LifeOrganizer.Application.Users.Commands.RefreshToken;
 using LifeOrganizer.Application.Users.Commands.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +31,19 @@ namespace LifeOrganizer.API.Controllers
         {
             var result = await mediator.Send(command);
             return Ok(result);
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(RefreshTokenCommand command)
+        {
+            return Ok(await mediator.Send(command));
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout(LogoutUserCommand command)
+        {
+            await mediator.Send(command);
+            return NoContent();
         }
     }
 }
