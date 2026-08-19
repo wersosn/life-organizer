@@ -20,9 +20,8 @@ export default function SettingsScreen() {
                 text: "Log out",
                 style: "destructive",
                 onPress: async () => {
-                    await logout();
                     router.dismissAll();
-                    router.replace("/(auth)/login");
+                    await logout();
                 },
             },
         ]);

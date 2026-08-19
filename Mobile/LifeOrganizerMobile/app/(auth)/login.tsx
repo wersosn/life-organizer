@@ -1,33 +1,12 @@
-import { View, Text, Button, TextInput, useColorScheme, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from "react-native";
+import { View, Text, Button, TextInput, useColorScheme, KeyboardAvoidingView, Platform, ScrollView, Alert } from "react-native";
 import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/api/apiClient";
 import { useAuth } from "@/auth/AuthContext";
 import { styles } from "../../src/styles/login.styles";
+import { LoginResponse } from "@/types/auth";
 
 export default function LoginScreen() {
-    // Connection test:
-    /*const [message, setMessage] = useState("Sprawdzanie połączenia...");
-
-    useEffect(() => {
-        apiClient
-            .get("/test")
-            .then(response => {
-                console.log(response.data);
-                setMessage("Działa połączenie z serwerem");
-            })
-            .catch(error => {
-                console.log(error);
-                setMessage("Nie działa połączenie z serwerem " + error);
-            });
-    }, []);
-
-    return (
-        <View>
-            <ThemedText>{message}</ThemedText>
-        </View>
-    )*/
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
@@ -36,12 +15,13 @@ export default function LoginScreen() {
 
     async function handleLogin() {
         try {
-            const response = await apiClient.post("/auth/login", {
+            const response = await apiClient.post<LoginResponse>("/auth/login", {
                 email,
                 password,
             });
 
-            await login(response.data.token);
+            const { token, refreshToken } = response.data;
+            await login(token, refreshToken);
             router.replace("/(tabs)/todo");
         }
         catch (error: any) {

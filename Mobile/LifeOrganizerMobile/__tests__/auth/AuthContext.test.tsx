@@ -1,16 +1,22 @@
 import { apiClient } from "@/api/apiClient";
 import { AuthProvider, useAuth } from "@/auth/AuthContext";
-import { getToken, removeToken, saveToken } from "@/auth/tokenStorage";
+import { getRefreshToken, getAccessToken, saveTokens, removeTokens } from "@/auth/tokenStorage";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
+import axios from "axios";
 
 jest.mock("@/auth/tokenStorage", () => ({
-    getToken: jest.fn(),
-    saveToken: jest.fn(),
-    removeToken: jest.fn(),
+    getAccessToken: jest.fn(),
+    getRefreshToken: jest.fn(),
+    saveTokens: jest.fn(),
+    removeTokens: jest.fn(),
 }));
 
 jest.mock("@/api/apiClient", () => ({
     apiClient: { get: jest.fn() },
+}));
+
+jest.mock("axios", () => ({
+    post: jest.fn().mockResolvedValue({ data: {} }),
 }));
 
 describe("AuthContext", () => {
@@ -19,8 +25,9 @@ describe("AuthContext", () => {
     });
 
     describe("initial load (loadToken)", () => {
-        it("stays logged out when there is no saved token", async () => {
-            (getToken as jest.Mock).mockResolvedValue(null);
+        it("stays logged out when there is no saved tokens", async () => {
+            (getAccessToken as jest.Mock).mockResolvedValue(null);
+            (getRefreshToken as jest.Mock).mockResolvedValue(null);
 
             const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
 
@@ -31,9 +38,10 @@ describe("AuthContext", () => {
             expect(apiClient.get).not.toHaveBeenCalled();
         });
 
-        it("restores the session when a saved token is valid", async () => {
+        it("restores the session when a saved access token is valid", async () => {
             const mockUser = { id: "1", email: "test@test.com", name: "Test User" };
-            (getToken as jest.Mock).mockResolvedValue("saved-token");
+            (getAccessToken as jest.Mock).mockResolvedValue("saved-token");
+            (getRefreshToken as jest.Mock).mockResolvedValue("saved-refresh-token");
             (apiClient.get as jest.Mock).mockResolvedValue({ data: mockUser });
 
             const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
@@ -44,35 +52,52 @@ describe("AuthContext", () => {
             expect(result.current.user).toEqual(mockUser);
         });
 
-        it("logs out when the saved token is rejected with 401", async () => {
-            (getToken as jest.Mock).mockResolvedValue("expired-token");
+        it("logs out when the saved token is rejected with 401 (refresh already failed)", async () => {
+            (getAccessToken as jest.Mock).mockResolvedValue("saved-token");
+            (getRefreshToken as jest.Mock).mockResolvedValue("saved-refresh-token");
             (apiClient.get as jest.Mock).mockRejectedValue({ response: { status: 401 } });
 
             const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
 
             await waitFor(() => expect(result.current.loading).toBe(false));
 
-            expect(removeToken).toHaveBeenCalled();
+            expect(removeTokens).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
             expect(result.current.user).toBeNull();
         });
 
         it("stays logged in on a network error, even though user profile could not be fetched", async () => {
-            (getToken as jest.Mock).mockResolvedValue("saved-token");
+            (getAccessToken as jest.Mock).mockResolvedValue("saved-token");
+            (getRefreshToken as jest.Mock).mockResolvedValue("saved-refresh-token");
             (apiClient.get as jest.Mock).mockRejectedValue({ code: "ERR_NETWORK" });
 
             const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
 
             await waitFor(() => expect(result.current.loading).toBe(false));
 
-            expect(removeToken).not.toHaveBeenCalled();
+            expect(removeTokens).not.toHaveBeenCalled();
             expect(result.current.token).toBe("saved-token");
+        });
+
+        it("attempts to restore session via refresh token even when access token is missing", async () => {
+            const mockUser = { id: "1", email: "test@test.com", name: "Test User" };
+            (getAccessToken as jest.Mock).mockResolvedValue(null);
+            (getRefreshToken as jest.Mock).mockResolvedValue("valid-refresh-token");
+            (apiClient.get as jest.Mock).mockResolvedValue({ data: mockUser });
+
+            const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
+
+            await waitFor(() => expect(result.current.loading).toBe(false));
+
+            expect(apiClient.get).toHaveBeenCalledWith("/auth/me");
+            expect(result.current.user).toEqual(mockUser);
         });
     });
 
     describe("login", () => {
-        it("saves the token and fetches the user profile", async () => {
-            (getToken as jest.Mock).mockResolvedValue(null);
+        it("saves both tokens and fetches the user profile", async () => {
+            (getAccessToken as jest.Mock).mockResolvedValue(null);
+            (getRefreshToken as jest.Mock).mockResolvedValue(null);
             const mockUser = { id: "1", email: "test@test.com", name: "Test User" };
             (apiClient.get as jest.Mock).mockResolvedValue({ data: mockUser });
 
@@ -80,51 +105,50 @@ describe("AuthContext", () => {
             await waitFor(() => expect(result.current.loading).toBe(false));
 
             await act(async () => {
-                await result.current.login("new-token");
+                await result.current.login("new-token", "new-refresh-token");
             });
 
-            expect(saveToken).toHaveBeenCalledWith("new-token");
+            expect(saveTokens).toHaveBeenCalledWith("new-token", "new-refresh-token");
             expect(result.current.token).toBe("new-token");
             expect(result.current.user).toEqual(mockUser);
         });
 
-        it("keeps the token set even if fetching the user profile fails", async () => {
-            (getToken as jest.Mock).mockResolvedValue(null);
+        it("keeps the token set even if fetching the user profile fails with a non-401 error", async () => {
+            (getAccessToken as jest.Mock).mockResolvedValue(null);
+            (getRefreshToken as jest.Mock).mockResolvedValue(null);
             (apiClient.get as jest.Mock).mockRejectedValue(new Error("network error"));
 
             const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
             await waitFor(() => expect(result.current.loading).toBe(false));
 
             await act(async () => {
-                await result.current.login("new-token");
+                await result.current.login("new-token", "new-refresh-token");
             });
 
             expect(result.current.token).toBe("new-token");
         });
-    });
 
-    describe("logout", () => {
-        it("clears the token and user", async () => {
-            (getToken as jest.Mock).mockResolvedValue("saved-token");
-            (apiClient.get as jest.Mock).mockResolvedValue({ data: { id: "1", email: "a@a.com", name: "A" } });
+        it("clears the session if fetching the user profile fails with 401", async () => {
+            (getAccessToken as jest.Mock).mockResolvedValue(null);
+            (getRefreshToken as jest.Mock).mockResolvedValue(null);
+            (apiClient.get as jest.Mock).mockRejectedValue({ response: { status: 401 } });
 
             const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
             await waitFor(() => expect(result.current.loading).toBe(false));
-            expect(result.current.token).toBe("saved-token");
 
             await act(async () => {
-                await result.current.logout();
+                await result.current.login("new-token", "new-refresh-token");
             });
 
-            expect(removeToken).toHaveBeenCalled();
+            expect(removeTokens).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
-            expect(result.current.user).toBeNull();
         });
     });
 
     describe("logout", () => {
-        it("clears the token and user", async () => {
-            (getToken as jest.Mock).mockResolvedValue("saved-token");
+        it("calls the backend logout endpoint and clears tokens and user", async () => {
+            (getAccessToken as jest.Mock).mockResolvedValue("saved-token");
+            (getRefreshToken as jest.Mock).mockResolvedValue("saved-refresh-token");
             (apiClient.get as jest.Mock).mockResolvedValue({ data: { id: "1", email: "a@a.com", name: "A" } });
 
             const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
@@ -135,9 +159,30 @@ describe("AuthContext", () => {
                 await result.current.logout();
             });
 
-            expect(removeToken).toHaveBeenCalled();
+            expect(axios.post).toHaveBeenCalledWith(
+                expect.stringContaining("/auth/logout"),
+                { refreshToken: "saved-refresh-token" }
+            );
+            expect(removeTokens).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
             expect(result.current.user).toBeNull();
+        });
+
+        it("still clears local session even if the backend call fails", async () => {
+            (getAccessToken as jest.Mock).mockResolvedValue("saved-token");
+            (getRefreshToken as jest.Mock).mockResolvedValue("saved-refresh-token");
+            (apiClient.get as jest.Mock).mockResolvedValue({ data: { id: "1", email: "a@a.com", name: "A" } });
+            (axios.post as jest.Mock).mockRejectedValue(new Error("network error"));
+
+            const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
+            await waitFor(() => expect(result.current.loading).toBe(false));
+
+            await act(async () => {
+                await result.current.logout();
+            });
+
+            expect(removeTokens).toHaveBeenCalled();
+            expect(result.current.token).toBeNull();
         });
     });
 });
