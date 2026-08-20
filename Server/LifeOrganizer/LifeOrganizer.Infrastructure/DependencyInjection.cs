@@ -31,8 +31,8 @@ namespace LifeOrganizer.Infrastructure
 
             services.AddHttpClient<PushNotificationSender>();
 
-            services.Configure<EmailSettings>(configuration.GetSection("Email"));
-            services.AddScoped<IEmailSender, MailtrapEmailSender>();
+            //services.Configure<EmailSettings>(configuration.GetSection("Email"));
+            //services.AddScoped<Infrastructure.Email.IEmailSender, MailtrapEmailSender>();
 
             return services;
         }

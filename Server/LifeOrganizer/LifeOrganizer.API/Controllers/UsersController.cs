@@ -1,5 +1,6 @@
 ﻿using LifeOrganizer.Application.Users.Commands.ConfirmEmail;
 using LifeOrganizer.Application.Users.Commands.CurrentUser;
+using LifeOrganizer.Application.Users.Commands.ForgotPassword;
 using LifeOrganizer.Application.Users.Commands.ResetPassword;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -36,7 +37,7 @@ namespace LifeOrganizer.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("confirm-email")]
+        /*[HttpPost("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
         {
             await mediator.Send(command);
@@ -55,6 +56,6 @@ namespace LifeOrganizer.API.Controllers
         {
             await mediator.Send(command);
             return NoContent();
-        }
+        }*/
     }
 }

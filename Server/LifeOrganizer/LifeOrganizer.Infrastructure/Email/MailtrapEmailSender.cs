@@ -2,7 +2,6 @@
 using MimeKit;
 using Microsoft.Extensions.Options;
 using LifeOrganizer.Domain.Entities;
-using LifeOrganizer.Application.Common.Interfaces;
 
 namespace LifeOrganizer.Infrastructure.Email
 {

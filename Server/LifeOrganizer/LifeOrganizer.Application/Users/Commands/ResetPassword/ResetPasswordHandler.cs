@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LifeOrganizer.Application.Users.Commands.ResetPassword
 {
-    public class ResetPasswordHandler : IRequestHandler<ResetPasswordCommand>
+    /*public class ResetPasswordHandler : IRequestHandler<ResetPasswordCommand>
     {
         private readonly IApplicationDbContext _context;
 
@@ -39,5 +39,5 @@ namespace LifeOrganizer.Application.Users.Commands.ResetPassword
             }
             await _context.SaveChangesAsync(cancellationToken);
         }
-    }
+    }*/
 }

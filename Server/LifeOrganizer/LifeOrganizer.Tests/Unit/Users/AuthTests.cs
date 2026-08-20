@@ -21,7 +21,8 @@ namespace LifeOrganizer.Tests.Unit.Users
         public async Task Register_ShouldCreateUser()
         {
             var context = TestDbContextFactory.Create();
-            var handler = new RegisterUserHandler(context, new NoOpPublisher(), NullLogger<RegisterUserHandler>.Instance);
+            var configuration = TestConfigurationFactory.Create(new Dictionary<string, string> { ["Jwt:RefreshTokenDays"] = "60" });
+            var handler = new RegisterUserHandler(context, new NoOpPublisher(), configuration, NullLogger<RegisterUserHandler>.Instance);
 
             var command = new RegisterUserCommand(
                 "test@test.com",

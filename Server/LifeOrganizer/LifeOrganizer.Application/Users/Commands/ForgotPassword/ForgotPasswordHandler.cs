@@ -1,15 +1,13 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Application.Users.Commands.ResetPassword;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
-using LifeOrganizer.Infrastructure.Email;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace LifeOrganizer.Application.Users.Commands.ForgotPassword
 {
-    public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordCommand>
+    /*public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordCommand>
     {
         private readonly IApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
@@ -50,5 +48,5 @@ namespace LifeOrganizer.Application.Users.Commands.ForgotPassword
                 $"<p>Click <a href='{resetLink}'>here</a> to reset your password. This link expires in 1 hour.</p>",
                 cancellationToken);
         }
-    }
+    }*/
 }
