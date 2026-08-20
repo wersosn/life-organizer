@@ -18,6 +18,7 @@ namespace LifeOrganizer.Infrastructure.Persistence
         public DbSet<ChoreCategory> ChoreCategories => Set<ChoreCategory>();
         public DbSet<ChoreCompletion> ChoreCompletions => Set<ChoreCompletion>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<VerificationToken> VerificationTokens => Set<VerificationToken>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

@@ -26,7 +26,11 @@ export default function LoginScreen() {
         }
         catch (error: any) {
             console.log(error);
-            Alert.alert("Login failed", "Invalid email or password");
+            if (error.code === "ERR_NETWORK" || !error.response) {
+                Alert.alert("Connection error", "Could not reach the server. Check your internet connection.");
+            } else {
+                Alert.alert("Login failed", "Invalid email or password");
+            }
         }
     }
 
@@ -38,7 +42,7 @@ export default function LoginScreen() {
                     { backgroundColor: isDark ? "#121212" : "#F5F5F5" },
                 ]}
                 keyboardShouldPersistTaps="handled">
-                <Text style={[ styles.title, { color: isDark ? "#FFFFFF" : "#000000" }, ]}>
+                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" },]}>
                     Login
                 </Text>
 
