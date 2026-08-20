@@ -1,9 +1,13 @@
-﻿using LifeOrganizer.Application.Common.Events;
+﻿using FluentValidation.Validators;
+using LifeOrganizer.Application.Common.Events;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
+using LifeOrganizer.Domain.Enums;
+using LifeOrganizer.Infrastructure.Email;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace LifeOrganizer.Application.Users.Commands.RegisterUser
@@ -12,12 +16,16 @@ namespace LifeOrganizer.Application.Users.Commands.RegisterUser
     {
         private readonly IApplicationDbContext _context;
         private readonly IPublisher _publisher;
+        private readonly IEmailSender _emailSender;
+        private readonly IConfiguration _configuration;
         private readonly ILogger<RegisterUserHandler> _logger;
 
-        public RegisterUserHandler(IApplicationDbContext context, IPublisher publisher, ILogger<RegisterUserHandler> logger)
+        public RegisterUserHandler(IApplicationDbContext context, IPublisher publisher, IEmailSender emailSender, IConfiguration configuration, ILogger<RegisterUserHandler> logger)
         {
             _context = context;
             _publisher = publisher;
+            _emailSender = emailSender;
+            _configuration = configuration;
             _logger = logger;
         }
 
@@ -38,9 +46,27 @@ namespace LifeOrganizer.Application.Users.Commands.RegisterUser
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 CreatedAt = DateTime.UtcNow
             };
-
             await _context.Users.AddAsync(user, cancellationToken);
+
+            var confirmationToken = Guid.NewGuid().ToString("N");
+            _context.VerificationTokens.Add(new VerificationToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Token = confirmationToken,
+                Type = VerificationTokenType.EmailConfirmation,
+                ExpiresAt = DateTime.UtcNow.AddHours(24),
+            });
+
             await _context.SaveChangesAsync(cancellationToken);
+
+            var confirmationLink = $"{_configuration["App:BaseUrl"]}/confirm-email?token={confirmationToken}";
+            await _emailSender.SendAsync(
+                user.Email,
+                "Confirm your email",
+                $"<p>Welcome to LifeOrganizer! Click <a href='{confirmationLink}'>here</a> to confirm your email.</p>",
+                cancellationToken);
+
             await _publisher.Publish(new UserRegisteredEvent(user.Id), cancellationToken);
 
             _logger.LogInformation("User registered successfully. UserId: {UserId}", user.Id);
