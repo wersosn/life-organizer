@@ -146,6 +146,7 @@ Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emu
 ### Backend
 - [x] Project structure (Clean Architecture)
 - [x] User registration & login (JWT)
+- [x] E-mail confirmation & password reset (JWT)
 - [x] Task List module
 - [x] Habit Tracker module
 - [x] Finance Tracker module
@@ -320,6 +321,7 @@ Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na e
 ### Backend
 - [x] Struktura projektu (Clean Architecture)
 - [x] Rejestracja i logowanie użytkownika (JWT)
+- [x] Potwierdzanie adresu e-mail oraz reset hasła (JWT)
 - [x] Moduł listy zadań
 - [x] Moduł Habit Tracker
 - [x] Moduł Finance Tracker
