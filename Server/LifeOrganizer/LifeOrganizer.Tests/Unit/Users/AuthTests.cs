@@ -22,7 +22,8 @@ namespace LifeOrganizer.Tests.Unit.Users
         {
             var context = TestDbContextFactory.Create();
             var configuration = TestConfigurationFactory.Create(new Dictionary<string, string> { ["Jwt:RefreshTokenDays"] = "60" });
-            var handler = new RegisterUserHandler(context, new NoOpPublisher(), configuration, NullLogger<RegisterUserHandler>.Instance);
+            var fakeEmailSender = new FakeEmailSender();
+            var handler = new RegisterUserHandler(context, new NoOpPublisher(), fakeEmailSender, configuration, NullLogger<RegisterUserHandler>.Instance);
 
             var command = new RegisterUserCommand(
                 "test@test.com",

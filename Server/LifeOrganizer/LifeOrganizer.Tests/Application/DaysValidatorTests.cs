@@ -5,10 +5,10 @@ using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Application
 {
-    public class ValidatorTests
+    public class DaysValidatorTests
     {
         private readonly ITestOutputHelper output;
-        public ValidatorTests(ITestOutputHelper output)
+        public DaysValidatorTests(ITestOutputHelper output)
         {
             this.output = output;
         }
