@@ -1,4 +1,4 @@
-﻿namespace LifeOrganizer.Domain.Entities
+﻿namespace LifeOrganizer.Infrastructure.Email
 {
     public class EmailSettings
     {

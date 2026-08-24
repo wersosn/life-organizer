@@ -1,7 +1,10 @@
-﻿using LifeOrganizer.Application.Users.Commands.LoginUser;
+﻿using LifeOrganizer.Application.Users.Commands.ConfirmEmail;
+using LifeOrganizer.Application.Users.Commands.ForgotPassword;
+using LifeOrganizer.Application.Users.Commands.LoginUser;
 using LifeOrganizer.Application.Users.Commands.LogoutUser;
 using LifeOrganizer.Application.Users.Commands.RefreshToken;
 using LifeOrganizer.Application.Users.Commands.RegisterUser;
+using LifeOrganizer.Application.Users.Commands.ResetPassword;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -41,6 +44,27 @@ namespace LifeOrganizer.API.Controllers
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(LogoutUserCommand command)
+        {
+            await mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
+        {
+            await mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand command)
+        {
+            await mediator.Send(command);
+            return Ok(new { message = "If an account with that email exists, we've sent a reset link." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
         {
             await mediator.Send(command);
             return NoContent();

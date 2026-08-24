@@ -35,27 +35,6 @@ namespace LifeOrganizer.API.Controllers
                 )
             );
             return Ok(result);
-        }
-
-        /*[HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
-        {
-            await mediator.Send(command);
-            return NoContent();
-        }
-
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand command)
-        {
-            await mediator.Send(command);
-            return Ok(new { message = "If an account with that email exists, we've sent a reset link." });
-        }
-
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
-        {
-            await mediator.Send(command);
-            return NoContent();
-        }*/
+        }  
     }
 }

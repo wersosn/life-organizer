@@ -1,7 +1,6 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Application.Interfaces;
-using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Infrastructure.BackgroundServices;
 using LifeOrganizer.Infrastructure.Email;
 using LifeOrganizer.Infrastructure.Notifications;
@@ -31,8 +30,8 @@ namespace LifeOrganizer.Infrastructure
 
             services.AddHttpClient<PushNotificationSender>();
 
-            //services.Configure<EmailSettings>(configuration.GetSection("Email"));
-            //services.AddScoped<Infrastructure.Email.IEmailSender, MailtrapEmailSender>();
+            services.Configure<EmailSettings>(configuration.GetSection("Email"));
+            services.AddScoped<IEmailSender, MailtrapEmailSender>();
 
             return services;
         }

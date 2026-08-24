@@ -43,13 +43,14 @@
       "expo-sqlite",
       "expo-secure-store",
       "@react-native-community/datetimepicker",
-      "expo-build-properties",
-      "expo-build-properties",
-      {
-        "android": {
-          "usesCleartextTraffic": true
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
-      }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
