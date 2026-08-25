@@ -34,4 +34,9 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 15,
     },
+
+    divider: { 
+        height: 1, 
+        margin: 10
+    },
 });

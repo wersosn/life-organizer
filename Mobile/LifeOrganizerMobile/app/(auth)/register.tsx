@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput, useColorScheme, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, Button, TextInput, useColorScheme, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from "react-native";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { apiClient } from "@/api/apiClient";
@@ -18,13 +18,21 @@ export default function RegisterScreen() {
             return;
         }
 
-        await apiClient.post("/auth/register", { email, name, password });
-        console.log({
-            email,
-            name,
-            password
-        });
-        router.replace("../login");
+        //await apiClient.post("/auth/register", { email, name, password });
+        //router.replace("../login");
+
+        try {
+            await apiClient.post("/auth/register", { email, name, password });
+            Alert.alert(
+                "Check your email",
+                "We've sent you a confirmation link. Please confirm your email before logging in.",
+                [{ text: "OK" }]
+            );
+            router.replace("../login");
+        } catch (error: any) {
+            console.log(error);
+            Alert.alert("Registration failed", "Something went wrong. Please try again.");
+        }
     }
 
     return (
@@ -38,7 +46,7 @@ export default function RegisterScreen() {
                 ]}
                 keyboardShouldPersistTaps="handled">
 
-                <Text style={[ styles.title, { color: isDark ? "#FFFFFF" : "#000000", }, ]}>
+                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000", },]}>
                     Registration
                 </Text>
 

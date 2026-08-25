@@ -68,6 +68,10 @@ export default function LoginScreen() {
                     <Button title="Login" onPress={handleLogin} color="#4F7CFF" />
                 </View>
 
+                <Link href="../forgotPassword" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                    Forgot password? Click here
+                </Link>
+                <View style={[styles.divider, { backgroundColor: isDark ? "#2A2A2A" : "#F0F0F0" }]} />
                 <Link href="../register" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
                     Don't have an account? Register here
                 </Link>
