@@ -1,8 +1,9 @@
-﻿using System.Net.Http.Json;
+﻿using LifeOrganizer.Application.Common.Interfaces;
+using System.Net.Http.Json;
 
 namespace LifeOrganizer.Infrastructure.Notifications
 {
-    public class PushNotificationSender
+    public class PushNotificationSender : IPushNotificationSender
     {
         private readonly HttpClient _httpClient;
         public PushNotificationSender(HttpClient httpClient)

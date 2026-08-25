@@ -74,7 +74,7 @@ export default function RegisterScreen() {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
-                    style={styles.input}
+                    style={[styles.input,  { color: "#000000" }]}
                 />
 
                 <TextInput
@@ -83,7 +83,7 @@ export default function RegisterScreen() {
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
                     secureTextEntry
-                    style={styles.input}
+                    style={[styles.input,  { color: "#000000" }]}
                 />
 
                 <View style={styles.buttonContainer}>

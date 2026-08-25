@@ -29,6 +29,7 @@ namespace LifeOrganizer.Infrastructure
             services.AddHostedService<TaskHistoryCleanupService>();
 
             services.AddHttpClient<PushNotificationSender>();
+            services.AddScoped<IPushNotificationSender>(sp => sp.GetRequiredService<PushNotificationSender>());
 
             services.Configure<EmailSettings>(configuration.GetSection("Email"));
             services.AddScoped<IEmailSender, MailtrapEmailSender>();

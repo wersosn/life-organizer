@@ -61,7 +61,7 @@ export default function LoginScreen() {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
-                    style={styles.input}
+                    style={[styles.input,  { color: "#000000" }]}
                 />
 
                 <View style={styles.buttonContainer}>
