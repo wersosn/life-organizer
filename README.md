@@ -64,6 +64,8 @@ The backend follows **Clean Architecture** principles, with a clear separation b
 - [Docker](https://www.docker.com/) - required only if running the backend with Docker
 - [PostgreSQL](https://www.postgresql.org/) instance (local or hosted, e.g. Supabase/Neon/Azure)
 - [Node.js](https://nodejs.org/) (LTS) + [Expo CLI](https://docs.expo.dev/get-started/installation/) - for the mobile app
+- [Expo Go](https://expo.dev/go) app on your phone - for quick local testing without building a native app
+- An [Expo account](https://expo.dev/) + [EAS CLI](https://docs.expo.dev/eas/) - only if you want to build a standalone, installable APK
 
 ### 1. Clone the repository
 ```bash
@@ -81,7 +83,8 @@ ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=lifeorgan
 Jwt__Key=your-super-secret-key-min-32-characters
 Jwt__Issuer=LifeOrganizerAPI
 Jwt__Audience=LifeOrganizerClient
-Jwt__ExpiryMinutes=60
+Jwt__AccessTokenMinutes=20
+Jwt__RefreshTokenDays=30
  
 # ASP.NET Core
 ASPNETCORE_ENVIRONMENT=Development
@@ -128,7 +131,7 @@ To also remove the database volume (this deletes all local data!):
 docker compose down -v
 ```
  
-> **Note:** the credentials and connection string in `docker-compose.yml` (`password`, `ConnectionStrings__DefaultConnection`, etc.) are placeholders for local development only — replace them before deploying anywhere public!
+> **Note:** the credentials and connection string in `docker-compose.yml` (`password`, `ConnectionStrings__DefaultConnection`, etc.) are placeholders for local development only!
 
 ### 5. Run the mobile app
 ```bash
@@ -136,11 +139,60 @@ cd Mobile/LifeOrganizerMobile
  
 # Install dependencies
 npm install
- 
-# Start the Expo dev server
+```
+Create an `.env` file in `Mobile/LifeOrganizerMobile` pointing to your running backend instance:
+```env
+EXPO_PUBLIC_API_URL=http://192.168.x.x:5292/api
+```
+
+> **Use your computer's local network IP, not `localhost`.** Your phone and computer are separate devices on the network -  `localhost` on the phone refers to the phone itself, not your computer. Find your IP with `ipconfig` (Windows) or `ifconfig`/`ip addr` (macOS/Linux), and make sure your phone is connected to the **same Wi-Fi network** as your computer.
+
+> The backend uses plain HTTP for local development. Android blocks cleartext (non-HTTPS) traffic by default in standalone/release builds (though not in Expo Go or development builds) - this is already handled by the `expo-build-properties` plugin in `app.json` (`usesCleartextTraffic: true`). This is fine for local development, but should not be relied on for a production deployment - use HTTPS there instead.
+
+### 6. Run the mobile app - with Expo Go (recommended for day-to-day development)
+```
 npx expo start
 ```
 Then scan the QR code with the **Expo Go** app (Android/iOS) or run it on an emulator/simulator. Make sure the app's API base URL (in its config/`.env`) points to your running backend instance.
+
+This gives you instant hot reload for any JS/TS changes - no build step needed. Note that a few native features (e.g. push notifications on Android) are [not supported in Expo Go](https://docs.expo.dev/push-notifications/what-you-need-to-know/) and require a development or standalone build instead.
+
+### 7. Build a standalone, installable APK - with EAS Build
+Useful when you want to install the app directly on a device without a computer/Expo Go running (e.g. to test native-only features, or to share a build for testing).
+
+```bash
+npm install -g eas-cli
+eas login
+eas build:configure
+```
+
+The project's `eas.json` should have a `preview` profile configured to output an installable `.apk` (instead of the Play Store `.aab` format):
+```json
+{
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://192.168.x.x:5292/api"
+      }
+    }
+  }
+}
+```
+
+> **Environment variables are not read from your local `.env` file during a cloud build** - EAS Build runs on a remote machine that only has access to whatever is committed to the repository. Set `EXPO_PUBLIC_API_URL` (and any other `EXPO_PUBLIC_*` variables) either directly in `eas.json` as above, or via `eas env:set --scope project --name EXPO_PUBLIC_API_URL --value "..." --environment preview` (choose **Plain text** visibility for non-sensitive values like a local API URL).
+
+Then build:
+```bash
+eas build --platform android --profile preview
+```
+
+The first build will ask to generate a new Android Keystore - accept this unless you already have one for the project (EAS stores and manages it securely on your behalf). The build runs entirely in the cloud (10-20 minutes, plus queue time on the free tier); once finished, download and install the `.apk` either via the printed link/QR code, or from the **Builds** tab on [expo.dev](https://expo.dev).
+
+> Any native-level change (new native dependency, a plugin added to `app.json`, permissions, etc.) requires a new build to take effect. Pure JS/TS changes don't - for those, prefer Expo Go (step 6) during development, or look into [EAS Update](https://docs.expo.dev/eas-update/introduction/) for pushing JS-only updates to an already-installed build without a full rebuild.
 
 ## Roadmap
 ### Backend
@@ -226,11 +278,11 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 
 ## Architektura
 Backend oparty jest na zasadach **Clean Architecture**, z wyraźnym podziałem na:
-- `Domain` — encje, reguły biznesowe
-- `Application` — przypadki użycia, komendy/zapytania MediatR, interfejsy
-- `Infrastructure` — EF Core, PostgreSQL, usługi zewnętrzne
-- `API` — kontrolery, middleware, uwierzytelnianie
-- `Tests` — testy
+- `Domain` - encje, reguły biznesowe
+- `Application` - przypadki użycia, komendy/zapytania MediatR, interfejsy
+- `Infrastructure` - EF Core, PostgreSQL, usługi zewnętrzne
+- `API` - kontrolery, middleware, uwierzytelnianie
+- `Tests` - testy
 
 ## Instrukcja użytkowania
 > Ta sekcja to wstępny przewodnik startowy i będzie rozbudowywana wraz z rozwojem projektu!
@@ -240,6 +292,8 @@ Backend oparty jest na zasadach **Clean Architecture**, z wyraźnym podziałem n
 - [Docker](https://www.docker.com/) - wymagany tylko przy uruchamianiu backendu z Dockerem
 - Instancja [PostgreSQL](https://www.postgresql.org/) (lokalna lub hostowana, np. Supabase/Neon/Azure)
 - [Node.js](https://nodejs.org/) (LTS) + [Expo CLI](https://docs.expo.dev/get-started/installation/) - do aplikacji mobilnej
+- Aplikacja [Expo Go](https://expo.dev/go) na telefonie - do szybkiego testowania lokalnego bez budowania aplikacji natywnej
+- Konto [Expo](https://expo.dev/) + [EAS CLI](https://docs.expo.dev/eas/) - tylko jeśli chcesz zbudować samodzielny, instalowalny plik APK
 
 ### 1. Sklonuj repozytorium
 ```bash
@@ -257,7 +311,8 @@ ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=lifeorgan
 Jwt__Key=your-super-secret-key-min-32-characters
 Jwt__Issuer=LifeOrganizerAPI
 Jwt__Audience=LifeOrganizerClient
-Jwt__ExpiryMinutes=60
+Jwt__AccessTokenMinutes=20
+Jwt__RefreshTokenDays=30
  
 # ASP.NET Core
 ASPNETCORE_ENVIRONMENT=Development
@@ -303,7 +358,7 @@ Aby dodatkowo usunąć wolumen z danymi bazy (usuwa to wszystkie lokalne dane!):
 docker compose down -v
 ```
  
-> **Uwaga:** dane logowania i connection string w `docker-compose.yml` (`password`, `ConnectionStrings__DefaultConnection` itd.) to wartości tymczasowe, przeznaczone wyłącznie do developmentu lokalnego — zmień je przed jakimkolwiek publicznym wdrożeniem!
+> **Uwaga:** dane logowania i connection string w `docker-compose.yml` (`password`, `ConnectionStrings__DefaultConnection` itd.) to wartości tymczasowe, przeznaczone wyłącznie do developmentu lokalnego!
  
 ### 5. Uruchomienie aplikacji mobilnej
 ```bash
@@ -311,11 +366,63 @@ cd Mobile/LifeOrganizerMobile
  
 # Zainstaluj zależności
 npm install
- 
-# Uruchom serwer deweloperski Expo
+```
+
+Utwórz plik `.env` w `Mobile/LifeOrganizerMobile`, wskazujący na Twoją uruchomioną instancję backendu:
+```env
+EXPO_PUBLIC_API_URL=http://192.168.x.x:5292/api
+```
+
+> **Użyj lokalnego adresu IP komputera w sieci, nie `localhost`.** Telefon i komputer to osobne urządzenia w sieci - `localhost` na telefonie odnosi się do samego telefonu, nie do komputera. Adres IP znajdziesz przez `ipconfig` (Windows) lub `ifconfig`/`ip addr` (macOS/Linux). Upewnij się też, że telefon jest podłączony do **tej samej sieci Wi-Fi** co komputer.
+
+> Backend w wersji lokalnej używa zwykłego HTTP. Android domyślnie blokuje ruch cleartext (nieszyfrowany, nie HTTPS) w samodzielnych/wydaniowych buildach (nie dotyczy to jednak Expo Go ani development buildów) - jest to już obsłużone przez plugin `expo-build-properties` w `app.json` (`usesCleartextTraffic: true`). Jest to rozwiązanie odpowiednie do developmentu lokalnego, ale nie powinno być stosowane w wdrożeniu produkcyjnym - tam należy używać HTTPS.
+
+### 6. Uruchomienie aplikacji mobilnej - przez Expo Go (zalecane do codziennej pracy)
+```bash
 npx expo start
 ```
-Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na emulatorze/symulatorze. Upewnij się, że bazowy URL API w konfiguracji aplikacji (config/`.env`) wskazuje na Twoją uruchomioną instancję backendu.
+Następnie zeskanuj kod QR aplikacją **Expo Go** (Android/iOS) lub uruchom na emulatorze/symulatorze.
+
+Dzięki temu zmiany w kodzie JS/TS pojawiają się natychmiast (hot reload) - bez potrzeby budowania aplikacji. Warto pamiętać, że część funkcji natywnych (np. powiadomienia push na Androidzie) [nie jest wspierana w Expo Go](https://docs.expo.dev/push-notifications/what-you-need-to-know/) i wymaga development buildu lub samodzielnego builda.
+
+### 7. Zbudowanie samodzielnego, instalowalnego pliku APK - przez EAS Build
+Przydatne, gdy chcesz zainstalować aplikację bezpośrednio na urządzeniu bez podłączonego komputera/Expo Go (np. do testowania funkcji dostępnych tylko natywnie, albo żeby udostępnić build komuś innemu do testów).
+
+```bash
+npm install -g eas-cli
+eas login
+eas build:configure
+```
+
+Profil `preview` w pliku `eas.json` projektu powinien być skonfigurowany tak, aby generował instalowalny plik `.apk` (zamiast formatu `.aab` przeznaczonego na Google Play):
+```json
+{
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://192.168.x.x:5292/api"
+      }
+    }
+  }
+}
+```
+
+> **Zmienne środowiskowe nie są odczytywane z lokalnego pliku `.env` podczas builda w chmurze** - EAS Build działa na zdalnej maszynie, która ma dostęp wyłącznie do tego, co zostało zacommitowane do repozytorium. Ustaw `EXPO_PUBLIC_API_URL` (i inne zmienne `EXPO_PUBLIC_*`) bezpośrednio w `eas.json` jak wyżej, albo przez `eas env:set --scope project --name EXPO_PUBLIC_API_URL --value "..." --environment preview` (dla wartości nie-wrażliwych, jak lokalny adres API, wybierz widoczność **Plain text**).
+
+Następnie uruchom build:
+```bash
+eas build --platform android --profile preview
+```
+
+Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, chyba że masz już jeden przypisany do tego projektu (EAS bezpiecznie przechowuje go i zarządza nim za Ciebie). Build wykonuje się w całości w chmurze (10-20 minut, plus czas oczekiwania w kolejce na darmowym planie); po zakończeniu pobierz i zainstaluj plik `.apk` poprzez wypisany link/kod QR, albo z zakładki **Builds** na [expo.dev](https://expo.dev).
+
+> Każda zmiana na poziomie natywnym (nowa zależność natywna, plugin dodany w `app.json`, uprawnienia itd.) wymaga nowego builda, żeby zaczęła obowiązywać. Zmiany czysto w JS/TS - nie wymagają; do nich lepiej korzystać z Expo Go (krok 6) podczas developmentu, albo rozważyć [EAS Update](https://docs.expo.dev/eas-update/introduction/), żeby wypuszczać aktualizacje JS do już zainstalowanego builda bez pełnego rebuilda.
+
+> **Uwaga przy konfigurowaniu EAS Update:** komenda `eas update:configure` modyfikuje lokalnie pliki `app.json`/`eas.json` (dodaje m.in. pole `runtimeVersion`). Pamiętaj, żeby zacommitować te zmiany (`git add app.json eas.json && git commit`) przed uruchomieniem kolejnego builda - EAS pakuje projekt na podstawie stanu zacommitowanego w repozytorium, więc niezacommitowane zmiany w `app.json` mogą spowodować błąd `Runtime version mismatch` przy buildzie.
 
 ## Plan prac
 ### Backend
