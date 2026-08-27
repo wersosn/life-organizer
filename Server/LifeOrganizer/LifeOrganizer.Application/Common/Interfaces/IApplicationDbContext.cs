@@ -17,6 +17,7 @@ namespace LifeOrganizer.Application.Common.Interfaces
         DbSet<ChoreCompletion> ChoreCompletions { get; }
         DbSet<RefreshToken> RefreshTokens { get; }
         DbSet<VerificationToken> VerificationTokens { get; }
+        DbSet<IdempotentRequest> IdempotentRequests { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

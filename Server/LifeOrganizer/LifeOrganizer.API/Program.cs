@@ -1,4 +1,5 @@
 using LifeOrganizer.API.Filters;
+using LifeOrganizer.API.Middlewares;
 using LifeOrganizer.Application;
 using LifeOrganizer.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -112,6 +113,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseRateLimiter();
+
+app.UseMiddleware<IdempotencyMiddleware>();
 
 app.MapControllers();
 

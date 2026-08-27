@@ -19,6 +19,7 @@ namespace LifeOrganizer.Infrastructure.Persistence
         public DbSet<ChoreCompletion> ChoreCompletions => Set<ChoreCompletion>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<VerificationToken> VerificationTokens => Set<VerificationToken>();
+        public DbSet<IdempotentRequest> IdempotentRequests => Set<IdempotentRequest>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
