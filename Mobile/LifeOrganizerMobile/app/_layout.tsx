@@ -8,6 +8,17 @@ import { useEffect } from 'react';
 import { registerForPushNotificationsAsync } from '@/utils/pushNotifications';
 import { registerPushToken } from '@/api/notificationsApi';
 import { Alert } from 'react-native';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
+    }),
+});
 
 function AppContent() {
     const colorScheme = useColorScheme();
@@ -22,10 +33,7 @@ function AppContent() {
                         return;
                     }
 
-                    Alert.alert("Push token obtained", pushToken);
-
                     registerPushToken(pushToken)
-                        .then(() => Alert.alert("Backend success", "Token registered on backend"))
                         .catch(e => {
                             Alert.alert(
                                 "Backend error",
