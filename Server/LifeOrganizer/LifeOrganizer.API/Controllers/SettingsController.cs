@@ -1,6 +1,7 @@
 ﻿using LifeOrganizer.Application.Automation.GetAutomationSettings;
 using LifeOrganizer.Application.Automation.UpdateAutomationSettings;
 using LifeOrganizer.Application.Export;
+using LifeOrganizer.Application.Notifications.Commands;
 using LifeOrganizer.Application.Retention.Commands.GetRetentionSettings;
 using LifeOrganizer.Application.Retention.Commands.UpdateRetentionSettings;
 using MediatR;
@@ -52,6 +53,13 @@ namespace LifeOrganizer.API.Controllers
             var bytes = await mediator.Send(new GetFullExportQuery());
             var fileName = $"lifeorganizer_export_{DateTime.UtcNow:yyyyMMdd}.json";
             return File(bytes, "application/json", fileName);
+        }
+
+        [HttpPost("pushtoken")]
+        public async Task<IActionResult> RegisterPushToken(RegisterPushTokenCommand command, CancellationToken cancellationToken)
+        {
+            await mediator.Send(command, cancellationToken);
+            return NoContent();
         }
     }
 }

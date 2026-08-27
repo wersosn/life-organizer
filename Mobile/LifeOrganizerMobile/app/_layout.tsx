@@ -7,20 +7,37 @@ import { AuthProvider, useAuth } from "@/auth/AuthContext";
 import { useEffect } from 'react';
 import { registerForPushNotificationsAsync } from '@/utils/pushNotifications';
 import { registerPushToken } from '@/api/notificationsApi';
+import { Alert } from 'react-native';
 
 function AppContent() {
     const colorScheme = useColorScheme();
-    /*const { token } = useAuth();
+    const { token } = useAuth();
 
     useEffect(() => {
         if (token) {
-            registerForPushNotificationsAsync().then(pushToken => {
-                if (pushToken) {
-                    registerPushToken(pushToken).catch(e => console.log(e));
-                }
-            });
+            registerForPushNotificationsAsync()
+                .then(pushToken => {
+                    if (!pushToken) {
+                        Alert.alert("No push token", "registerForPushNotificationsAsync returned null/undefined");
+                        return;
+                    }
+
+                    Alert.alert("Push token obtained", pushToken);
+
+                    registerPushToken(pushToken)
+                        .then(() => Alert.alert("Backend success", "Token registered on backend"))
+                        .catch(e => {
+                            Alert.alert(
+                                "Backend error",
+                                `Status: ${e?.response?.status ?? "no response"}\n${JSON.stringify(e?.response?.data ?? e?.message)}`
+                            );
+                        });
+                })
+                .catch(e => {
+                    Alert.alert("Error getting push token", e?.message ?? String(e));
+                });
         }
-    }, [token]);*/
+    }, [token]);
 
     return (
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

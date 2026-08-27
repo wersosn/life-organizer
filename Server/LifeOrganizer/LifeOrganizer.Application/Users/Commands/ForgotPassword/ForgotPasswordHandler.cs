@@ -41,19 +41,19 @@ namespace LifeOrganizer.Application.Users.Commands.ForgotPassword
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            /* Deep link for later:
+            /* Deep link for later:*/
             var resetLink = $"{_configuration["App:DeepLinkScheme"]}://reset-password?token={resetToken}";
             await _emailSender.SendAsync(
                 user.Email,
                 "Reset your password",
                 $"<p>Click <a href='{resetLink}'>here</a> to reset your password. This link expires in 1 hour.</p>",
-                cancellationToken);*/
+                cancellationToken);
 
-            await _emailSender.SendAsync(
+            /*await _emailSender.SendAsync(
                 user.Email,
                 "Reset your password",
                 $"<p>Your password reset token is:</p><p><strong>{resetToken}</strong></p><p>This token expires in 1 hour.</p>",
-                cancellationToken);
+                cancellationToken);*/
         }
     }
 }

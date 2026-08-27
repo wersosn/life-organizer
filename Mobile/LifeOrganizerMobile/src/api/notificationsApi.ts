@@ -1,9 +1,9 @@
 import { apiClient } from "./apiClient";
 
 export async function registerPushToken(token: string) {
-    await apiClient.post("/pushtoken", { token });
+    await apiClient.post("/settings/pushtoken", { token });
 }
 
 export async function sendTestNotification() {
-    await apiClient.post("/settings/test-notification");
+    await apiClient.post("/test/test-notification");
 }

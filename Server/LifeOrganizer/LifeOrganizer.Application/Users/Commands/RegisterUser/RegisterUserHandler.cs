@@ -58,19 +58,20 @@ namespace LifeOrganizer.Application.Users.Commands.RegisterUser
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            /* Deep link for later:
+            /* Deep link for later: */
             var confirmationLink = $"{_configuration["App:DeepLinkScheme"]}://confirm-email?token={confirmationToken}";
             await _emailSender.SendAsync(
                 user.Email,
                 "Confirm your email",
                 $"<p>Welcome to LifeOrganizer! Click <a href='{confirmationLink}'>here</a> to confirm your email.</p>",
-                cancellationToken);*/
+                cancellationToken);
 
-            await _emailSender.SendAsync(
+            /*await _emailSender.SendAsync(
                 user.Email,
                 "Confirm your email",
                 $"<p>Your confirmation token is:</p><p><strong>{confirmationToken}</strong></p><p>Copy this token and use it with the /api/Users/confirm-email endpoint.</p>",
-                cancellationToken);
+                cancellationToken);*/
+
             await _publisher.Publish(new UserRegisteredEvent(user.Id), cancellationToken);
 
             _logger.LogInformation("User registered successfully. UserId: {UserId}", user.Id);
