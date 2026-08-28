@@ -1,7 +1,9 @@
 import { AUTH_EVENTS, authEvents } from "@/auth/AuthEvents";
 import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from "@/auth/tokenStorage";
 import { API_URL } from "@/config/api";
+import * as Crypto from "expo-crypto";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 export const apiClient = axios.create({
     baseURL: API_URL,
@@ -13,6 +15,9 @@ apiClient.interceptors.request.use(
         const token = await getAccessToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
+        }
+        if (config.method === "post" && !config.headers["Idempotency-Key"]) {
+            config.headers["Idempotency-Key"] = Crypto.randomUUID();
         }
         return config;
     }
@@ -81,3 +86,11 @@ apiClient.interceptors.response.use(
         }
     }
 );
+
+axiosRetry(apiClient, {
+    retries: 3,
+    retryDelay: axiosRetry.exponentialDelay,
+    retryCondition: error => {       
+        return axiosRetry.isNetworkError(error) || (error.response?.status ?? 0) >= 500;
+    },
+});

@@ -6,6 +6,7 @@ import { TransactionCategory, TransactionType } from "@/types/transaction";
 import { todayIso } from "@/utils/transactionFormat";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
+import { randomUUID } from "expo-crypto";
 import { ActivityIndicator, Button, KeyboardAvoidingView, Pressable, ScrollView, TextInput, Text, View, useColorScheme, Platform } from "react-native";
 
 export default function CreateTransactionScreen() {
@@ -17,6 +18,7 @@ export default function CreateTransactionScreen() {
     const [loadingCategories, setLoadingCategories] = useState(true);
     const [categoryModalVisible, setCategoryModalVisible] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [idempotencyKey] = useState(() => randomUUID());
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
@@ -63,7 +65,7 @@ export default function CreateTransactionScreen() {
         setError(null);
 
         try {
-            await createTransaction(categoryId, parsedAmount, type, todayIso(), description || undefined);
+            await createTransaction(categoryId, parsedAmount, type, todayIso(), description || undefined, idempotencyKey);
             router.back();
         } catch (e) {
             console.log(e);

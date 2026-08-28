@@ -13,13 +13,15 @@ export async function getTransactionById(id: string) {
     return response.data;
 }
 
-export async function createTransaction(categoryId: string, amount: number, type: TransactionType, date: string, description?: string) {
+export async function createTransaction(categoryId: string, amount: number, type: TransactionType, date: string, description: string | undefined, idempotencyKey: string) {
     const response = await apiClient.post("/transactions", {
         categoryId,
         amount,
         type,
         date,
         description,
+    }, {
+        headers: { "Idempotency-Key": idempotencyKey }
     });
     return response.data;
 }
