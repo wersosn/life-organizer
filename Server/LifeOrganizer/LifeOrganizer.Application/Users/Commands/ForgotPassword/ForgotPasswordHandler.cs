@@ -42,7 +42,7 @@ namespace LifeOrganizer.Application.Users.Commands.ForgotPassword
             await _context.SaveChangesAsync(cancellationToken);
 
             /* Deep link for later:*/
-            var resetLink = $"{_configuration["App:DeepLinkScheme"]}://reset-password?token={resetToken}";
+            var resetLink = $"{_configuration["App:DeepLinkScheme"]}://resetPassword?token={resetToken}";
             await _emailSender.SendAsync(
                 user.Email,
                 "Reset your password",

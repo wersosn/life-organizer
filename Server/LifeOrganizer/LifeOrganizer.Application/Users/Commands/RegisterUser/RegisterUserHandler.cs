@@ -59,7 +59,7 @@ namespace LifeOrganizer.Application.Users.Commands.RegisterUser
             await _context.SaveChangesAsync(cancellationToken);
 
             /* Deep link for later: */
-            var confirmationLink = $"{_configuration["App:DeepLinkScheme"]}://confirm-email?token={confirmationToken}";
+            var confirmationLink = $"{_configuration["App:DeepLinkScheme"]}://confirmEmail?token={confirmationToken}";
             await _emailSender.SendAsync(
                 user.Email,
                 "Confirm your email",
