@@ -17,7 +17,7 @@ describe("transactionsApi", () => {
         jest.clearAllMocks();
     });
 
-     it("getTransactions sends from and to as query params", async () => {
+    it("getTransactions sends from and to as query params", async () => {
         const mockTransactions = [{ id: "1", amount: 50 }];
         (apiClient.get as jest.Mock).mockResolvedValue({ data: mockTransactions });
 
@@ -52,7 +52,7 @@ describe("transactionsApi", () => {
     it("createTransaction sends the correct payload", async () => {
         (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
 
-        await createTransaction("category-id", 49.99, TransactionType.Expense, "2026-07-25", "Groceries");
+        await createTransaction("category-id", 49.99, TransactionType.Expense, "2026-07-25", "Groceries", "idempotency-key-1");
 
         expect(apiClient.post).toHaveBeenCalledWith("/transactions", {
             categoryId: "category-id",
@@ -60,13 +60,13 @@ describe("transactionsApi", () => {
             type: TransactionType.Expense,
             date: "2026-07-25",
             description: "Groceries",
-        });
+        }, { headers: { "Idempotency-Key": "idempotency-key-1" } });
     });
 
     it("createTransaction sends undefined description when not provided", async () => {
         (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
 
-        await createTransaction("category-id", 49.99, TransactionType.Expense, "2026-07-25");
+        await createTransaction("category-id", 49.99, TransactionType.Expense, "2026-07-25", undefined, "idempotency-key-2");
 
         expect(apiClient.post).toHaveBeenCalledWith("/transactions", {
             categoryId: "category-id",
@@ -74,7 +74,7 @@ describe("transactionsApi", () => {
             type: TransactionType.Expense,
             date: "2026-07-25",
             description: undefined,
-        });
+        },  { headers: { "Idempotency-Key": "idempotency-key-2" } });
     });
 
     it("updateTransaction sends a PUT request to the correct endpoint with the full payload", async () => {
