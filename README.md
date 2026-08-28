@@ -205,7 +205,7 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Chore Tracker module
 - [x] Automation engine (habits → tasks)
 - [x] Automation engine (chores → tasks)
-- [ ] Notifications system
+- [x] Notifications system
 - [x] Task history + configurable retention/cleanup
 - [ ] Background services for scheduled checks
 - [x] Data export (csv, json)
@@ -222,7 +222,7 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Automation
 - [ ] Offline mode with SQLite
 - [ ] Sync mechanism (local ↔ server)
-- [ ] Push notifications
+- [x] Push notifications
 - [x] Statistics
 - [x] Settings (automation toggle, history retention)
 - [ ] API, unit & components tests
@@ -435,7 +435,7 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Moduł Chore Tracker
 - [x] Silnik automatyzacji (nawyki → zadania)
 - [x] Silnik automatyzacji (obowiązki → zadania)
-- [ ] System powiadomień
+- [x] System powiadomień
 - [x] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
 - [ ] Background services do zaplanowanych sprawdzeń
 - [x] Eksport danych (csv, json)
@@ -452,7 +452,7 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Automatyzacja
 - [ ] Tryb offline z SQLite
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
-- [ ] Powiadomienia push
+- [x] Powiadomienia push
 - [x] Statystyki
 - [x] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
 - [ ] Testy API, jednostkowe oraz komponentów
