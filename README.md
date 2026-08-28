@@ -16,7 +16,7 @@ After logging in, the user gets access to four main modules:
 - **Task List** - a general to-do list
 - **Habit Tracker** - tracking recurring habits
 - **Finance Tracker** - personal finance/budget tracking
-- **Chore Tracker** - household chores with categories and frequency
+- **Chore Tracker** - household chores with categories and frequency  
 The key feature is an **automation system** that connects these modules together (see below).
 
 ## Automation system
@@ -244,7 +244,7 @@ Po zalogowaniu użytkownik ma dostęp do czterech głównych zakładek:
 - **Lista zadań** - ogólna lista rzeczy do zrobienia
 - **Habit Tracker** - śledzenie powtarzalnych nawyków
 - **Finance Tracker** - śledzenie finansów osobistych/budżetu
-- **Chore Tracker** - obowiązki domowe z kategoriami i częstotliwością
+- **Chore Tracker** - obowiązki domowe z kategoriami i częstotliwością  
 Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze sobą (opis poniżej).
 
 ## System automatyzacji
