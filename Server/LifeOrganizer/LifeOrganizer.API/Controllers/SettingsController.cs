@@ -1,7 +1,9 @@
 ﻿using LifeOrganizer.Application.Automation.GetAutomationSettings;
 using LifeOrganizer.Application.Automation.UpdateAutomationSettings;
 using LifeOrganizer.Application.Export;
-using LifeOrganizer.Application.Notifications.Commands;
+using LifeOrganizer.Application.Notifications.Commands.GetNotificationSettings;
+using LifeOrganizer.Application.Notifications.Commands.RegisterPushToken;
+using LifeOrganizer.Application.Notifications.Commands.UpdateNotificationSettings;
 using LifeOrganizer.Application.Retention.Commands.GetRetentionSettings;
 using LifeOrganizer.Application.Retention.Commands.UpdateRetentionSettings;
 using MediatR;
@@ -59,6 +61,19 @@ namespace LifeOrganizer.API.Controllers
         public async Task<IActionResult> RegisterPushToken(RegisterPushTokenCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
+            return NoContent();
+        }
+
+        [HttpGet("notifications")]
+        public async Task<IActionResult> GetNotificationSettings()
+        {
+            return Ok(await mediator.Send(new GetNotificationSettingsQuery()));
+        }
+
+        [HttpPut("notifications")]
+        public async Task<IActionResult> UpdateNotificationSettings(UpdateNotificationSettingsCommand command)
+        {
+            await mediator.Send(command);
             return NoContent();
         }
     }

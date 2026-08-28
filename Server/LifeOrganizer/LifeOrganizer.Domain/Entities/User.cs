@@ -13,5 +13,6 @@
         public bool ChoreAutomationEnabled { get; set; } = true;
         public string? PushToken { get; set; }
         public int TaskHistoryRetentionDays { get; set; } = 30;
+        public bool PushNotificationsEnabled { get; set; } = true;
     }
 }

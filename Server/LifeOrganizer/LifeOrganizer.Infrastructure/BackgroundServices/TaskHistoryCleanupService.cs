@@ -1,6 +1,7 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Domain.Services;
+using LifeOrganizer.Infrastructure.Notifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,6 +43,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+            var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
 
             var now = DateTime.UtcNow;
 
@@ -62,6 +64,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                 _logger.LogInformation("Task history cleanup found nothing to remove.");
                 return;
             }
+
             context.TodoItems.RemoveRange(tasksToDelete);
             await context.SaveChangesAsync(cancellationToken);
             _logger.LogInformation("Task history cleanup removed {count} completed tasks past their retention period.", tasksToDelete.Count);

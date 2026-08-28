@@ -29,7 +29,6 @@ function AppContent() {
             registerForPushNotificationsAsync()
                 .then(pushToken => {
                     if (!pushToken) {
-                        Alert.alert("No push token", "registerForPushNotificationsAsync returned null/undefined");
                         return;
                     }
 

@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace LifeOrganizer.Application.Notifications.Commands
+namespace LifeOrganizer.Application.Notifications.Commands.RegisterPushToken
 {
     public class RegisterPushTokenHandler : IRequestHandler<RegisterPushTokenCommand>
     {

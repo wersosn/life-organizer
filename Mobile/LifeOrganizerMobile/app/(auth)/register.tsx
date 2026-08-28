@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput, useColorScheme, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from "react-native";
+import { View, Text, Button, TextInput, useColorScheme, ScrollView, KeyboardAvoidingView, Platform, Alert } from "react-native";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { apiClient } from "@/api/apiClient";
@@ -9,6 +9,7 @@ export default function RegisterScreen() {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
@@ -17,10 +18,8 @@ export default function RegisterScreen() {
             console.log("Passwords do not match");
             return;
         }
-
-        //await apiClient.post("/auth/register", { email, name, password });
-        //router.replace("../login");
-
+        
+        setLoading(true);
         try {
             await apiClient.post("/auth/register", { email, name, password });
             Alert.alert(
@@ -32,6 +31,8 @@ export default function RegisterScreen() {
         } catch (error: any) {
             console.log(error);
             Alert.alert("Registration failed", "Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -88,8 +89,9 @@ export default function RegisterScreen() {
 
                 <View style={styles.buttonContainer}>
                     <Button
-                        title="Create account"
+                        title={loading ? "Creating account..." : "Create account"}
                         onPress={register}
+                        disabled={loading}
                         color="#4F7CFF"
                     />
                 </View>

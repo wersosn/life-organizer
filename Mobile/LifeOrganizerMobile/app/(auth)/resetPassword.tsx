@@ -65,7 +65,7 @@ export default function ResetPasswordScreen() {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
-                    style={styles.input}
+                    style={[styles.input, { color: "#000000" }]}
                 />
                 <TextInput
                     placeholder="Confirm password"
@@ -73,7 +73,7 @@ export default function ResetPasswordScreen() {
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
                     secureTextEntry
-                    style={styles.input}
+                    style={[styles.input, { color: "#000000" }]}
                 />
 
                 <Button title={loading ? "Saving..." : "Reset password"} onPress={handleSubmit} disabled={loading} color="#4F7CFF" />

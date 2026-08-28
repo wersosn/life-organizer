@@ -88,7 +88,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                 });
                 tasksCreated++;
 
-                if (!string.IsNullOrEmpty(chore.User.PushToken))
+                if (!string.IsNullOrEmpty(chore.User.PushToken) && chore.User.PushNotificationsEnabled)
                 {
                     try
                     {

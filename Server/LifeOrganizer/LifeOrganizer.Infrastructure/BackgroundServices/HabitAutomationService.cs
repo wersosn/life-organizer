@@ -109,7 +109,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                 });
                 tasksCreated++;
 
-                if (!string.IsNullOrEmpty(habit.User.PushToken))
+                if (!string.IsNullOrEmpty(habit.User.PushToken) && habit.User.PushNotificationsEnabled)
                 {
                     try
                     {
