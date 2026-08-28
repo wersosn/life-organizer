@@ -50,6 +50,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
 
             var chores = await context.Chores
+                .Include(c => c.User)
                 .Where(c => c.IsActive && c.IsAutomationEnabled && c.User.ChoreAutomationEnabled)
                 .ToListAsync(cancellationToken);
 

@@ -50,6 +50,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
 
             var habits = await context.Habits
+                .Include(h => h.User)
                 .Where(h => h.IsActive && h.IsAutomationEnabled && h.User.HabitAutomationEnabled)
                 .ToListAsync(cancellationToken);
 
