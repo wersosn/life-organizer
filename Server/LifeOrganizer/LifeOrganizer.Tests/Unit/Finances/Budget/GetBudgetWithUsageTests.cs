@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Budget.GetBudgetWithUsage;
+﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Application.Finances.Commands.Budget.GetBudgetWithUsage;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Moq;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Budget
@@ -53,7 +55,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Budget
             );
             await context.SaveChangesAsync();
 
-            var handler = new GetBudgetWithUsageHandler(context, new FakeCurrentUserService(userId));
+            var handler = new GetBudgetWithUsageHandler(context, new FakeCurrentUserService(userId), new FakeCacheService());
             var result = await handler.Handle(new GetBudgetWithUsageQuery(2026, 7), CancellationToken.None);
             Assert.Equal(2, result.Count);
 

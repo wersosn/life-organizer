@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Common.Exceptions;
+﻿using LifeOrganizer.Application.Common.Caching;
+using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +11,14 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.DeleteBudget
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<DeleteBudgetHandler> _logger;
 
-        public DeleteBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<DeleteBudgetHandler> logger)
+        public DeleteBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ICacheService cacheService, ILogger<DeleteBudgetHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _cacheService = cacheService;
             _logger = logger;
         }
 
@@ -33,6 +36,9 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.DeleteBudget
 
             _context.Budgets.Remove(budget);
             await _context.SaveChangesAsync(cancellationToken);
+
+            _cacheService.RemoveByPrefix(CacheKeys.UserPrefix(_currentUser.UserId));
+
             _logger.LogInformation("Budget deleted successfully. BudgetId: {BudgetId}", budget.Id);
         }
     }

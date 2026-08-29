@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Common.Exceptions;
+﻿using LifeOrganizer.Application.Common.Caching;
+using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +11,14 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.UpdateBudget
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<UpdateBudgetHandler> _logger;
 
-        public UpdateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<UpdateBudgetHandler> logger)
+        public UpdateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ICacheService cacheService, ILogger<UpdateBudgetHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _cacheService = cacheService;
             _logger = logger;
         }
 
@@ -34,6 +37,9 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.UpdateBudget
             budget.MonthlyLimit = request.MonthlyLimit;
             budget.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
+
+            _cacheService.RemoveByPrefix(CacheKeys.UserPrefix(_currentUser.UserId));
+
             _logger.LogInformation("Budget updated successfully. BudgetId: {BudgetId}", budget.Id);
         }
     }

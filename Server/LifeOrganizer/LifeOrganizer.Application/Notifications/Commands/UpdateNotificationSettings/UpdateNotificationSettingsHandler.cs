@@ -22,7 +22,7 @@ namespace LifeOrganizer.Application.Notifications.Commands.UpdateNotificationSet
 
         public async Task Handle(UpdateNotificationSettingsCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstAsync(u => u.Id == _currentUser.UserId, cancellationToken);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == _currentUser.UserId, cancellationToken);
             if (user is null)
             {
                 _logger.LogWarning("Notification settings update failed: user not found.");

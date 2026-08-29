@@ -2,6 +2,7 @@
 using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Application.Interfaces;
 using LifeOrganizer.Infrastructure.BackgroundServices;
+using LifeOrganizer.Infrastructure.Caching;
 using LifeOrganizer.Infrastructure.Email;
 using LifeOrganizer.Infrastructure.Notifications;
 using LifeOrganizer.Infrastructure.Persistence;
@@ -33,6 +34,9 @@ namespace LifeOrganizer.Infrastructure
 
             services.Configure<EmailSettings>(configuration.GetSection("Email"));
             services.AddScoped<IEmailSender, MailtrapEmailSender>();
+
+            services.AddMemoryCache();
+            services.AddSingleton<ICacheService, MemoryCacheService>();
 
             return services;
         }

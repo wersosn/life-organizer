@@ -1,10 +1,12 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
+﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
 using LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransaction;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Transactions
@@ -38,7 +40,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Transactions
             context.Transactions.Add(transaction);
             await context.SaveChangesAsync();
 
-            var handler = new DeleteTransactionHandler(context, currentUser, NullLogger<DeleteTransactionHandler>.Instance);
+            var handler = new DeleteTransactionHandler(context, currentUser, new FakeCacheService(), NullLogger<DeleteTransactionHandler>.Instance);
 
             await handler.Handle(new DeleteTransactionCommand(transaction.Id), CancellationToken.None);
 

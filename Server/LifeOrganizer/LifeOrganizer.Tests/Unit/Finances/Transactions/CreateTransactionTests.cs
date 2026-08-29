@@ -1,10 +1,12 @@
-﻿using LifeOrganizer.Application.Finances.Commands.TransactionCategories.UpdateTransactionCategory;
+﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Application.Finances.Commands.TransactionCategories.UpdateTransactionCategory;
 using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Transactions
@@ -34,7 +36,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Transactions
             context.TransactionCategories.Add(category);
             await context.SaveChangesAsync();
 
-            var handler = new CreateTransactionHandler(context, currentUser, NullLogger<CreateTransactionHandler>.Instance);
+            var handler = new CreateTransactionHandler(context, currentUser, new FakeCacheService(), NullLogger<CreateTransactionHandler>.Instance);
             var command = new CreateTransactionCommand(
                 category.Id,
                 49.99m,

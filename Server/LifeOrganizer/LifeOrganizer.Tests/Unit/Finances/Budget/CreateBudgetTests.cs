@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
+using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
 using LifeOrganizer.Application.Todo.Commands.CompleteTodo;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Budget
@@ -40,7 +42,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Budget
             });
             await context.SaveChangesAsync();
 
-            var handler = new CreateBudgetHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateBudgetHandler>.Instance);
+            var handler = new CreateBudgetHandler(context, new FakeCurrentUserService(userId), new FakeCacheService(), NullLogger<CreateBudgetHandler>.Instance);
             var command = new CreateBudgetCommand(category.Id, 800);
             await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
 

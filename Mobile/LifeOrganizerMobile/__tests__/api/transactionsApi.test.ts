@@ -74,7 +74,27 @@ describe("transactionsApi", () => {
             type: TransactionType.Expense,
             date: "2026-07-25",
             description: undefined,
-        },  { headers: { "Idempotency-Key": "idempotency-key-2" } });
+        }, { headers: { "Idempotency-Key": "idempotency-key-2" } });
+    });
+
+    it("createTransaction sends a different Idempotency-Key when called with a different key", async () => {
+        (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
+
+        await createTransaction("category-id", 20, TransactionType.Expense, "2026-07-25", "Coffee", "key-a");
+        await createTransaction("category-id", 20, TransactionType.Expense, "2026-07-25", "Coffee", "key-b");
+
+        expect(apiClient.post).toHaveBeenNthCalledWith(
+            1,
+            "/transactions",
+            expect.anything(),
+            { headers: { "Idempotency-Key": "key-a" } }
+        );
+        expect(apiClient.post).toHaveBeenNthCalledWith(
+            2,
+            "/transactions",
+            expect.anything(),
+            { headers: { "Idempotency-Key": "key-b" } }
+        );
     });
 
     it("updateTransaction sends a PUT request to the correct endpoint with the full payload", async () => {

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using LifeOrganizer.Application.Common.Caching;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
@@ -12,12 +13,14 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransac
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<CreateTransactionHandler> _logger;
 
-        public CreateTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<CreateTransactionHandler> logger)
+        public CreateTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser, ICacheService cacheService, ILogger<CreateTransactionHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _cacheService = cacheService;
             _logger = logger;
         }
 
@@ -57,6 +60,9 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransac
 
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync(cancellationToken);
+
+            _cacheService.RemoveByPrefix(CacheKeys.UserPrefix(_currentUser.UserId));
+
             _logger.LogInformation("Transaction created successfully. TransactionId: {TransactionId}", transaction.Id);
             return transaction.Id;
         }

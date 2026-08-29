@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Common.Exceptions;
+﻿using LifeOrganizer.Application.Common.Caching;
+using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
 using MediatR;
@@ -11,12 +12,14 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransac
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<DeleteTransactionHandler> _logger;
 
-        public DeleteTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<DeleteTransactionHandler> logger)
+        public DeleteTransactionHandler(IApplicationDbContext context, ICurrentUserService currentUser, ICacheService cacheService, ILogger<DeleteTransactionHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _cacheService = cacheService;
             _logger = logger;
         }
 
@@ -34,6 +37,9 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransac
 
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync(cancellationToken);
+
+            _cacheService.RemoveByPrefix(CacheKeys.UserPrefix(_currentUser.UserId));
+
             _logger.LogInformation("Transaction deleted successfully. TransactionId: {TransactionId}", transaction.Id);
         }
     }

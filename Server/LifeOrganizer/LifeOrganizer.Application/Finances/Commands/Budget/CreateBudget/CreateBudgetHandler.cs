@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using LifeOrganizer.Application.Common.Caching;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Domain.Entities;
@@ -12,12 +13,14 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<CreateBudgetHandler> _logger;
 
-        public CreateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ILogger<CreateBudgetHandler> logger)
+        public CreateBudgetHandler(IApplicationDbContext context, ICurrentUserService currentUser, ICacheService cacheService, ILogger<CreateBudgetHandler> logger)
         {
             _context = context;
             _currentUser = currentUser;
+            _cacheService = cacheService;
             _logger = logger;
         }
 
@@ -57,6 +60,9 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
 
             _context.Budgets.Add(budget);
             await _context.SaveChangesAsync(cancellationToken);
+
+            _cacheService.RemoveByPrefix(CacheKeys.UserPrefix(_currentUser.UserId));
+
             _logger.LogInformation("Budget created successfully. BudgetId: {BudgetId}", budget.Id);
             return budget.Id;
         }

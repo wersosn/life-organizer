@@ -1,7 +1,9 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Transactions.GetMonthlySummary;
+﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Application.Finances.Commands.Transactions.GetMonthlySummary;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
+using Moq;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Transactions
@@ -43,7 +45,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Transactions
             );
             await context.SaveChangesAsync();
 
-            var handler = new GetMonthlySummaryHandler(context, new FakeCurrentUserService(userId));
+            var handler = new GetMonthlySummaryHandler(context, new FakeCurrentUserService(userId), new FakeCacheService());
 
             var result = await handler.Handle(new GetMonthlySummaryQuery(2026, 7), CancellationToken.None);
 

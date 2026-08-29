@@ -1,10 +1,12 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
+﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
 using LifeOrganizer.Application.Finances.Commands.Budget.UpdateBudget;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using Xunit.Abstractions;
 
 namespace LifeOrganizer.Tests.Unit.Finances.Budget
@@ -42,7 +44,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Budget
             context.Budgets.Add(budget);
             await context.SaveChangesAsync();
 
-            var handler = new UpdateBudgetHandler(context, new FakeCurrentUserService(userId), NullLogger<UpdateBudgetHandler>.Instance);
+            var handler = new UpdateBudgetHandler(context, new FakeCurrentUserService(userId), new FakeCacheService(), NullLogger<UpdateBudgetHandler>.Instance);
             var command = new UpdateBudgetCommand(budget.Id, 750);
             await handler.Handle(command, CancellationToken.None);
 
