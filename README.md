@@ -207,7 +207,7 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Automation engine (chores → tasks)
 - [x] Notifications system
 - [x] Task history + configurable retention/cleanup
-- [ ] Background services for scheduled checks
+- [x] Background services for scheduled checks
 - [x] Data export (csv, json)
 - [ ] Unit & integration tests
 - [x] API documentation (Swagger/OpenAPI)
@@ -437,7 +437,7 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Silnik automatyzacji (obowiązki → zadania)
 - [x] System powiadomień
 - [x] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
-- [ ] Background services do zaplanowanych sprawdzeń
+- [x] Background services do zaplanowanych sprawdzeń
 - [x] Eksport danych (csv, json)
 - [ ] Testy jednostkowe i integracyjne
 - [x] Dokumentacja API (Swagger/OpenAPI)
