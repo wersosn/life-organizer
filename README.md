@@ -28,21 +28,27 @@ The key feature is an **automation system** that connects these modules together
 ## Tech stack
 ### Backend
 - **ASP.NET Core Web API**
-- **PostgreSQL** (hosted/online database)
+- **PostgreSQL** (database)
 - **Entity Framework Core** + **Fluent API** for entity configuration
-- **MediatR** (CQRS pattern)
+- **MediatR** (CQRS pattern) + **FluentValidation**
 - **JWT** authentication
 - **Background Services** (for automation checks, notifications, history cleanup)
+- **Expo Push Notifications** via **Firebase Cloud Messaging** (FCM)
+- **In-memory caching** with prefix-based invalidation
+- **Idempotency middleware** for safe request retries
+- **API versioning** (Asp.Versioning)
 - **Serilog** (logs)
-- **xUnit** (tests)
-> TBA
+- **xUnit** + **Moq** (tests)
 
 ### Mobile App
 - **React Native** with **Expo**
-- **SQLite** for local storage (offline mode)
+- **SQLite** for local storage (database for offline mode)
 - **Offline-first** sync approach
+- **Axios** with automatic token refresh and retry logic
+- **Expo Notifications** for push notifications
+- **Expo Secure Store** for token storage
+- **EAS Build** / **EAS Update** for builds and OTA updates
 - **Jest** (tests)
-> TBA
 
 ### DevOps
 - **Docker** / Docker Compose
@@ -241,7 +247,7 @@ Projekt jest aplikacją mobilną do zarządzania życiem codziennym, łącząca 
 
 ## Główna idea
 Po zalogowaniu użytkownik ma dostęp do czterech głównych zakładek:
-- **Lista zadań** - ogólna lista rzeczy do zrobienia
+- **Task List** - ogólna lista rzeczy do zrobienia
 - **Habit Tracker** - śledzenie powtarzalnych nawyków
 - **Finance Tracker** - śledzenie finansów osobistych/budżetu
 - **Chore Tracker** - obowiązki domowe z kategoriami i częstotliwością  
@@ -256,21 +262,27 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 ## Technologie
 ### Backend
 - **ASP.NET Core Web API**
-- **PostgreSQL** (baza danych online)
+- **PostgreSQL** (baza danych)
 - **Entity Framework Core** + **Fluent API** do konfiguracji encji
-- **MediatR** (wzorzec CQRS)
+- **MediatR** (wzorzec CQRS) + **FluentValidation**
 - **JWT** do uwierzytelniania
 - **Background Services** (do sprawdzania automatyzacji, powiadomień, czyszczenia historii)
+- **Expo Push Notifications** przez **Firebase Cloud Messaging** (FCM)
+- **Cache w pamięci** z unieważnianiem po prefiksie
+- **Middleware idempotencji** zapewniający bezpieczne ponawianie żądań
+- **Wersjonowanie API** (Asp.Versioning)
 - **Serilog** (logi)
-- **xUnit** (testy)
-> TBA
+- **xUnit** + **Moq**  (testy)
 
 ### Mobile App
 - **React Native** z **Expo**
-- **SQLite** do przechowywania danych lokalnych (tryb offline)
+- **SQLite** do przechowywania danych lokalnych (baza danych do trybu offline)
 - Podejście **offline-first** z synchronizacją
+- **Axios** z automatycznym odświeżaniem tokenów i logiką ponawiania żądań
+- **Expo Notifications** do obsługi powiadomień push
+- **Expo Secure Store** do przechowywania tokenów
+- **EAS Build** / **EAS Update** do budowania aplikacji i aktualizacji OTA
 - **Jest** (testy)
-> TBA
 
 ### DevOps
 - **Docker** / Docker Compose
@@ -430,9 +442,9 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Rejestracja i logowanie użytkownika (JWT)
 - [x] Potwierdzanie adresu e-mail oraz reset hasła (JWT)
 - [x] Moduł listy zadań
-- [x] Moduł Habit Tracker
-- [x] Moduł Finance Tracker
-- [x] Moduł Chore Tracker
+- [x] Moduł zarządzania nawykami
+- [x] Moduł zarządzania finansami
+- [x] Moduł zarządzania obowiązkami domowymi
 - [x] Silnik automatyzacji (nawyki → zadania)
 - [x] Silnik automatyzacji (obowiązki → zadania)
 - [x] System powiadomień
@@ -446,9 +458,9 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Ekrany logowania/rejestracji
 - [x] Nawigacja i struktura zakładek (4 moduły)
 - [x] Ekran listy zadań
-- [x] Ekran Habit Tracker
-- [x] Ekran Finance Tracker
-- [x] Ekran Chore Tracker
+- [x] Ekran zarządzania nawykami
+- [x] Ekran zarządzania finansami
+- [x] Ekran zarządzania obowiązkami domowymi
 - [x] Automatyzacja
 - [ ] Tryb offline z SQLite
 - [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
