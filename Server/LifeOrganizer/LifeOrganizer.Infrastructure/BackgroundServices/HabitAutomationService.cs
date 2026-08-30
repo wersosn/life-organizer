@@ -49,7 +49,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-            var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
+            //var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
             var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
             var habits = await context.Habits
@@ -155,5 +155,8 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             _logger.LogInformation("Habit automation created {count} new tasks from missed habits.", tasksCreated);
         }*/
         }
+
+        // For tests:
+        public Task RunCheckOnceAsync(CancellationToken cancellationToken = default) => CheckHabitsAsync(cancellationToken);
     }
 }

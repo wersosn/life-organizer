@@ -50,7 +50,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-            var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
+            //var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
             var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
             var chores = await context.Chores
@@ -130,5 +130,8 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             _logger.LogInformation("Chore automation created {count} new tasks from overdue chores.", tasksCreated);
         }*/
         }
+
+        // For tests:
+        public Task RunCheckOnceAsync(CancellationToken cancellationToken = default) => CheckChoresAsync(cancellationToken);
     }
 }

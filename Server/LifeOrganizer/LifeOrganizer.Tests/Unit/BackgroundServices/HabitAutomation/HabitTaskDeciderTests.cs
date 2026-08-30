@@ -3,7 +3,7 @@ using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
 using Xunit.Abstractions;
 
-namespace LifeOrganizer.Tests.Unit.BackgroundServices
+namespace LifeOrganizer.Tests.Unit.BackgroundServices.HabitAutomation
 {
     public class HabitTaskDeciderTests
     {
@@ -16,10 +16,10 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void ShouldCreateTask_ShouldReturnFalse_WhenTaskAlreadyExistsToday()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily, 
-                CompletionDeadline = null 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily,
+                CompletionDeadline = null
             };
             var today = new DateOnly(2026, 8, 10);
             var now = new DateTime(2026, 8, 10, 23, 59, 59);
@@ -34,10 +34,10 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void ShouldCreateTask_ShouldReturnTrue_WhenMissedAndNoExistingTask()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily, 
-                CompletionDeadline = new TimeSpan(9, 0, 0) 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily,
+                CompletionDeadline = new TimeSpan(9, 0, 0)
             };
             var today = new DateOnly(2026, 8, 10);
             var now = new DateTime(2026, 8, 10, 10, 0, 0);
@@ -52,10 +52,10 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void ShouldCreateTask_ShouldReturnFalse_WhenNotYetMissed()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily, 
-                CompletionDeadline = new TimeSpan(20, 0, 0) 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily,
+                CompletionDeadline = new TimeSpan(20, 0, 0)
             };
             var today = new DateOnly(2026, 8, 10);
             var now = new DateTime(2026, 8, 10, 10, 0, 0);

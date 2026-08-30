@@ -3,7 +3,7 @@ using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
 using Xunit.Abstractions;
 
-namespace LifeOrganizer.Tests.Unit.BackgroundServices
+namespace LifeOrganizer.Tests.Unit.BackgroundServices.HabitAutomation
 {
     public class HabitScheduleCalculatorTests
     {
@@ -32,9 +32,9 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void IsMissed_ShouldReturnFalse_WhenAlreadyCompleted()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily
             };
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -47,10 +47,10 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void IsMissed_ShouldReturnFalse_WhenDeadlineHasNotPassedYet()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily, 
-                CompletionDeadline = new TimeSpan(20, 0, 0) 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily,
+                CompletionDeadline = new TimeSpan(20, 0, 0)
             };
             var today = new DateOnly(2026, 8, 10);
             var now = new DateTime(2026, 8, 10, 15, 0, 0); // 15:00, deadline at 20:00
@@ -64,10 +64,10 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void IsMissed_ShouldReturnTrue_WhenDeadlineHasPassedAndNotCompleted()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily, 
-                CompletionDeadline = new TimeSpan(20, 0, 0) 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily,
+                CompletionDeadline = new TimeSpan(20, 0, 0)
             };
             var today = new DateOnly(2026, 8, 10);
             var now = new DateTime(2026, 8, 10, 21, 0, 0); // 21:00, after deadline
@@ -81,10 +81,10 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void IsMissed_ShouldReturnFalse_BeforeEndOfDay_WhenNoDeadlineSet()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily, 
-                CompletionDeadline = null 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily,
+                CompletionDeadline = null
             };
             var today = new DateOnly(2026, 8, 10);
             var now = new DateTime(2026, 8, 10, 12, 0, 0); // afternoon
@@ -98,10 +98,10 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void IsMissed_ShouldReturnTrue_WhenNoCompletionExistsAtAll()
         {
-            var habit = new Habit 
-            { 
-                Frequency = HabitFrequency.Daily, 
-                CompletionDeadline = new TimeSpan(9, 0, 0) 
+            var habit = new Habit
+            {
+                Frequency = HabitFrequency.Daily,
+                CompletionDeadline = new TimeSpan(9, 0, 0)
             };
             var today = new DateOnly(2026, 8, 10);
             var now = new DateTime(2026, 8, 10, 10, 0, 0);

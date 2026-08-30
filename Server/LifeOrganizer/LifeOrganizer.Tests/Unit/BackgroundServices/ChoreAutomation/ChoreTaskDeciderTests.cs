@@ -3,7 +3,7 @@ using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
 using Xunit.Abstractions;
 
-namespace LifeOrganizer.Tests.Unit.BackgroundServices
+namespace LifeOrganizer.Tests.Unit.BackgroundServices.ChoreAutomation
 {
     public class ChoreTaskDeciderTests
     {
@@ -16,11 +16,11 @@ namespace LifeOrganizer.Tests.Unit.BackgroundServices
         [Fact]
         public void ShouldCreateTask_ShouldReturnFalse_WhenIncompleteTaskAlreadyExists()
         {
-            var chore = new Chore 
-            { 
-                FrequencyUnit = ChoreFrequency.Days, 
-                FrequencyValue = 1, 
-                LastCompletedAt = null 
+            var chore = new Chore
+            {
+                FrequencyUnit = ChoreFrequency.Days,
+                FrequencyValue = 1,
+                LastCompletedAt = null
             };
             var now = DateTime.UtcNow;
 
