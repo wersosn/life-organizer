@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using LifeOrganizer.API.Filters;
 using LifeOrganizer.API.Middlewares;
 using LifeOrganizer.Application;
@@ -61,6 +62,7 @@ builder.Services
         };
     });
 
+// Rate limiting for login:
 builder.Services.AddRateLimiter(options =>
 {
     options.AddPolicy("login", context =>
@@ -96,6 +98,24 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 builder.Host.UseSerilog();
 builder.Services.AddScoped<LoggingFilter>();
+
+// API versioning:
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("X-Api-Version")
+    );
+})
+.AddMvc()
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 var app = builder.Build();
 
