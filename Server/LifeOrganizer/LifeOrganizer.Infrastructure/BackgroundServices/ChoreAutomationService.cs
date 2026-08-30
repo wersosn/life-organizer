@@ -1,9 +1,12 @@
-﻿using LifeOrganizer.Application.Common.Interfaces;
+﻿using LifeOrganizer.Application.Common.Events;
+using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
 using LifeOrganizer.Infrastructure.Notifications;
+using LifeOrganizer.Infrastructure.Services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -48,6 +51,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
             var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
+            var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
             var chores = await context.Chores
                 .Include(c => c.User)
@@ -61,10 +65,16 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             }
 
             var now = DateTime.UtcNow;
-            var tasksCreated = 0;
+            //var tasksCreated = 0;
 
+            var eventsPublished = 0;
             foreach (var chore in chores)
             {
+                if (!ChoreOverdueCalculator.IsOverdue(chore.LastCompletedAt, chore.FrequencyUnit, chore.FrequencyValue, now))
+                {
+                    continue;
+                }
+
                 // do not create a second task on the same day for the same chore
                 var taskAlreadyExists = await context.TodoItems.AnyAsync(t =>
                     t.Source == TaskSource.ChoreAutomation &&
@@ -72,41 +82,53 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                     !t.IsCompleted,
                     cancellationToken);
 
-                if (!ChoreTaskDecider.ShouldCreateTask(chore, now, taskAlreadyExists))
-                {
+                if (taskAlreadyExists)
                     continue;
-                }
 
-                context.TodoItems.Add(new TodoItem
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = chore.UserId,
-                    Title = chore.Name,
-                    Source = TaskSource.ChoreAutomation,
-                    SourceId = chore.Id,
-                    CreatedAt = now,
-                    IsCompleted = false,
-                });
-                tasksCreated++;
-
-                if (!string.IsNullOrEmpty(chore.User.PushToken) && chore.User.PushNotificationsEnabled)
-                {
-                    try
-                    {
-                        await pushSender.SendAsync(chore.User.PushToken, "Habit overdue", $"You missed: {chore.Name}", cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning(ex, "Failed to send push notification for chore {ChoreId}",chore.Id);
-                    }
-                }
+                await publisher.Publish(new ChoreOverdueEvent(chore.Id, chore.UserId, chore.Name), cancellationToken);
+                eventsPublished++;
             }
 
-            if (tasksCreated > 0)
+            if (eventsPublished > 0)
             {
-                await context.SaveChangesAsync(cancellationToken);
-                _logger.LogInformation("Chore automation created {count} new tasks from overdue chores.", tasksCreated);
+                _logger.LogInformation("Chore automation published {count} ChoreOverdueEvent(s).", eventsPublished);
             }
+
+            /*if (!ChoreTaskDecider.ShouldCreateTask(chore, now, taskAlreadyExists))
+            {
+                continue;
+            }
+
+            context.TodoItems.Add(new TodoItem
+            {
+                Id = Guid.NewGuid(),
+                UserId = chore.UserId,
+                Title = chore.Name,
+                Source = TaskSource.ChoreAutomation,
+                SourceId = chore.Id,
+                CreatedAt = now,
+                IsCompleted = false,
+            });
+            tasksCreated++;
+
+            if (!string.IsNullOrEmpty(chore.User.PushToken) && chore.User.PushNotificationsEnabled)
+            {
+                try
+                {
+                    await pushSender.SendAsync(chore.User.PushToken, "Habit overdue", $"You missed: {chore.Name}", cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to send push notification for chore {ChoreId}",chore.Id);
+                }
+            }
+        }
+
+        if (tasksCreated > 0)
+        {
+            await context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Chore automation created {count} new tasks from overdue chores.", tasksCreated);
+        }*/
         }
     }
 }

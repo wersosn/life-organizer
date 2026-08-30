@@ -1,9 +1,11 @@
-﻿using LifeOrganizer.Application.Common.Interfaces;
+﻿using LifeOrganizer.Application.Common.Events;
+using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
 using LifeOrganizer.Infrastructure.Notifications;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -48,6 +50,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
             var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
+            var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
             var habits = await context.Habits
                 .Include(h => h.User)
@@ -68,10 +71,17 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                 .Where(c => habitIds.Contains(c.HabitId) && c.Date == today)
                 .ToDictionaryAsync(c => c.HabitId, c => (HabitCompletionStatus?)c.Status, cancellationToken);
 
-            var tasksCreated = 0;
+            //var tasksCreated = 0;
+
+            var eventsPublished = 0;
             foreach (var habit in habits)
             {
                 todaysCompletions.TryGetValue(habit.Id, out var existingStatus);
+
+                if (!HabitScheduleCalculator.IsMissed(habit, today, now, existingStatus))
+                {
+                    continue;
+                }
 
                 // if habit has not been marked for today, mark it as Missed
                 if (!todaysCompletions.ContainsKey(habit.Id))
@@ -93,41 +103,57 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                     t.CreatedAt.Date == now.Date,
                     cancellationToken);
 
-                if (!HabitTaskDecider.ShouldCreateTask(habit, today, now, existingStatus, taskAlreadyExists))
+                if (taskAlreadyExists)
                 {
                     continue;
                 }
 
-                context.TodoItems.Add(new TodoItem
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = habit.UserId,
-                    Title = habit.Name,
-                    Source = TaskSource.HabitAutomation,
-                    SourceId = habit.Id,
-                    CreatedAt = now,
-                    IsCompleted = false,
-                });
-                tasksCreated++;
+                await publisher.Publish(new HabitMissedEvent(habit.Id, habit.UserId, habit.Name), cancellationToken);
+                eventsPublished++;
+            }
 
-                if (!string.IsNullOrEmpty(habit.User.PushToken) && habit.User.PushNotificationsEnabled)
+            await context.SaveChangesAsync(cancellationToken);
+
+            if (eventsPublished > 0)
+            {
+                _logger.LogInformation("Habit automation published {count} HabitMissedEvent(s).", eventsPublished);
+            }
+
+            /*if (!HabitTaskDecider.ShouldCreateTask(habit, today, now, existingStatus, taskAlreadyExists))
+            {
+                continue;
+            }
+
+            context.TodoItems.Add(new TodoItem
+            {
+                Id = Guid.NewGuid(),
+                UserId = habit.UserId,
+                Title = habit.Name,
+                Source = TaskSource.HabitAutomation,
+                SourceId = habit.Id,
+                CreatedAt = now,
+                IsCompleted = false,
+            });
+            tasksCreated++;
+
+            if (!string.IsNullOrEmpty(habit.User.PushToken) && habit.User.PushNotificationsEnabled)
+            {
+                try
                 {
-                    try
-                    {
-                        await pushSender.SendAsync(habit.User.PushToken, "Habit missed", $"You missed: {habit.Name}", cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning(ex, "Failed to send push notification for habit {HabitId}", habit.Id);
-                    }
+                    await pushSender.SendAsync(habit.User.PushToken, "Habit missed", $"You missed: {habit.Name}", cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to send push notification for habit {HabitId}", habit.Id);
                 }
             }
+        }
 
-            if (tasksCreated > 0)
-            {
-                await context.SaveChangesAsync(cancellationToken);
-                _logger.LogInformation("Habit automation created {count} new tasks from missed habits.", tasksCreated);
-            }
+        if (tasksCreated > 0)
+        {
+            await context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation("Habit automation created {count} new tasks from missed habits.", tasksCreated);
+        }*/
         }
     }
 }
