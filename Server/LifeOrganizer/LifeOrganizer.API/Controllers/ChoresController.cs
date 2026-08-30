@@ -1,4 +1,4 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleChore;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleteChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.CreateChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.GetAllChores;

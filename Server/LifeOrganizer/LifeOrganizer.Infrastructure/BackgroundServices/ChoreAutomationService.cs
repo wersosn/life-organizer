@@ -83,7 +83,9 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
                     cancellationToken);
 
                 if (taskAlreadyExists)
+                {
                     continue;
+                }
 
                 await publisher.Publish(new ChoreOverdueEvent(chore.Id, chore.UserId, chore.Name), cancellationToken);
                 eventsPublished++;

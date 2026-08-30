@@ -1,6 +1,6 @@
 ﻿using LifeOrganizer.Domain.Enums;
 
-namespace LifeOrganizer.Infrastructure.Services
+namespace LifeOrganizer.Domain.Services
 {
     public static class ChoreOverdueCalculator
     {

@@ -1,5 +1,4 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleChore;
-using LifeOrganizer.Application.Chores.Commands.ChoreCategories.DeleteChoreCategory;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleteChore;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;

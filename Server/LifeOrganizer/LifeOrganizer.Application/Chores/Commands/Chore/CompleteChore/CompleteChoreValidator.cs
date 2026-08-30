@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleChore
+namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleteChore
 {
     public class CompleteChoreValidator : AbstractValidator<CompleteChoreCommand>
     {

@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleChore
+namespace LifeOrganizer.Application.Chores.Commands.Chore.CompleteChore
 {
     public class CompleteChoreHandler : IRequestHandler<CompleteChoreCommand, Guid>
     {

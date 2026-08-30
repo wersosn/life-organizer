@@ -1,5 +1,5 @@
 ﻿using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Infrastructure.Services;
+using LifeOrganizer.Domain.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

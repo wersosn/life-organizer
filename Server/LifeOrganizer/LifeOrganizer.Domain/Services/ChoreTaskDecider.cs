@@ -1,5 +1,4 @@
 ﻿using LifeOrganizer.Domain.Entities;
-using LifeOrganizer.Infrastructure.Services;
 
 namespace LifeOrganizer.Domain.Services
 {

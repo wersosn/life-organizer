@@ -1,6 +1,6 @@
 ﻿using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Infrastructure.Services;
+using LifeOrganizer.Domain.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

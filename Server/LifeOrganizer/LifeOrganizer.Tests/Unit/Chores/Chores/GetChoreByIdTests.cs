@@ -1,5 +1,4 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore;
-using LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById;
+﻿using LifeOrganizer.Application.Chores.Commands.Chore.GetChoreById;
 using LifeOrganizer.Application.Common.Exceptions;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
