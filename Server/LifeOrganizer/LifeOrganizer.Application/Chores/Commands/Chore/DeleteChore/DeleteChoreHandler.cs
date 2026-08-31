@@ -31,10 +31,6 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore
                 throw new NotFoundException(nameof(Chore), request.Id);
             }
 
-            // soft delete for later:
-            //chore.IsActive = false;
-            //chore.UpdatedAt = DateTime.UtcNow;
-
             _context.Chores.Remove(chore);
             await _context.SaveChangesAsync(cancellationToken);
             _logger.LogInformation("Chore deleted successfully. ChoreId: {ChoreId}", chore.Id);

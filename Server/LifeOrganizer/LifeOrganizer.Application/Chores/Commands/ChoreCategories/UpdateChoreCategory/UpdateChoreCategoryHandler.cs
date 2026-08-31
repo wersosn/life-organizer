@@ -34,6 +34,7 @@ namespace LifeOrganizer.Application.Chores.Commands.ChoreCategories.UpdateChoreC
 
             category.Name = request.Name;
             category.Icon = request.Icon;
+            category.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);
             _logger.LogInformation("Chore category updated successfully. CategoryId: {CategoryId}", category.Id);
         }

@@ -4,7 +4,6 @@ using LifeOrganizer.Application.Common.Settings;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
-using LifeOrganizer.Infrastructure.Notifications;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -117,43 +116,7 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             if (eventsPublished > 0)
             {
                 _logger.LogInformation("Habit automation published {count} HabitMissedEvent(s).", eventsPublished);
-            }
-
-            /*if (!HabitTaskDecider.ShouldCreateTask(habit, today, now, existingStatus, taskAlreadyExists))
-            {
-                continue;
-            }
-
-            context.TodoItems.Add(new TodoItem
-            {
-                Id = Guid.NewGuid(),
-                UserId = habit.UserId,
-                Title = habit.Name,
-                Source = TaskSource.HabitAutomation,
-                SourceId = habit.Id,
-                CreatedAt = now,
-                IsCompleted = false,
-            });
-            tasksCreated++;
-
-            if (!string.IsNullOrEmpty(habit.User.PushToken) && habit.User.PushNotificationsEnabled)
-            {
-                try
-                {
-                    await pushSender.SendAsync(habit.User.PushToken, "Habit missed", $"You missed: {habit.Name}", cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "Failed to send push notification for habit {HabitId}", habit.Id);
-                }
-            }
-        }
-
-        if (tasksCreated > 0)
-        {
-            await context.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation("Habit automation created {count} new tasks from missed habits.", tasksCreated);
-        }*/
+            }         
         }
 
         // For tests:

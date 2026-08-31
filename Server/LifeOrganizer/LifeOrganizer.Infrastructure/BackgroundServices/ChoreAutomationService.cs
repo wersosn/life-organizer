@@ -1,11 +1,8 @@
 ﻿using LifeOrganizer.Application.Common.Events;
 using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Common.Settings;
-using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Domain.Services;
-using LifeOrganizer.Infrastructure.Notifications;
-using LifeOrganizer.Infrastructure.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -95,42 +92,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             {
                 _logger.LogInformation("Chore automation published {count} ChoreOverdueEvent(s).", eventsPublished);
             }
-
-            /*if (!ChoreTaskDecider.ShouldCreateTask(chore, now, taskAlreadyExists))
-            {
-                continue;
-            }
-
-            context.TodoItems.Add(new TodoItem
-            {
-                Id = Guid.NewGuid(),
-                UserId = chore.UserId,
-                Title = chore.Name,
-                Source = TaskSource.ChoreAutomation,
-                SourceId = chore.Id,
-                CreatedAt = now,
-                IsCompleted = false,
-            });
-            tasksCreated++;
-
-            if (!string.IsNullOrEmpty(chore.User.PushToken) && chore.User.PushNotificationsEnabled)
-            {
-                try
-                {
-                    await pushSender.SendAsync(chore.User.PushToken, "Habit overdue", $"You missed: {chore.Name}", cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "Failed to send push notification for chore {ChoreId}",chore.Id);
-                }
-            }
-        }
-
-        if (tasksCreated > 0)
-        {
-            await context.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation("Chore automation created {count} new tasks from overdue chores.", tasksCreated);
-        }*/
         }
 
         // For tests:
