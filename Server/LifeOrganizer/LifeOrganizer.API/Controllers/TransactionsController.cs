@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransaction;
 using LifeOrganizer.Application.Finances.Commands.Transactions.DeleteTransaction;
 using LifeOrganizer.Application.Finances.Commands.Transactions.ExportTransaction;
 using LifeOrganizer.Application.Finances.Commands.Transactions.GetAllTransactions;
@@ -12,7 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class TransactionsController : ControllerBase
     {

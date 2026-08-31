@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Habits.Commands.CompleteHabit;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Habits.Commands.CompleteHabit;
 using LifeOrganizer.Application.Habits.Commands.CreateHabit;
 using LifeOrganizer.Application.Habits.Commands.DeleteHabit;
 using LifeOrganizer.Application.Habits.Commands.GetAllHabits;
@@ -12,7 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class HabitsController : ControllerBase
     {

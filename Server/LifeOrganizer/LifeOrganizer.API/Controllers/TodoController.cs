@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Todo.Commands.CompleteTodo;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Todo.Commands.CompleteTodo;
 using LifeOrganizer.Application.Todo.Commands.CreateTodo;
 using LifeOrganizer.Application.Todo.Commands.DeleteTodo;
 using LifeOrganizer.Application.Todo.Commands.GetAllTodo;
@@ -11,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class TodoController : ControllerBase
     {

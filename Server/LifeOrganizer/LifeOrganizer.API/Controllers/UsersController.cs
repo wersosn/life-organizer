@@ -1,7 +1,5 @@
-﻿using LifeOrganizer.Application.Users.Commands.ConfirmEmail;
+﻿using Asp.Versioning;
 using LifeOrganizer.Application.Users.Commands.CurrentUser;
-using LifeOrganizer.Application.Users.Commands.ForgotPassword;
-using LifeOrganizer.Application.Users.Commands.ResetPassword;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +8,8 @@ using System.Security.Claims;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class UsersController : ControllerBase
     {

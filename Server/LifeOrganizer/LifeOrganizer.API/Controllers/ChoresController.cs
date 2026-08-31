@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Chores.Commands.Chore.CompleteChore;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Chores.Commands.Chore.CompleteChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.CreateChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.DeleteChore;
 using LifeOrganizer.Application.Chores.Commands.Chore.GetAllChores;
@@ -12,7 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class ChoresController : ControllerBase
     {

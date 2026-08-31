@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
 using LifeOrganizer.Application.Finances.Commands.Budget.DeleteBudget;
 using LifeOrganizer.Application.Finances.Commands.Budget.GetAllBudgets;
 using LifeOrganizer.Application.Finances.Commands.Budget.GetBudgetById;
@@ -11,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class BudgetsController : ControllerBase
     {

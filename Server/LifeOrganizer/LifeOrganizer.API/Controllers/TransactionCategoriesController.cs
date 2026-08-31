@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
 using LifeOrganizer.Application.Finances.Commands.TransactionCategories.DeleteTransactionCategory;
 using LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetAllTransactionCategories;
 using LifeOrganizer.Application.Finances.Commands.TransactionCategories.GetTransactionCategoryById;
@@ -10,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class TransactionCategoriesController : ControllerBase
     {

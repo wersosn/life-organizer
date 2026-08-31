@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Chores.Commands.ChoreCategories.CreateChoreCategory;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Chores.Commands.ChoreCategories.CreateChoreCategory;
 using LifeOrganizer.Application.Chores.Commands.ChoreCategories.DeleteChoreCategory;
 using LifeOrganizer.Application.Chores.Commands.ChoreCategories.GetAllChoreCategories;
 using LifeOrganizer.Application.Chores.Commands.ChoreCategories.GetChoreCategoryById;
@@ -10,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class ChoreCategoriesController : ControllerBase
     {

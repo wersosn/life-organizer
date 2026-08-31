@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Users.Commands.ConfirmEmail;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Users.Commands.ConfirmEmail;
 using LifeOrganizer.Application.Users.Commands.ForgotPassword;
 using LifeOrganizer.Application.Users.Commands.LoginUser;
 using LifeOrganizer.Application.Users.Commands.LogoutUser;
@@ -12,7 +13,8 @@ using Microsoft.AspNetCore.RateLimiting;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator mediator;

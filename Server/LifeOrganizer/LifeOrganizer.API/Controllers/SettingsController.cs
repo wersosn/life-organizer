@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Automation.GetAutomationSettings;
+﻿using Asp.Versioning;
+using LifeOrganizer.Application.Automation.GetAutomationSettings;
 using LifeOrganizer.Application.Automation.UpdateAutomationSettings;
 using LifeOrganizer.Application.Export;
 using LifeOrganizer.Application.Notifications.Commands.GetNotificationSettings;
@@ -13,7 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LifeOrganizer.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
     public class SettingsController : ControllerBase
     {
