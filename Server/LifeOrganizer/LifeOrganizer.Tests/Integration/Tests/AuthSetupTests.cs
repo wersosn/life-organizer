@@ -12,7 +12,7 @@ namespace LifeOrganizer.Tests.Integration.Tests
         [Fact]
         public async Task AuthenticatedEndpoint_ShouldReturnSuccessOrNotFound_NotUnauthorized()
         {
-            var response = await Client.GetAsync("/api/habits");
+            var response = await Client.GetAsync("/api/v1/habits");
 
             Assert.NotEqual(HttpStatusCode.Unauthorized, response.StatusCode);
         }
@@ -28,7 +28,7 @@ namespace LifeOrganizer.Tests.Integration.Tests
                 CompletionDeadline = (string?)null
             };
 
-            var response = await Client.PostAsJsonAsync("/api/habits", createCommand);
+            var response = await Client.PostAsJsonAsync("/api/v1/habits", createCommand);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

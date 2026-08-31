@@ -18,21 +18,21 @@ namespace LifeOrganizer.Tests.Integration.Tests
             // Create
             var createCommand = new CreateHabitCommand("Meditation", HabitFrequency.Daily, new List<DayOfWeek>(), null);
 
-            var createResponse = await Client.PostAsJsonAsync("/api/habits", createCommand);
+            var createResponse = await Client.PostAsJsonAsync("/api/v1/habits", createCommand);
             createResponse.EnsureSuccessStatusCode();
             var habitId = await createResponse.Content.ReadFromJsonAsync<Guid>();
 
-            var listResponse = await Client.GetAsync("/api/habits");
+            var listResponse = await Client.GetAsync("/api/v1/habits");
             listResponse.EnsureSuccessStatusCode();
             var habits = await listResponse.Content.ReadFromJsonAsync<List<HabitDto>>();
 
             var created = Assert.Single(habits!, h => h.Id == habitId);
             Assert.False(created.IsCompletedToday);
 
-            var completeResponse = await Client.PatchAsync($"/api/habits/{habitId}/complete", null);
+            var completeResponse = await Client.PatchAsync($"/api/v1/habits/{habitId}/complete", null);
             completeResponse.EnsureSuccessStatusCode();
 
-            var detailsResponse = await Client.GetAsync($"/api/habits/{habitId}");
+            var detailsResponse = await Client.GetAsync($"/api/v1/habits/{habitId}");
             detailsResponse.EnsureSuccessStatusCode();
             var details = await detailsResponse.Content.ReadFromJsonAsync<HabitDetailsDto>();
 

@@ -20,10 +20,10 @@ namespace LifeOrganizer.Tests.Integration.Tests
 
             Client.DefaultRequestHeaders.Add("Idempotency-Key", idempotencyKey);
 
-            var firstResponse = await Client.PostAsJsonAsync("/api/transactioncategories", command);
+            var firstResponse = await Client.PostAsJsonAsync("/api/v1/transactioncategories", command);
             var firstId = await firstResponse.Content.ReadFromJsonAsync<Guid>();
 
-            var secondResponse = await Client.PostAsJsonAsync("/api/transactioncategories", command);
+            var secondResponse = await Client.PostAsJsonAsync("/api/v1/transactioncategories", command);
             var secondId = await secondResponse.Content.ReadFromJsonAsync<Guid>();
             Assert.Equal(firstId, secondId);
 
@@ -42,11 +42,11 @@ namespace LifeOrganizer.Tests.Integration.Tests
             var command = new { Name = "Another Category", Type = 0 };
 
             Client.DefaultRequestHeaders.Add("Idempotency-Key", Guid.NewGuid().ToString());
-            var firstResponse = await Client.PostAsJsonAsync("/api/transactioncategories", command);
+            var firstResponse = await Client.PostAsJsonAsync("/api/v1/transactioncategories", command);
             Client.DefaultRequestHeaders.Remove("Idempotency-Key");
 
             Client.DefaultRequestHeaders.Add("Idempotency-Key", Guid.NewGuid().ToString());
-            var secondResponse = await Client.PostAsJsonAsync("/api/transactioncategories", command);
+            var secondResponse = await Client.PostAsJsonAsync("/api/v1/transactioncategories", command);
             Client.DefaultRequestHeaders.Remove("Idempotency-Key");
 
             var firstId = await firstResponse.Content.ReadFromJsonAsync<Guid>();
@@ -60,8 +60,8 @@ namespace LifeOrganizer.Tests.Integration.Tests
         {
             var command = new { Name = "No Key Category", Type = 0 };
 
-            var firstResponse = await Client.PostAsJsonAsync("/api/transactioncategories", command);
-            var secondResponse = await Client.PostAsJsonAsync("/api/transactioncategories", command);
+            var firstResponse = await Client.PostAsJsonAsync("/api/v1/transactioncategories", command);
+            var secondResponse = await Client.PostAsJsonAsync("/api/v1/transactioncategories", command);
 
             var firstId = await firstResponse.Content.ReadFromJsonAsync<Guid>();
             var secondId = await secondResponse.Content.ReadFromJsonAsync<Guid>();

@@ -37,9 +37,9 @@ namespace LifeOrganizer.Tests.Integration.Tests
 
             for (var i = 0; i < 5; i++)
             {
-                var response = await Client.PostAsJsonAsync("/api/auth/login", payload);
+                var response = await Client.PostAsJsonAsync("/api/v1/auth/login", payload);
             }
-            var sixthResponse = await Client.PostAsJsonAsync("/api/auth/login", payload);
+            var sixthResponse = await Client.PostAsJsonAsync("/api/v1/auth/login", payload);
 
             Assert.Equal(HttpStatusCode.TooManyRequests, sixthResponse.StatusCode);
         }
