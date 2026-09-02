@@ -22,7 +22,7 @@ Notifications.setNotificationHandler({
     }),
 });
 
-initDatabase();
+//initDatabase();
 
 function AppContent() {
     const colorScheme = useColorScheme();
@@ -50,7 +50,7 @@ function AppContent() {
         }
     }, [token]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const subscription = AppState.addEventListener("change", nextState => {
             if (nextState === "active" && token) {
                 processSyncQueue().catch(e => console.log("[Sync] Foreground sync failed", e));
@@ -58,7 +58,7 @@ function AppContent() {
         });
 
         return () => subscription.remove();
-    }, [token]);
+    }, [token]);*/
 
     return (
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

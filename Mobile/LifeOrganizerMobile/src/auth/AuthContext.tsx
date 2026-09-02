@@ -31,14 +31,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function fetchAndSetUser() {
         const response = await apiClient.get("/auth/me");
         setUser(response.data);
-        saveUserProfileLocally({ id: response.data.id, email: response.data.email, name: response.data.name });
+        //saveUserProfileLocally({ id: response.data.id, email: response.data.email, name: response.data.name });
     }
 
     async function resetSession() {
         setToken(null);
         setUser(null);
         await removeTokens();
-        clearUserProfileLocally();
+        //clearUserProfileLocally();
     }
 
     useEffect(() => {
@@ -112,65 +112,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             {children}
         </AuthContext.Provider>
     );
-
-
-    /*useEffect(() => {
-        loadToken();
-    }, []);
-
-    async function loadToken() {
-        const savedToken = await getAccessToken();
-        if (!savedToken) {
-            setLoading(false);
-            return;
-        }
-
-        setToken(savedToken);
-        
-        try {
-            const response = await apiClient.get("/auth/me");
-            setUser(response.data);
-            //await saveUserProfile(response.data);
-        } catch (error: any) {
-            if (error?.response?.status === 401) {
-                await removeTokens();
-                //await clearUserProfile();
-                setToken(null);
-                setUser(null);
-            } else {
-                //const cachedUser = await getCachedUserProfile();
-                //setUser(cachedUser);
-            }
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    async function login(accessToken: string, refreshToken: string) {
-        await saveTokens(accessToken, refreshToken);
-        setToken(accessToken);
-        try {
-            const response = await apiClient.get("/auth/me");
-            setUser(response.data);
-            //await saveUserProfile(response.data);
-        } catch {
-            //const cachedUser = await getCachedUserProfile();
-            //setUser(cachedUser);
-        }
-    }
-
-    async function logout() {
-        await removeTokens();
-        //await clearUserProfile();
-        setToken(null);
-        setUser(null);
-    }
-
-    return (
-        <AuthContext.Provider value={{ token, user, loading, login, logout, }}>
-            {children}
-        </AuthContext.Provider>
-    );*/
 }
 
 export function useAuth() {
