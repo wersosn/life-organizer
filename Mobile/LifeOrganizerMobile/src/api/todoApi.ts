@@ -41,7 +41,7 @@ export async function getTodos() {
     return response.data;
 }
 
-export async function createTodo(userId: string, title: string, description?: string) {
+export async function createTodo(title: string, description?: string) {
     const id = Crypto.randomUUID();
     /*const now = new Date().toISOString();
     const payload = { id, title, description: description ?? null };
