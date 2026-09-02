@@ -7,8 +7,10 @@ import { AuthProvider, useAuth } from "@/auth/AuthContext";
 import { useEffect } from 'react';
 import { registerForPushNotificationsAsync } from '@/utils/pushNotifications';
 import { registerPushToken } from '@/api/notificationsApi';
-import { Alert } from 'react-native';
+import { Alert, AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import { initDatabase } from '@/database/database';
+import { processSyncQueue } from '@/services/syncQueue';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -19,6 +21,8 @@ Notifications.setNotificationHandler({
         shouldShowList: true,
     }),
 });
+
+initDatabase();
 
 function AppContent() {
     const colorScheme = useColorScheme();
@@ -44,6 +48,16 @@ function AppContent() {
                     Alert.alert("Error getting push token", e?.message ?? String(e));
                 });
         }
+    }, [token]);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener("change", nextState => {
+            if (nextState === "active" && token) {
+                processSyncQueue().catch(e => console.log("[Sync] Foreground sync failed", e));
+            }
+        });
+
+        return () => subscription.remove();
     }, [token]);
 
     return (
