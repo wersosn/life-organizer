@@ -1,5 +1,6 @@
 import { Budget, BudgetUsage } from "@/types/budget";
 import { apiClient } from "./apiClient";
+import * as Crypto from "expo-crypto";
 
 export async function getBudgets() {
     const response = await apiClient.get<Budget[]>("/budgets");
@@ -14,7 +15,8 @@ export async function getBudgetsWithUsage(year: number, month: number) {
 }
 
 export async function createBudget(categoryId: string, monthlyLimit: number) {
-    const response = await apiClient.post("/budgets", { categoryId, monthlyLimit });
+    const id = Crypto.randomUUID();
+    const response = await apiClient.post("/budgets", { id, categoryId, monthlyLimit });
     return response.data;
 }
 

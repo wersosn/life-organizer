@@ -1,5 +1,6 @@
 import { Chore, ChoreDetails, ChoreFrequency } from "@/types/chore";
 import { apiClient } from "./apiClient";
+import * as Crypto from "expo-crypto";
 
 export async function getChores() {
     const response = await apiClient.get<Chore[]>("/chores");
@@ -12,7 +13,9 @@ export async function getChoreById(id: string) {
 }
 
 export async function createChore(name: string, categoryId: string, frequencyUnit: ChoreFrequency, frequencyValue: number, isAutomationEnabled: boolean, description?: string) {
+    const id = Crypto.randomUUID();
     const response = await apiClient.post("/chores", {
+        id,
         name,
         description,
         categoryId,

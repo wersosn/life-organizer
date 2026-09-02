@@ -1,5 +1,6 @@
 import { MonthlySummary, Transaction, TransactionType } from "@/types/transaction";
 import { apiClient } from "./apiClient";
+import * as Crypto from "expo-crypto";
 
 export async function getTransactions(from?: string, to?: string) {
     const response = await apiClient.get<Transaction[]>("/transactions", {
@@ -14,7 +15,9 @@ export async function getTransactionById(id: string) {
 }
 
 export async function createTransaction(categoryId: string, amount: number, type: TransactionType, date: string, description: string | undefined, idempotencyKey: string) {
+    const id = Crypto.randomUUID();
     const response = await apiClient.post("/transactions", {
+        id,
         categoryId,
         amount,
         type,

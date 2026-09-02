@@ -1,6 +1,7 @@
 import { Habit, HabitDetails, HabitFrequency } from "@/types/habit";
 import { apiClient } from "./apiClient";
 import { DayOfWeek } from "@/types/days";
+import * as Crypto from "expo-crypto";
 
 export async function getHabits() {
     const response = await apiClient.get<Habit[]>("/habits");
@@ -13,7 +14,9 @@ export async function getHabitById(id: string) {
 }
 
 export async function createHabit(name: string, frequency: HabitFrequency, scheduledDays: DayOfWeek[], isAutomationEnabled: boolean, completionDeadline?: string) {
+    const id = Crypto.randomUUID();
     const response = await apiClient.post("/habits", {
+        id,
         name,
         frequency,
         scheduledDays,

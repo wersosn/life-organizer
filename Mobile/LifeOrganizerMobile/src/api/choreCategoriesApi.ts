@@ -1,5 +1,6 @@
 import { ChoreCategory } from "@/types/chore";
 import { apiClient } from "./apiClient";
+import * as Crypto from "expo-crypto";
 
 export async function getChoreCategories() {
     const response = await apiClient.get<ChoreCategory[]>("/chorecategories");
@@ -12,7 +13,8 @@ export async function getChoreCategoryById(id: string) {
 }
 
 export async function createChoreCategory(name: string, icon?: string) {
-    const response = await apiClient.post("/chorecategories", { name, icon });
+    const id = Crypto.randomUUID();
+    const response = await apiClient.post("/chorecategories", { id, name, icon });
     return response.data;
 }
 

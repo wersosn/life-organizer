@@ -1,5 +1,6 @@
 import { TransactionCategory, TransactionType } from "@/types/transaction";
 import { apiClient } from "./apiClient";
+import * as Crypto from "expo-crypto";
 
 export async function getCategories() {
     const response = await apiClient.get<TransactionCategory[]>("/transactioncategories");
@@ -12,7 +13,8 @@ export async function getCategoryById(id: string) {
 }
 
 export async function createCategory(name: string, type: TransactionType, icon?: string) {
-    const response = await apiClient.post("/transactioncategories", { name, type, icon });
+    const id = Crypto.randomUUID();
+    const response = await apiClient.post("/transactioncategories", { id, name, type, icon });
     return response.data;
 }
 
