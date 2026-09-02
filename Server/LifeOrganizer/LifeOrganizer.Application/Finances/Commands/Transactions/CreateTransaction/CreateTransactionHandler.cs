@@ -47,7 +47,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Transactions.CreateTransac
 
             var transaction = new Transaction
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = _currentUser.UserId,
                 CategoryId = request.CategoryId,
                 Amount = request.Amount,

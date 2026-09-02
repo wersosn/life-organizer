@@ -2,5 +2,5 @@
 
 namespace LifeOrganizer.Application.Todo.Commands.CreateTodo
 {
-    public record CreateTodoCommand(string Title, string? Description) : IRequest<Guid>;
+    public record CreateTodoCommand(Guid Id, string Title, string? Description) : IRequest<Guid>;
 }

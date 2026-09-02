@@ -1,5 +1,6 @@
 import { Todo } from "@/types/todo";
 import { apiClient } from "./apiClient";
+import * as Crypto from "expo-crypto";
 
 export async function getTodos() {
     const response = await apiClient.get<Todo[]>("/todo");
@@ -7,7 +8,9 @@ export async function getTodos() {
 }
 
 export async function createTodo(title: string, description?: string) {
+    const id = Crypto.randomUUID();
     const response = await apiClient.post("/todo", {
+        id,
         title,
         description,
     });

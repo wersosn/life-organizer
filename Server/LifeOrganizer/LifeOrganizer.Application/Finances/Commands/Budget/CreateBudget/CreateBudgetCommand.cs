@@ -2,5 +2,5 @@
 
 namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
 {
-    public record CreateBudgetCommand(Guid CategoryId, decimal MonthlyLimit) : IRequest<Guid>;
+    public record CreateBudgetCommand(Guid Id, Guid CategoryId, decimal MonthlyLimit) : IRequest<Guid>;
 }

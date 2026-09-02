@@ -22,7 +22,7 @@ namespace LifeOrganizer.Application.Chores.Commands.ChoreCategories.CreateChoreC
         {
             var category = new ChoreCategory
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = _currentUser.UserId,
                 Name = request.Name,
                 Icon = request.Icon,

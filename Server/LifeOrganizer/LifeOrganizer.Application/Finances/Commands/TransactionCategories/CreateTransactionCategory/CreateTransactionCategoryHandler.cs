@@ -21,7 +21,7 @@ namespace LifeOrganizer.Application.Finances.Commands.TransactionCategories.Crea
         {
             var category = new TransactionCategory
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = _currentUser.UserId,
                 Name = request.Name,
                 Icon = request.Icon,

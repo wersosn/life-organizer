@@ -34,7 +34,7 @@ namespace LifeOrganizer.Application.Chores.Commands.Chore.CreateChore
 
             var chore = new LifeOrganizer.Domain.Entities.Chore
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = _currentUser.UserId,
                 Name = request.Name,
                 Description = request.Description,

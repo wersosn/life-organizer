@@ -22,7 +22,7 @@ namespace LifeOrganizer.Application.Todo.Commands.CreateTodo
         {
             var todo = new TodoItem
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = _currentUser.UserId,
                 Title = request.Title,
                 Description = request.Description,

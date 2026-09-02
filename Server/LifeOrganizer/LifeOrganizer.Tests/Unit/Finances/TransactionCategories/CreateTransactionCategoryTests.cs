@@ -1,5 +1,4 @@
-﻿using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
-using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
+﻿using LifeOrganizer.Application.Finances.Commands.TransactionCategories.CreateTransactionCategory;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.TransactionCategories
             var userId = Guid.NewGuid();
             var handler = new CreateTransactionCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateTransactionCategoryHandler>.Instance);
 
-            var command = new CreateTransactionCategoryCommand("Groceries", "cart-icon", TransactionType.Expense);
+            var command = new CreateTransactionCategoryCommand(Guid.NewGuid(), "Groceries", "cart-icon", TransactionType.Expense);
 
             var result = await handler.Handle(command, CancellationToken.None);
 

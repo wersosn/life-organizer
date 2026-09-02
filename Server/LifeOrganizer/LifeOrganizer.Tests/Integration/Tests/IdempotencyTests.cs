@@ -1,5 +1,4 @@
-﻿using LifeOrganizer.Application.Common.Interfaces;
-using LifeOrganizer.Infrastructure.Persistence;
+﻿using LifeOrganizer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;

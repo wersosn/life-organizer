@@ -47,7 +47,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-            //var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
             var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
             var chores = await context.Chores
@@ -62,7 +61,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             }
 
             var now = DateTime.UtcNow;
-            //var tasksCreated = 0;
 
             var eventsPublished = 0;
             foreach (var chore in chores)

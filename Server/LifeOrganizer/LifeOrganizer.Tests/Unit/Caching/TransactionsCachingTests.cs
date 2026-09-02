@@ -75,7 +75,7 @@ namespace LifeOrganizer.Tests.Unit.Caching
             Assert.Equal(0, beforeResult.TotalExpense);
 
             await createHandler.Handle(
-                new CreateTransactionCommand(category.Id, 150, TransactionType.Expense, null, new DateOnly(2026, 7, 15)),
+                new CreateTransactionCommand(Guid.NewGuid(), category.Id, 150, TransactionType.Expense, null, new DateOnly(2026, 7, 15)),
                 CancellationToken.None);
 
             var afterResult = await summaryHandler.Handle(new GetMonthlySummaryQuery(2026, 7), CancellationToken.None);
@@ -98,7 +98,7 @@ namespace LifeOrganizer.Tests.Unit.Caching
             var handler = new CreateTransactionHandler(context, new FakeCurrentUserService(userId), cacheServiceMock.Object, NullLogger<CreateTransactionHandler>.Instance);
 
             await handler.Handle(
-                new CreateTransactionCommand(category.Id, 50, TransactionType.Expense, null, new DateOnly(2026, 7, 1)),
+                new CreateTransactionCommand(Guid.NewGuid(), category.Id, 50, TransactionType.Expense, null, new DateOnly(2026, 7, 1)),
                 CancellationToken.None);
 
             cacheServiceMock.Verify(c => c.RemoveByPrefix(CacheKeys.UserPrefix(userId)), Times.Once);

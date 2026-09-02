@@ -17,7 +17,7 @@ namespace LifeOrganizer.Tests.Application
         public void Validator_ShouldFail_WhenWeeklyFrequencyHasNoScheduledDays()
         {
             var validator = new CreateHabitValidator();
-            var command = new CreateHabitCommand("Gym", HabitFrequency.Weekly, new List<DayOfWeek>(), null);
+            var command = new CreateHabitCommand(Guid.NewGuid(), "Gym", HabitFrequency.Weekly, new List<DayOfWeek>(), null);
 
             var result = validator.Validate(command);
 

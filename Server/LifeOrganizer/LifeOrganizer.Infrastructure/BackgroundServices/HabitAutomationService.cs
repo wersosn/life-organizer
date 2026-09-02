@@ -48,7 +48,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-            //var pushSender = scope.ServiceProvider.GetRequiredService<PushNotificationSender>();
             var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
             var habits = await context.Habits
@@ -69,8 +68,6 @@ namespace LifeOrganizer.Infrastructure.BackgroundServices
             var todaysCompletions = await context.HabitCompletions
                 .Where(c => habitIds.Contains(c.HabitId) && c.Date == today)
                 .ToDictionaryAsync(c => c.HabitId, c => (HabitCompletionStatus?)c.Status, cancellationToken);
-
-            //var tasksCreated = 0;
 
             var eventsPublished = 0;
             foreach (var habit in habits)

@@ -33,7 +33,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             await context.SaveChangesAsync();
 
             var handler = new CreateChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateChoreHandler>.Instance);
-            var command = new CreateChoreCommand("Change bedsheets", null, category.Id, ChoreFrequency.Weeks, 3);
+            var command = new CreateChoreCommand(Guid.NewGuid(), "Change bedsheets", null, category.Id, ChoreFrequency.Weeks, 3);
 
             var result = await handler.Handle(command, CancellationToken.None);
 
@@ -64,7 +64,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.Chores
             await context.SaveChangesAsync();
 
             var handler = new CreateChoreHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateChoreHandler>.Instance);
-            var command = new CreateChoreCommand("Vacuum", null, foreignCategory.Id, ChoreFrequency.Days, 7);
+            var command = new CreateChoreCommand(Guid.NewGuid(), "Vacuum", null, foreignCategory.Id, ChoreFrequency.Days, 7);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
 
             output.WriteLine("Correctly rejected chore creation with another user's category");

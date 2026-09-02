@@ -22,7 +22,7 @@ namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
         {
             var habit = new Habit
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = _currentUser.UserId,
                 Name = request.Name,
                 Frequency = request.Frequency,

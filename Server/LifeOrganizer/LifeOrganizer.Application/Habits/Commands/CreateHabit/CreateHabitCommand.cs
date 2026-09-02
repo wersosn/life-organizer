@@ -3,5 +3,5 @@ using MediatR;
 
 namespace LifeOrganizer.Application.Habits.Commands.CreateHabit
 {
-    public record CreateHabitCommand(string Name, HabitFrequency Frequency, List<DayOfWeek> ScheduledDays, TimeSpan? CompletionDeadline) : IRequest<Guid>;
+    public record CreateHabitCommand(Guid Id, string Name, HabitFrequency Frequency, List<DayOfWeek> ScheduledDays, TimeSpan? CompletionDeadline) : IRequest<Guid>;
 }

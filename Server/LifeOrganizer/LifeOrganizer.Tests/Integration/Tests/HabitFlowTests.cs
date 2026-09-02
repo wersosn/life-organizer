@@ -16,7 +16,7 @@ namespace LifeOrganizer.Tests.Integration.Tests
         public async Task FullHabitFlow_CreateCompleteAndFetch_ShouldReflectCompletionInDetails()
         {
             // Create
-            var createCommand = new CreateHabitCommand("Meditation", HabitFrequency.Daily, new List<DayOfWeek>(), null);
+            var createCommand = new CreateHabitCommand(Guid.NewGuid(), "Meditation", HabitFrequency.Daily, new List<DayOfWeek>(), null);
 
             var createResponse = await Client.PostAsJsonAsync("/api/v1/habits", createCommand);
             createResponse.EnsureSuccessStatusCode();

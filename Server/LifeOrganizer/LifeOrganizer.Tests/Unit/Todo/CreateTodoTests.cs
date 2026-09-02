@@ -29,6 +29,7 @@ namespace LifeOrganizer.Tests.Unit.Todo
             );
 
             var command = new CreateTodoCommand(
+                Guid.NewGuid(),
                 "Test task",
                 "Description"
             );

@@ -20,7 +20,7 @@ namespace LifeOrganizer.Tests.Unit.Chores.ChoreCategories
             var context = TestDbContextFactory.Create();
             var userId = Guid.NewGuid();
             var handler = new CreateChoreCategoryHandler(context, new FakeCurrentUserService(userId), NullLogger<CreateChoreCategoryHandler>.Instance);
-            var command = new CreateChoreCategoryCommand("Kitchen", "kitchen-icon");
+            var command = new CreateChoreCategoryCommand(Guid.NewGuid(), "Kitchen", "kitchen-icon");
             var result = await handler.Handle(command, CancellationToken.None);
 
             var category = await context.ChoreCategories.FirstAsync();

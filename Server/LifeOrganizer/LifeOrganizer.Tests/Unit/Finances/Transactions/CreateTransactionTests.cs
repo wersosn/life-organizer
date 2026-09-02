@@ -38,6 +38,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Transactions
 
             var handler = new CreateTransactionHandler(context, currentUser, new FakeCacheService(), NullLogger<CreateTransactionHandler>.Instance);
             var command = new CreateTransactionCommand(
+                Guid.NewGuid(),
                 category.Id,
                 49.99m,
                 TransactionType.Expense,

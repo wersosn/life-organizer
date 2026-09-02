@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
-using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget;
-using LifeOrganizer.Application.Todo.Commands.CompleteTodo;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Domain.Enums;
 using LifeOrganizer.Tests.Helpers;
@@ -43,7 +41,7 @@ namespace LifeOrganizer.Tests.Unit.Finances.Budget
             await context.SaveChangesAsync();
 
             var handler = new CreateBudgetHandler(context, new FakeCurrentUserService(userId), new FakeCacheService(), NullLogger<CreateBudgetHandler>.Instance);
-            var command = new CreateBudgetCommand(category.Id, 800);
+            var command = new CreateBudgetCommand(Guid.NewGuid(), category.Id, 800);
             await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
 
             output.WriteLine("Correctly blocked duplicate budget for the same category");

@@ -50,7 +50,7 @@ namespace LifeOrganizer.Application.Finances.Commands.Budget.CreateBudget
 
             var budget = new LifeOrganizer.Domain.Entities.Budget
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = _currentUser.UserId,
                 CategoryId = request.CategoryId,
                 MonthlyLimit = request.MonthlyLimit,

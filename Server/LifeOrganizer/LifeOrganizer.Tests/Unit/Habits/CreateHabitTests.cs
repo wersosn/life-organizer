@@ -29,6 +29,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             );
 
             var command = new CreateHabitCommand(
+                Guid.NewGuid(),
                 "Test habit",
                 Domain.Enums.HabitFrequency.Daily,
                 new List<DayOfWeek>(),
@@ -63,6 +64,7 @@ namespace LifeOrganizer.Tests.Unit.Habits
             );
 
             var command = new CreateHabitCommand(
+                Guid.NewGuid(),
                 "Gym",
                 Domain.Enums.HabitFrequency.Weekly,
                 new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Thursday },
