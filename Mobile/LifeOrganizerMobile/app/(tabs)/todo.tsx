@@ -17,7 +17,6 @@ export default function TodoScreen() {
     const [refreshing, setRefreshing] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const isOnline = useNetworkStatus();
 
     async function loadTodos() {
         if (!user) {
@@ -26,30 +25,16 @@ export default function TodoScreen() {
             return;
         }
 
-        if (!isOnline) {
-            try {
-                const data = await getAllTodos(user.id);
-                Alert.alert("Sync", "Data synchronization completed successfully.");
-                setTodos(data);
-            } catch (e) {
-                console.log(e);
-                Alert.alert("Sync", "Data synchronization failed.");
-            } finally {
-                setLoading(false);
-                setRefreshing(false);
-            }
-        } else {
-            try {
-                const data = await getTodos();
-                Alert.alert("Online", "hello");
-                setTodos(data);
-            } catch (e) {
-                console.log(e);
-                Alert.alert("Error", "Could not load tasks.");
-            } finally {
-                setLoading(false);
-                setRefreshing(false);
-            }
+        try {
+            const data = await getAllTodos(user.id);
+            Alert.alert("Sync", "Data synchronization completed successfully.");
+            setTodos(data);
+        } catch (e) {
+            console.log(e);
+            Alert.alert("Sync", "Data synchronization failed.");
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
         }
     }
 

@@ -26,15 +26,31 @@ Notifications.setNotificationHandler({
 initDatabase();
 
 function AppContent() {
+    Alert.alert("BUILD TEST", "NEW BUILD IS RUNNING 01");
     const colorScheme = useColorScheme();
     const isOnline = useNetworkStatus();
     const { token, user } = useAuth();
 
     useEffect(() => {
-        if (isOnline && token && user) {
-            runFullSync(user.id).catch(e => console.log(Alert.alert("Sync", "Data synchronization error: " + e.message)));
-            Alert.alert("Sync", "Data synchronization completed successfully.");
+        if (!isOnline || !token || !user) {
+            return;
         }
+
+        const userId = user.id;
+
+        async function sync() {
+            try {
+                await runFullSync(userId);
+                Alert.alert("Sync", "Synchronization completed");
+            } catch (e: any) {
+                Alert.alert(
+                    "Sync",
+                    "Synchronization failed: " + String(e?.message ?? e)
+                );
+            }
+        }
+
+        sync();
     }, [isOnline, token, user]);
 
     useEffect(() => {
