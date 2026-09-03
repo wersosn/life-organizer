@@ -34,7 +34,7 @@ function AppContent() {
         if (isOnline && token && user) {
             runFullSync(user.id);
         }
-    }, [isOnline, token]);
+    }, [isOnline, token, user]);
 
     useEffect(() => {
         if (token) {

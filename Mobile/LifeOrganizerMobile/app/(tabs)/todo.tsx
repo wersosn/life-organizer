@@ -6,8 +6,11 @@ import { router, useFocusEffect } from "expo-router";
 import TodoCard from "@/components/TodoCard";
 import { styles } from "../../src/styles/todo.styles";
 import { SettingsButton } from "@/components/SettingsButton";
+import { useAuth } from "@/auth/AuthContext";
+import { getAllTodos } from "@/database/repositories/todoRepository";
 
 export default function TodoScreen() {
+    const { user } = useAuth();
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -15,8 +18,14 @@ export default function TodoScreen() {
     const isDark = colorScheme === "dark";
 
     async function loadTodos() {
+        if (!user) {
+            setLoading(false);
+            setRefreshing(false);
+            return;
+        }
+        
         try {
-            const data = await getTodos();
+            const data = await getAllTodos(user.id);
             setTodos(data);
         } catch (e) {
             console.log(e);
@@ -29,7 +38,7 @@ export default function TodoScreen() {
     useFocusEffect(
         useCallback(() => {
             loadTodos();
-        }, [])
+        }, [user])
     );
 
     async function handleComplete(id: string) {

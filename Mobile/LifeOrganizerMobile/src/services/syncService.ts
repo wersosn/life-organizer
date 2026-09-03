@@ -1,6 +1,7 @@
 import { completeTodo, createTodo, deleteTodo, updateTodo } from "@/api/todoApi";
 import { getPendingSyncItems, recordSyncFailure, removeSyncItem } from "./syncQueue";
 import { SyncQueueItem } from "@/database/types";
+import { apiClient } from "@/api/apiClient";
 
 const MAX_ATTEMPTS = 5;
 
@@ -41,13 +42,10 @@ async function syncSingleItem(item: SyncQueueItem) {
 
 async function syncTodoItem(action: SyncQueueItem["action"], id: string, payload: any) {
     if (action === "create") {
-        await createTodo(payload.title, payload.description);
+        await apiClient.post("/todo", payload);
     } else if (action === "update") {
-        await updateTodo(id, payload.title, payload.description);
-        if (payload.isCompleted) {
-            await completeTodo(id);
-        }
+        await apiClient.put(`/todo/${id}`, { title: payload.title, description: payload.description });
     } else if (action === "delete") {
-        await deleteTodo(id);
+        await apiClient.delete(`/todo/${id}`);
     }
 }

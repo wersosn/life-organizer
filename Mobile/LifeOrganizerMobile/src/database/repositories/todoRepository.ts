@@ -70,8 +70,7 @@ export async function upsertFromServer(userId: string, serverTodos: Todo[]) {
                 title = excluded.title,
                 description = excluded.description,
                 is_completed = excluded.is_completed,
-                updated_at = excluded.updated_at
-             WHERE NOT EXISTS (SELECT 1 FROM sync_queue WHERE entity_id = todos.id AND entity_type = 'todo')`,
+                updated_at = excluded.updated_at`,
             [
                 todo.id, userId, todo.title, todo.description ?? null,
                 todo.isCompleted ? 1 : 0, todo.source ?? 0, null,
