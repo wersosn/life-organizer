@@ -7,11 +7,9 @@ import TodoCard from "@/components/TodoCard";
 import { styles } from "../../src/styles/todo.styles";
 import { SettingsButton } from "@/components/SettingsButton";
 import { useAuth } from "@/auth/AuthContext";
-import { getAllTodos } from "@/database/repositories/todoRepository";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 
 export default function TodoScreen() {
-    const { user } = useAuth();
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -19,19 +17,11 @@ export default function TodoScreen() {
     const isDark = colorScheme === "dark";
 
     async function loadTodos() {
-        if (!user) {
-            setLoading(false);
-            setRefreshing(false);
-            return;
-        }
-
         try {
-            const data = await getAllTodos(user.id);
-            Alert.alert("Sync", "Data synchronization completed successfully.");
+            const data = await getTodos();
             setTodos(data);
         } catch (e) {
             console.log(e);
-            Alert.alert("Sync", "Data synchronization failed.");
         } finally {
             setLoading(false);
             setRefreshing(false);
@@ -40,9 +30,8 @@ export default function TodoScreen() {
 
     useFocusEffect(
         useCallback(() => {
-            Alert.alert("User", "User: " + (user ? user.id : "No user"));
             loadTodos();
-        }, [user])
+        }, [])
     );
 
     async function handleComplete(id: string) {

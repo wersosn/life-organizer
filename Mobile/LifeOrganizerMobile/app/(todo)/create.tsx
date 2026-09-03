@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import { styles } from "../../src/styles/createTodo.styles";
 import { useAuth } from "@/auth/AuthContext";
-import { createTodoLocal } from "@/database/repositories/todoRepository";
 
 export default function CreateTodoScreen() {
     const { user } = useAuth();
@@ -23,7 +22,7 @@ export default function CreateTodoScreen() {
             return;
         }
 
-        await createTodoLocal(user.id, title, description || undefined);
+        await createTodo(title, description || undefined);
         router.back();
     }
 

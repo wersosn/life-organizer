@@ -1,6 +1,5 @@
 import { apiClient } from "@/api/apiClient";
 import { completeTodo, createTodo, deleteTodo, getTodos, updateTodo } from "@/api/todoApi";
-import { getLocalUserId } from "@/database/repositories/userRepository";
 import { TaskSource } from "@/types/todo";
 import * as Crypto from "expo-crypto";
 
@@ -12,21 +11,6 @@ jest.mock("@/api/apiClient", () => ({
         delete: jest.fn(),
         patch: jest.fn(),
     },
-}));
-
-jest.mock("@/database/repositories/todoRepository", () => ({
-    insertTodoLocally: jest.fn(),
-    upsertTodoLocally: jest.fn(),
-    getAllTodosLocally: jest.fn(),
-}));
-
-jest.mock("@/database/repositories/userRepository", () => ({
-    getLocalUserId: jest.fn(),
-}));
-
-jest.mock("@/services/syncQueue", () => ({
-    enqueueSyncAction: jest.fn(),
-    processSyncQueue: jest.fn(),
 }));
 
 jest.mock("expo-crypto", () => ({

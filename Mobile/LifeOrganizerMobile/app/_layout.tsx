@@ -9,9 +9,7 @@ import { registerForPushNotificationsAsync } from '@/utils/pushNotifications';
 import { registerPushToken } from '@/api/notificationsApi';
 import { Alert, AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import { initDatabase } from '@/database/database';
-import { useNetworkStatus } from '@/hooks/useNetworkStatus';
-import { runFullSync } from '@/services/fullSync';
+import { initDatabase, resetDatabase } from '@/database/database';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -23,35 +21,11 @@ Notifications.setNotificationHandler({
     }),
 });
 
-initDatabase();
+resetDatabase();
 
 function AppContent() {
-    Alert.alert("BUILD TEST", "NEW BUILD IS RUNNING 01");
     const colorScheme = useColorScheme();
-    const isOnline = useNetworkStatus();
-    const { token, user } = useAuth();
-
-    useEffect(() => {
-        if (!isOnline || !token || !user) {
-            return;
-        }
-
-        const userId = user.id;
-
-        async function sync() {
-            try {
-                await runFullSync(userId);
-                Alert.alert("Sync", "Synchronization completed");
-            } catch (e: any) {
-                Alert.alert(
-                    "Sync",
-                    "Synchronization failed: " + String(e?.message ?? e)
-                );
-            }
-        }
-
-        sync();
-    }, [isOnline, token, user]);
+    const { token } = useAuth();
 
     useEffect(() => {
         if (token) {

@@ -1,7 +1,6 @@
 import { apiClient } from "@/api/apiClient";
 import { AuthProvider, useAuth } from "@/auth/AuthContext";
 import { getRefreshToken, getAccessToken, saveTokens, removeTokens } from "@/auth/tokenStorage";
-import { clearUserProfileLocally, saveUserProfileLocally } from "@/database/repositories/userRepository";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
 import axios from "axios";
 
@@ -18,11 +17,6 @@ jest.mock("@/api/apiClient", () => ({
 
 jest.mock("axios", () => ({
     post: jest.fn().mockResolvedValue({ data: {} }),
-}));
-
-jest.mock("@/database/repositories/userRepository", () => ({
-    saveUserProfileLocally: jest.fn(),
-    clearUserProfileLocally: jest.fn(),
 }));
 
 describe("AuthContext", () => {
@@ -56,9 +50,6 @@ describe("AuthContext", () => {
 
             expect(result.current.token).toBe("saved-token");
             expect(result.current.user).toEqual(mockUser);
-            /*expect(saveUserProfileLocally).toHaveBeenCalledWith(
-                expect.objectContaining({ id: "1", email: "test@test.com", name: "Test User" })
-            );*/
         });
 
         it("logs out when the saved token is rejected with 401 (refresh already failed)", async () => {
@@ -71,7 +62,6 @@ describe("AuthContext", () => {
             await waitFor(() => expect(result.current.loading).toBe(false));
 
             expect(removeTokens).toHaveBeenCalled();
-            //expect(clearUserProfileLocally).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
             expect(result.current.user).toBeNull();
         });
@@ -121,9 +111,6 @@ describe("AuthContext", () => {
             expect(saveTokens).toHaveBeenCalledWith("new-token", "new-refresh-token");
             expect(result.current.token).toBe("new-token");
             expect(result.current.user).toEqual(mockUser);
-            /*expect(saveUserProfileLocally).toHaveBeenCalledWith(
-                expect.objectContaining({ id: "1", email: "test@test.com", name: "Test User" })
-            );*/
         });
 
         it("keeps the token set even if fetching the user profile fails with a non-401 error", async () => {
@@ -154,7 +141,6 @@ describe("AuthContext", () => {
             });
 
             expect(removeTokens).toHaveBeenCalled();
-            //expect(clearUserProfileLocally).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
         });
     });
@@ -178,7 +164,6 @@ describe("AuthContext", () => {
                 { refreshToken: "saved-refresh-token" }
             );
             expect(removeTokens).toHaveBeenCalled();
-            //expect(clearUserProfileLocally).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
             expect(result.current.user).toBeNull();
         });
@@ -197,7 +182,6 @@ describe("AuthContext", () => {
             });
 
             expect(removeTokens).toHaveBeenCalled();
-            //expect(clearUserProfileLocally).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
         });
     });

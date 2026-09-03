@@ -5,7 +5,6 @@ import { User } from "@/types/user";
 import { API_URL } from "@/config/api";
 import axios from "axios";
 import { AUTH_EVENTS, authEvents } from "./AuthEvents";
-import { clearUserProfileLocally, saveUserProfileLocally } from "@/database/repositories/userRepository";
 
 type AuthContextType = {
     token: string | null;
@@ -31,14 +30,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function fetchAndSetUser() {
         const response = await apiClient.get("/auth/me");
         setUser(response.data);
-        //saveUserProfileLocally({ id: response.data.id, email: response.data.email, name: response.data.name });
     }
 
     async function resetSession() {
         setToken(null);
         setUser(null);
         await removeTokens();
-        //clearUserProfileLocally();
     }
 
     useEffect(() => {
