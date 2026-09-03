@@ -8,6 +8,7 @@ import { styles } from "../../src/styles/todo.styles";
 import { SettingsButton } from "@/components/SettingsButton";
 import { useAuth } from "@/auth/AuthContext";
 import { getAllTodos } from "@/database/repositories/todoRepository";
+import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 
 export default function TodoScreen() {
     const { user } = useAuth();
@@ -16,6 +17,7 @@ export default function TodoScreen() {
     const [refreshing, setRefreshing] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const isOnline = useNetworkStatus();
 
     async function loadTodos() {
         if (!user) {
@@ -23,20 +25,37 @@ export default function TodoScreen() {
             setRefreshing(false);
             return;
         }
-        
-        try {
-            const data = await getAllTodos(user.id);
-            setTodos(data);
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
-            setRefreshing(false);
+
+        if (!isOnline) {
+            try {
+                const data = await getAllTodos(user.id);
+                Alert.alert("Sync", "Data synchronization completed successfully.");
+                setTodos(data);
+            } catch (e) {
+                console.log(e);
+                Alert.alert("Sync", "Data synchronization failed.");
+            } finally {
+                setLoading(false);
+                setRefreshing(false);
+            }
+        } else {
+            try {
+                const data = await getTodos();
+                Alert.alert("Online", "hello");
+                setTodos(data);
+            } catch (e) {
+                console.log(e);
+                Alert.alert("Error", "Could not load tasks.");
+            } finally {
+                setLoading(false);
+                setRefreshing(false);
+            }
         }
     }
 
     useFocusEffect(
         useCallback(() => {
+            Alert.alert("User", "User: " + (user ? user.id : "No user"));
             loadTodos();
         }, [user])
     );
