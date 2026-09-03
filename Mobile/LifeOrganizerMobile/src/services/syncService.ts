@@ -4,28 +4,40 @@ import { SyncQueueItem } from "@/database/types";
 import { apiClient } from "@/api/apiClient";
 
 const MAX_ATTEMPTS = 5;
+let isSyncing = false;
 
 export async function processSyncQueue() {
-    const items = await getPendingSyncItems();
+    if (isSyncing) {
+        console.log("[Sync] Already syncing, skipping...");
+        return;
+    }
 
-    for (const item of items) {
-        if (item.attempts >= MAX_ATTEMPTS) {
-            console.log(`[Sync] Skipping ${item.entityType}:${item.entityId} — max attempts reached`);
-            continue;
-        }
+    isSyncing = true;
+    try {
+        const items = await getPendingSyncItems();
 
-        try {
-            await syncSingleItem(item);
-            await removeSyncItem(item.id);
-        } catch (e: any) {
-            console.log(`[Sync] Failed to sync ${item.entityType}:${item.entityId}`, e);
-            await recordSyncFailure(item.id, String(e?.message ?? e));
+        for (const item of items) {
+            if (item.attempts >= MAX_ATTEMPTS) {
+                console.log(`[Sync] Skipping ${item.entityType}:${item.entityId} — max attempts reached`);
+                continue;
+            }
 
-            if (!e?.response) {
-                console.log("[Sync] Network error detected, stopping queue processing");
-                break;
+            try {
+                await syncSingleItem(item);
+                await removeSyncItem(item.id);
+            } catch (e: any) {
+                console.log(`[Sync] Failed to sync ${item.entityType}:${item.entityId}`, e);
+                await recordSyncFailure(item.id, String(e?.message ?? e));
+
+                if (!e?.response) {
+                    console.log("[Sync] Network error detected, stopping queue processing");
+                    break;
+                }
             }
         }
+    }
+    finally {
+        isSyncing = false;
     }
 }
 

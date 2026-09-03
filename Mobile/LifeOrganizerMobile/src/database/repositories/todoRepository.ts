@@ -2,6 +2,7 @@ import { Todo } from "@/types/todo";
 import { db } from "../database";
 import { enqueueSync } from "@/services/syncQueue";
 import * as Crypto from "expo-crypto";
+import { processSyncQueue } from "@/services/syncService";
 
 export async function getAllTodos(userId: string): Promise<Todo[]> {
     const rows = await db.getAllAsync<any>(
@@ -22,6 +23,8 @@ export async function createTodoLocal(userId: string, title: string, description
     );
 
     await enqueueSync("todo", id, "create", { id, title, description });
+
+    processSyncQueue().catch(e => console.log("[Sync] Background sync failed", e));
 
     return { id, title, description, isCompleted: false, createdAt: now, source: 0 };
 }

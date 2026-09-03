@@ -3,8 +3,11 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import { styles } from "../../src/styles/createTodo.styles";
+import { useAuth } from "@/auth/AuthContext";
+import { createTodoLocal } from "@/database/repositories/todoRepository";
 
 export default function CreateTodoScreen() {
+    const { user } = useAuth();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const colorScheme = useColorScheme();
@@ -15,8 +18,12 @@ export default function CreateTodoScreen() {
             console.log("Title is required");
             return;
         }
+        if (!user) {
+            console.log("No user - cannot create todo");
+            return;
+        }
 
-        await createTodo(title, description);
+        await createTodoLocal(user.id, title, description || undefined);
         router.back();
     }
 

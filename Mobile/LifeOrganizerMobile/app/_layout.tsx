@@ -32,7 +32,8 @@ function AppContent() {
 
     useEffect(() => {
         if (isOnline && token && user) {
-            runFullSync(user.id);
+            runFullSync(user.id).catch(e => console.log(Alert.alert("Sync", "Data synchronization error: " + e.message)));
+            Alert.alert("Sync", "Data synchronization completed successfully.");
         }
     }, [isOnline, token, user]);
 
