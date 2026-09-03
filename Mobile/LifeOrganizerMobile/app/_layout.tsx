@@ -10,6 +10,8 @@ import { registerPushToken } from '@/api/notificationsApi';
 import { Alert, AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { initDatabase, resetDatabase } from '@/database/database';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
+import { syncOfflineChanges } from '@/services/syncService';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -21,11 +23,27 @@ Notifications.setNotificationHandler({
     }),
 });
 
-resetDatabase();
+useEffect(() => {
+    initDatabase();
+}, []);
 
 function AppContent() {
     const colorScheme = useColorScheme();
-    const { token } = useAuth();
+    const { token, user } = useAuth();
+    const isOnline = useNetworkStatus();
+
+    useEffect(() => {
+        if (!isOnline || !user) {
+            return;
+        }
+
+        syncOfflineChanges().catch(error => {
+            console.log(
+                "[Sync] Error:",
+                error
+            );
+        });
+    }, [isOnline, user?.id]);
 
     useEffect(() => {
         if (token) {

@@ -7,10 +7,10 @@ export async function getTodos() {
     return response.data;
 }
 
-export async function createTodo(title: string, description?: string) {
-    const id = Crypto.randomUUID();
+export async function createTodo(title: string, description?: string, id?: string) {
+    const todoId = id ?? Crypto.randomUUID();
     const response = await apiClient.post("/todo", {
-        id,
+        todoId,
         title,
         description,
     });

@@ -8,6 +8,7 @@ import { styles } from "../../src/styles/todo.styles";
 import { SettingsButton } from "@/components/SettingsButton";
 import { useAuth } from "@/auth/AuthContext";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { cacheTodos, getCachedTodos } from "@/database/repositories/todoRepository";
 
 export default function TodoScreen() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -15,13 +16,34 @@ export default function TodoScreen() {
     const [refreshing, setRefreshing] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const isOnline = useNetworkStatus();
+    const { user } = useAuth();
 
     async function loadTodos() {
+        if (!user) {
+            return;
+        }
+
         try {
-            const data = await getTodos();
-            setTodos(data);
+            if (isOnline) {
+                const data = await getTodos();
+                setTodos(data);
+                await cacheTodos(data, user.id);
+            } else {
+                const cached = await getCachedTodos(user.id);
+                setTodos(cached);
+            }
         } catch (e) {
-            console.log(e);
+            console.log("[Todo] Load error:", e);
+            try {
+                const cached = await getCachedTodos(user.id);
+                setTodos(cached);
+            } catch (cacheError) {
+                console.log(
+                    "[Todo] Cache error:",
+                    cacheError
+                );
+            }
         } finally {
             setLoading(false);
             setRefreshing(false);
@@ -31,7 +53,7 @@ export default function TodoScreen() {
     useFocusEffect(
         useCallback(() => {
             loadTodos();
-        }, [])
+        }, [isOnline, user?.id])
     );
 
     async function handleComplete(id: string) {

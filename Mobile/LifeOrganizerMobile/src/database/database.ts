@@ -150,7 +150,7 @@ export function initDatabase() {
             id TEXT PRIMARY KEY NOT NULL,
             entity_type TEXT NOT NULL,
             entity_id TEXT NOT NULL,
-            action TEXT NOT NULL CHECK (action IN ('create', 'update', 'delete')),
+            action TEXT NOT NULL CHECK (action IN ('create', 'update', 'delete', 'complete', 'uncomplete')),
             payload TEXT,
             created_at TEXT NOT NULL,
             attempts INTEGER NOT NULL DEFAULT 0,

@@ -4,25 +4,48 @@ import { useState } from "react";
 import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import { styles } from "../../src/styles/createTodo.styles";
 import { useAuth } from "@/auth/AuthContext";
+import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { addToSyncQueue } from "@/services/syncQueue";
+import { createCachedTodo } from "@/database/repositories/todoRepository";
 
 export default function CreateTodoScreen() {
-    const { user } = useAuth();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const isOnline = useNetworkStatus();
+    const { user } = useAuth();
 
     async function handleCreate() {
         if (!title.trim()) {
             console.log("Title is required");
             return;
         }
+
         if (!user) {
-            console.log("No user - cannot create todo");
             return;
         }
 
-        await createTodo(title, description || undefined);
+        if (isOnline) {
+            await createTodo(title, description || undefined);
+        } else {
+            const todo = await createCachedTodo(
+                user.id,
+                title.trim(),
+                description || undefined
+            );
+
+            await addToSyncQueue(
+                "todo",
+                todo.id,
+                "create",
+                {
+                    id: todo.id,
+                    title: todo.title,
+                    description: todo.description,
+                }
+            );
+        }
         router.back();
     }
 
