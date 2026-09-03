@@ -1,73 +1,94 @@
-import { TaskSource } from "@/types/todo";
+import { Todo } from "@/types/todo";
 import { db } from "../database";
+import { enqueueSync } from "@/services/syncQueue";
 import * as Crypto from "expo-crypto";
 
-export type LocalTodo = {
-    id: string;
-    userId: string;
-    title: string;
-    description: string | null;
-    isCompleted: boolean;
-    source: TaskSource;
-    sourceId: string | null;
-    createdAt: string;
-    completedAt: string | null;
-    updatedAt: string;
-};
+export async function getAllTodos(userId: string): Promise<Todo[]> {
+    const rows = await db.getAllAsync<any>(
+        "SELECT * FROM todos WHERE user_id = ? AND is_deleted = 0 ORDER BY created_at DESC",
+        [userId]
+    );
+    return rows.map(mapRow);
+}
 
-export function insertTodoLocally(todo: LocalTodo) {
-    db.runSync(
-        `INSERT INTO todos (id, user_id, title, description, is_completed, source, source_id, created_at, completed_at, updated_at, is_deleted)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)`,
+export async function createTodoLocal(userId: string, title: string, description?: string): Promise<Todo> {
+    const id = Crypto.randomUUID();
+    const now = new Date().toISOString();
+
+    await db.runAsync(
+        `INSERT INTO todos (id, user_id, title, description, is_completed, source, source_id, created_at, updated_at, is_deleted)
+         VALUES (?, ?, ?, ?, 0, 0, NULL, ?, ?, 0)`,
+        [id, userId, title, description ?? null, now, now]
+    );
+
+    await enqueueSync("todo", id, "create", { id, title, description });
+
+    return { id, title, description, isCompleted: false, createdAt: now, source: 0 };
+}
+
+export async function updateTodoLocal(id: string, changes: { title?: string; description?: string; isCompleted?: boolean }) {
+    const now = new Date().toISOString();
+
+    await db.runAsync(
+        `UPDATE todos SET
+            title = COALESCE(?, title),
+            description = COALESCE(?, description),
+            is_completed = COALESCE(?, is_completed),
+            completed_at = CASE WHEN ? = 1 THEN ? ELSE completed_at END,
+            updated_at = ?
+         WHERE id = ?`,
         [
-            todo.id,
-            todo.userId,
-            todo.title,
-            todo.description,
-            todo.isCompleted ? 1 : 0,
-            todo.source,
-            todo.sourceId,
-            todo.createdAt,
-            todo.completedAt,
-            todo.updatedAt,
+            changes.title ?? null,
+            changes.description ?? null,
+            changes.isCompleted === undefined ? null : changes.isCompleted ? 1 : 0,
+            changes.isCompleted ? 1 : 0,
+            changes.isCompleted ? now : null,
+            now,
+            id,
         ]
     );
+
+    const updated = await db.getFirstAsync<any>("SELECT * FROM todos WHERE id = ?", [id]);
+    await enqueueSync("todo", id, "update", {
+        title: updated.title,
+        description: updated.description,
+        isCompleted: !!updated.is_completed,
+    });
 }
 
-export function getAllTodosLocally(): LocalTodo[] {
-    const rows = db.getAllSync<any>(`SELECT * FROM todos WHERE is_deleted = 0 ORDER BY created_at DESC`);
-    return rows.map(mapRowToTodo);
+export async function deleteTodoLocal(id: string) {
+    await db.runAsync("UPDATE todos SET is_deleted = 1, updated_at = ? WHERE id = ?", [new Date().toISOString(), id]);
+    await enqueueSync("todo", id, "delete");
 }
 
-export function upsertTodoLocally(todo: LocalTodo) {
-    db.runSync(
-        `INSERT INTO todos (id, user_id, title, description, is_completed, source, source_id, created_at, completed_at, updated_at, is_deleted)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
-         ON CONFLICT(id) DO UPDATE SET
-            title = excluded.title,
-            description = excluded.description,
-            is_completed = excluded.is_completed,
-            completed_at = excluded.completed_at,
-            updated_at = excluded.updated_at`,
-        [
-            todo.id, todo.userId, todo.title, todo.description,
-            todo.isCompleted ? 1 : 0, todo.source, todo.sourceId,
-            todo.createdAt, todo.completedAt, todo.updatedAt,
-        ]
-    );
+export async function upsertFromServer(userId: string, serverTodos: Todo[]) {
+    for (const todo of serverTodos) {
+        await db.runAsync(
+            `INSERT INTO todos (id, user_id, title, description, is_completed, source, source_id, created_at, updated_at, is_deleted)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+             ON CONFLICT(id) DO UPDATE SET
+                title = excluded.title,
+                description = excluded.description,
+                is_completed = excluded.is_completed,
+                updated_at = excluded.updated_at
+             WHERE NOT EXISTS (SELECT 1 FROM sync_queue WHERE entity_id = todos.id AND entity_type = 'todo')`,
+            [
+                todo.id, userId, todo.title, todo.description ?? null,
+                todo.isCompleted ? 1 : 0, todo.source ?? 0, null,
+                todo.createdAt, (todo as any).updatedAt ?? todo.createdAt,
+            ]
+        );
+    }
 }
 
-function mapRowToTodo(row: any): LocalTodo {
+function mapRow(row: any): Todo {
     return {
         id: row.id,
-        userId: row.user_id,
         title: row.title,
-        description: row.description,
-        isCompleted: row.is_completed === 1,
-        source: row.source,
-        sourceId: row.source_id,
+        description: row.description ?? undefined,
+        isCompleted: !!row.is_completed,
         createdAt: row.created_at,
-        completedAt: row.completed_at,
-        updatedAt: row.updated_at,
+        completedAt: row.completed_at ?? undefined,
+        source: row.source,
     };
 }

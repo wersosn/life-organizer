@@ -10,7 +10,8 @@ import { registerPushToken } from '@/api/notificationsApi';
 import { Alert, AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { initDatabase } from '@/database/database';
-import { processSyncQueue } from '@/services/syncQueue';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
+import { runFullSync } from '@/services/fullSync';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -22,11 +23,18 @@ Notifications.setNotificationHandler({
     }),
 });
 
-//initDatabase();
+initDatabase();
 
 function AppContent() {
     const colorScheme = useColorScheme();
-    const { token } = useAuth();
+    const isOnline = useNetworkStatus();
+    const { token, user } = useAuth();
+
+    useEffect(() => {
+        if (isOnline && token && user) {
+            runFullSync(user.id);
+        }
+    }, [isOnline, token]);
 
     useEffect(() => {
         if (token) {
@@ -49,16 +57,6 @@ function AppContent() {
                 });
         }
     }, [token]);
-
-    /*useEffect(() => {
-        const subscription = AppState.addEventListener("change", nextState => {
-            if (nextState === "active" && token) {
-                processSyncQueue().catch(e => console.log("[Sync] Foreground sync failed", e));
-            }
-        });
-
-        return () => subscription.remove();
-    }, [token]);*/
 
     return (
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

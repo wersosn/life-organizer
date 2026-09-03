@@ -200,27 +200,5 @@ describe("AuthContext", () => {
             //expect(clearUserProfileLocally).toHaveBeenCalled();
             expect(result.current.token).toBeNull();
         });
-
-        /*it("does NOT clear local todos or the sync queue on logout", async () => {
-            // clearUserProfileLocally clears only the user_profile table - todos/sync_queue
-            // must survive logout so unsynced offline changes aren't lost.
-
-            (getAccessToken as jest.Mock).mockResolvedValue("saved-token");
-            (getRefreshToken as jest.Mock).mockResolvedValue("saved-refresh-token");
-            (apiClient.get as jest.Mock).mockResolvedValue({ data: { id: "1", email: "a@a.com", name: "A" } });
-
-            const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
-            await waitFor(() => expect(result.current.loading).toBe(false));
-
-            await act(async () => {
-                await result.current.logout();
-            });
-
-            expect(clearUserProfileLocally).toHaveBeenCalledTimes(1);
-            
-            // no assertion possible on todosRepository here since AuthContext
-            // must not import/call anything from it - absence of a mock call
-            // is implicitly enforced by not mocking it at all in this file
-        });*/
     });
 });
