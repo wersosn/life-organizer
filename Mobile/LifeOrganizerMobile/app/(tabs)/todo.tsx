@@ -1,14 +1,11 @@
-import { View, Text, StyleSheet, FlatList, useColorScheme, Alert } from "react-native";
-import { useCallback, useEffect, useState } from "react";
+import { View, Text, FlatList, useColorScheme, Alert, RefreshControl } from "react-native";
+import { useCallback, useState } from "react";
 import { Todo } from "@/types/todo";
 import { completeTodo, deleteTodo, getTodos } from "@/api/todoApi";
 import { router, useFocusEffect } from "expo-router";
 import TodoCard from "@/components/TodoCard";
 import { styles } from "../../src/styles/todo.styles";
 import { SettingsButton } from "@/components/SettingsButton";
-import { useAuth } from "@/auth/AuthContext";
-import { useNetworkStatus } from "@/hooks/useNetworkStatus";
-import { cacheTodos, getCachedTodos } from "@/database/repositories/todoRepository";
 
 export default function TodoScreen() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -16,35 +13,16 @@ export default function TodoScreen() {
     const [refreshing, setRefreshing] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const isOnline = useNetworkStatus();
-    const { user } = useAuth();
 
     async function loadTodos() {
-        if (!user) {
-            return;
-        }
-
         try {
-            if (isOnline) {
-                const data = await getTodos();
-                setTodos(data);
-                await cacheTodos(data, user.id);
-            } else {
-                const cached = await getCachedTodos(user.id);
-                setTodos(cached);
-            }
-        } catch (e) {
-            console.log("[Todo] Load error:", e);
-            try {
-                const cached = await getCachedTodos(user.id);
-                setTodos(cached);
-            } catch (cacheError) {
-                console.log(
-                    "[Todo] Cache error:",
-                    cacheError
-                );
-            }
-        } finally {
+            const data = await getTodos();
+            setTodos(data);
+        }
+        catch (e) {
+            console.log(e);
+        }
+        finally {
             setLoading(false);
             setRefreshing(false);
         }
@@ -53,8 +31,13 @@ export default function TodoScreen() {
     useFocusEffect(
         useCallback(() => {
             loadTodos();
-        }, [isOnline, user?.id])
+        }, [])
     );
+
+    async function handleRefresh() {
+        setRefreshing(true);
+        await loadTodos();
+    }
 
     async function handleComplete(id: string) {
         setTodos(prev =>
@@ -126,6 +109,9 @@ export default function TodoScreen() {
                     style={{ marginTop: 20 }}
                     data={todos}
                     keyExtractor={(item) => item.id}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+                    }
                     renderItem={({ item }) => (
                         <TodoCard
                             todo={item}

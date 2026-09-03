@@ -16,6 +16,15 @@ namespace LifeOrganizer.Tests.Integration
         {
             builder.UseEnvironment("Testing");
 
+            builder.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddInMemoryCollection(new Dictionary<string, string?>
+                {
+                    ["Jwt:Key"] = "test-secret-key-that-is-long-enough-for-tests-123456789987654321",
+                    ["Jwt:Issuer"] = "LifeOrganizerTests"
+                });
+            });
+
             builder.ConfigureServices((context, services) =>
             {
                 ConnectionString = context.Configuration.GetConnectionString("TestConnection")!;
