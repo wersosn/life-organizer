@@ -1,7 +1,5 @@
 import { apiClient } from "@/api/apiClient";
 import { completeTodo, createTodo, deleteTodo, getTodos, updateTodo } from "@/api/todoApi";
-import { TaskSource } from "@/types/todo";
-import * as Crypto from "expo-crypto";
 
 jest.mock("@/api/apiClient", () => ({
     apiClient: {
@@ -33,10 +31,33 @@ describe("todoApi", () => {
             expect(result).toEqual(mockTodos);
         });
 
-       
+
     });
 
     describe("createTodo", () => {
+        it("createTodo sends title and description in the payload", async () => {
+            (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
+
+            await createTodo("Buy milk", "2% fat");
+
+            expect(apiClient.post).toHaveBeenCalledWith("/todo", {
+                id: "generated-uuid",
+                title: "Buy milk",
+                description: "2% fat",
+            });
+        });
+
+        it("createTodo sends undefined description when not provided", async () => {
+            (apiClient.post as jest.Mock).mockResolvedValue({ data: "new-id" });
+
+            await createTodo("Buy milk");
+
+            expect(apiClient.post).toHaveBeenCalledWith("/todo", {
+                id: "generated-uuid",
+                title: "Buy milk",
+                description: undefined,
+            });
+        });
     });
 
     describe("updateTodo", () => {

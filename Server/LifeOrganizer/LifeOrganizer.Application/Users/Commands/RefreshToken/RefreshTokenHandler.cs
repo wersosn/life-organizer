@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Common.Interfaces;
+﻿using LifeOrganizer.Application.Common.Exceptions;
+using LifeOrganizer.Application.Common.Interfaces;
 using LifeOrganizer.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace LifeOrganizer.Application.Users.Commands.RefreshToken
 
             if (existingToken is null || !existingToken.IsActive)
             {
-                throw new Exception("Invalid or expired refresh token");
+                throw new InvalidCredentialsException("Invalid or expired refresh token");
             }
 
             existingToken.RevokedAt = DateTime.UtcNow;

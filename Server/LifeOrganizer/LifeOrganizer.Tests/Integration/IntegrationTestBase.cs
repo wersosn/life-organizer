@@ -58,6 +58,7 @@ namespace LifeOrganizer.Tests.Integration
             await respawner.ResetAsync(connection);
             await connection.CloseAsync();
             await connection.DisposeAsync();
+            Factory.EmailSender.SentEmails.Clear();
         }
     }
 

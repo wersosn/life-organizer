@@ -4,7 +4,7 @@ using LifeOrganizer.Application.Habits.Commands.GetHabitById;
 using LifeOrganizer.Domain.Enums;
 using System.Net.Http.Json;
 
-namespace LifeOrganizer.Tests.Integration.Tests
+namespace LifeOrganizer.Tests.Integration.Tests.Flow
 {
     public class HabitFlowTests : IntegrationTestBase
     {

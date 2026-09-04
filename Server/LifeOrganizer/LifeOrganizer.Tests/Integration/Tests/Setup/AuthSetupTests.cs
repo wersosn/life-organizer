@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Net;
 
-namespace LifeOrganizer.Tests.Integration.Tests
+namespace LifeOrganizer.Tests.Integration.Tests.Setup
 {
     public class AuthSetupTests : IntegrationTestBase
     {

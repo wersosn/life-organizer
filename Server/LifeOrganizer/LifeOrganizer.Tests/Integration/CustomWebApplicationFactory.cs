@@ -1,4 +1,6 @@
-﻿using LifeOrganizer.Infrastructure.Persistence;
+﻿using LifeOrganizer.Application.Common.Interfaces;
+using LifeOrganizer.Infrastructure.Persistence;
+using LifeOrganizer.Tests.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -10,6 +12,7 @@ namespace LifeOrganizer.Tests.Integration
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
+        public FakeEmailSender EmailSender { get; } = new();
         public string ConnectionString { get; private set; } = null!;
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -21,7 +24,10 @@ namespace LifeOrganizer.Tests.Integration
                 config.AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     ["Jwt:Key"] = "test-secret-key-that-is-long-enough-for-tests-123456789987654321",
-                    ["Jwt:Issuer"] = "LifeOrganizerTests"
+                    ["Jwt:Issuer"] = "LifeOrganizerTests",
+                    ["Jwt:RefreshTokenDays"] = "1",
+                    ["Jwt:AccessTokenMinutes"] = "10",
+                    ["RateLimiting:LoginPermitLimit"] = "1000"
                 });
             });
 
@@ -36,6 +42,13 @@ namespace LifeOrganizer.Tests.Integration
                 }
 
                 services.AddDbContext<AppDbContext>(options => options.UseNpgsql(ConnectionString));
+
+                var emailDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IEmailSender));
+                if (emailDescriptor is not null)
+                {
+                    services.Remove(emailDescriptor);
+                }
+                services.AddSingleton<IEmailSender>(EmailSender);
 
                 services.ConfigureAll<AuthenticationOptions>(options =>
                 {

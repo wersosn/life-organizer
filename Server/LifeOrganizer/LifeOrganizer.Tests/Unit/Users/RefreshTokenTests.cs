@@ -1,4 +1,5 @@
-﻿using LifeOrganizer.Application.Users.Commands.RefreshToken;
+﻿using LifeOrganizer.Application.Common.Exceptions;
+using LifeOrganizer.Application.Users.Commands.RefreshToken;
 using LifeOrganizer.Domain.Entities;
 using LifeOrganizer.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -80,7 +81,7 @@ namespace LifeOrganizer.Tests.Unit.Users
 
             var handler = new RefreshTokenHandler(context, new FakeJwtTokenService(), TestConfigurationFactory.Create(new Dictionary<string, string> { ["Jwt:RefreshTokenDays"] = "60" }));
 
-            await Assert.ThrowsAsync<Exception>(() => handler.Handle(new RefreshTokenCommand("revoked-token"), CancellationToken.None));
+            await Assert.ThrowsAsync<InvalidCredentialsException>(() => handler.Handle(new RefreshTokenCommand("revoked-token"), CancellationToken.None));
 
             output.WriteLine("Correctly rejected already-revoked refresh token");
         }
@@ -110,7 +111,7 @@ namespace LifeOrganizer.Tests.Unit.Users
 
             var handler = new RefreshTokenHandler(context, new FakeJwtTokenService(), TestConfigurationFactory.Create(new Dictionary<string, string> { ["Jwt:RefreshTokenDays"] = "60" }));
 
-            await Assert.ThrowsAsync<Exception>(() => handler.Handle(new RefreshTokenCommand("expired-token"), CancellationToken.None));
+            await Assert.ThrowsAsync<InvalidCredentialsException>(() => handler.Handle(new RefreshTokenCommand("expired-token"), CancellationToken.None));
 
             output.WriteLine("Correctly rejected expired refresh token");
         }

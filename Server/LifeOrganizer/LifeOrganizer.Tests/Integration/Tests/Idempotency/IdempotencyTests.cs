@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 
-namespace LifeOrganizer.Tests.Integration.Tests
+namespace LifeOrganizer.Tests.Integration.Tests.Idempotency
 {
     public class IdempotencyTests : IntegrationTestBase
     {

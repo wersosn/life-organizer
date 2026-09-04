@@ -1,0 +1,26 @@
+﻿using LifeOrganizer.Application.Common.Exceptions;
+
+namespace LifeOrganizer.API.Middlewares
+{
+    public class ExceptionHandlingMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public ExceptionHandlingMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            try
+            {
+                await _next(context);
+            }
+            catch (InvalidCredentialsException)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            }
+        }
+    }
+}

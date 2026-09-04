@@ -26,7 +26,9 @@ namespace LifeOrganizer.Infrastructure
 
             services.Configure<AutomationSettings>(configuration.GetSection("Automation"));
             services.AddHostedService<HabitAutomationService>();
+            services.AddSingleton<HabitAutomationService>();
             services.AddHostedService<ChoreAutomationService>();
+            services.AddSingleton<ChoreAutomationService>();
             services.AddHostedService<TaskHistoryCleanupService>();
 
             services.AddHttpClient<PushNotificationSender>();
