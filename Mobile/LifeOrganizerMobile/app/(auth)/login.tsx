@@ -1,6 +1,6 @@
-import { View, Text, Button, TextInput, useColorScheme, KeyboardAvoidingView, Platform, ScrollView, Alert } from "react-native";
+import { View, Text, Button, TextInput, useColorScheme, KeyboardAvoidingView, Platform, ScrollView, Alert, Pressable, Animated } from "react-native";
 import { Link, router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { apiClient } from "@/api/apiClient";
 import { useAuth } from "@/auth/AuthContext";
 import { styles } from "../../src/styles/login.styles";
