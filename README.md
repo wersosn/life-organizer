@@ -1,6 +1,6 @@
 Version [ENG](#Life-Organizer-App) | [PL](#Aplikacja-do-organizacji-życia)
 # Life Organizer App
-> **Status:** Early development stage - actively being built. This README serves as both project documentation and a personal progress tracker.
+> **Status:** Final development stage - core features are implemented, with final UI improvements, testing, and deployment remaining. This README serves as both project documentation and a personal progress tracker.
 A mobile life-management app that brings together task management, habit tracking, personal finance tracking, and household chore tracking in one place - with smart automation that turns neglected habits and overdue chores into actionable tasks.
 
 ## Table of contents
@@ -226,15 +226,15 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Finance Tracker screen
 - [x] Chore Tracker screen
 - [x] Automation
-- [ ] Offline mode with SQLite
-- [ ] Sync mechanism (local ↔ server)
 - [x] Push notifications
 - [x] Statistics
 - [x] Settings (automation toggle, history retention)
+- [x] System calendar integration for chore reminders
 - [ ] API, unit & components tests
-
+      
+---
 # Aplikacja do organizacji życia
-> **Status:** Wczesna faza rozwoju - projekt jest aktywnie rozwijany. Ten README pełni jednocześnie rolę dokumentacji projektu i osobistej listy postępu prac.
+> **Status:** Finalny etap - kluczowe funkcjonalności zostały zaimplementowane, a do zakończenia projektu pozostały finalne poprawki UI, testy oraz wdrożenie. To README pełni jednocześnie rolę dokumentacji projektu i osobistej listy postępu prac.
 Projekt jest aplikacją mobilną do zarządzania życiem codziennym, łącząca w sobie listę zadań, śledzenie nawyków, finansów oraz obowiązków domowych - wraz z inteligentnym systemem automatyzacji, który zamienia zaniedbane nawyki i zaległe obowiązki w konkretne zadania do wykonania.
 
 ## Spis treści
@@ -462,9 +462,8 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Ekran zarządzania finansami
 - [x] Ekran zarządzania obowiązkami domowymi
 - [x] Automatyzacja
-- [ ] Tryb offline z SQLite
-- [ ] Mechanizm synchronizacji (lokalnie ↔ serwer)
 - [x] Powiadomienia push
 - [x] Statystyki
 - [x] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
+- [x] Integracja z systemowym kalendarzem, w celu tworzenia przypomnień o obowiązkach domowych
 - [ ] Testy API, jednostkowe oraz komponentów
