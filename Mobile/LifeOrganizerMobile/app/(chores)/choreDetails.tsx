@@ -1,10 +1,12 @@
 import { ChoreDetails } from "@/types/chore";
 import { completeChore, deleteChore, getChoreById, uncompleteChore } from "@/api/choresApi";
-import { useCallback, useState } from "react";
-import { Alert, ActivityIndicator, Image, Pressable, ScrollView, Text, useColorScheme, View } from "react-native";
+import React, { useCallback, useState } from "react";
+import { Alert, ActivityIndicator, Image, Pressable, ScrollView, Text, useColorScheme, View, Platform } from "react-native";
 import { styles } from "../../src/styles/choreDetails.styles";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { formatFrequency, formatLastCompleted } from "@/utils/choreFormat";
+import { addChoreToCalendar } from "@/utils/calendar";
+import DateTimePickerimport, { DateTimePickerAndroid, } from "@react-native-community/datetimepicker";
 
 export default function ChoreDetailsScreen() {
     const params = useLocalSearchParams();
@@ -12,6 +14,8 @@ export default function ChoreDetailsScreen() {
 
     const [chore, setChore] = useState<ChoreDetails | null>(null);
     const [loading, setLoading] = useState(true);
+    const [calendarDate, setCalendarDate] = useState(new Date());
+    const [showCalendarPicker, setShowCalendarPicker] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
@@ -88,6 +92,33 @@ export default function ChoreDetailsScreen() {
         ]);
     }
 
+    async function handleCalendarDateSelected(event: any, selectedDate?: Date) {
+        if (event.type === "dismissed" || !selectedDate || !chore) {
+            return;
+        }
+
+        try {
+            await addChoreToCalendar(chore.name, chore.description ?? undefined, selectedDate);
+            Alert.alert("Added", "Reminder added to your calendar.");
+        } catch (e: any) {
+            console.log(e);
+            Alert.alert("Error", e.message ?? "Could not add to calendar.");
+        }
+    }
+
+    const handleOpenCalendarPicker = () => {
+        if (Platform.OS === "android") {
+            DateTimePickerAndroid.open({
+                value: new Date(),
+                mode: "date",
+                is24Hour: true,
+                onChange: handleCalendarDateSelected,
+            });
+            return;
+        }
+        setShowCalendarPicker(true);
+    };
+
     if (loading) {
         return (
             <View style={[styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
@@ -111,6 +142,12 @@ export default function ChoreDetailsScreen() {
                     {chore.name}
                 </Text>
                 <View style={styles.headerActions}>
+                    <Pressable onPress={handleOpenCalendarPicker} hitSlop={10} style={styles.iconButton}>
+                        <Image
+                            source={isDark ? require("@/assets/images/calendar-light.png") : require("@/assets/images/calendar-dark.png")}
+                            style={styles.icon}
+                        />
+                    </Pressable>
                     <Pressable onPress={handleEdit} hitSlop={10} style={styles.iconButton}>
                         <Image
                             source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
@@ -125,6 +162,10 @@ export default function ChoreDetailsScreen() {
                     </Pressable>
                 </View>
             </View>
+
+           {/*} {showCalendarPicker && (
+                <DateTimePicker value={calendarDate} mode="datetime" onChange={handleCalendarDateSelected} />
+            )}*/}
 
             {chore.description ? (
                 <Text style={[styles.description, { color: isDark ? "#aaa" : "#666" }]}>{chore.description}</Text>

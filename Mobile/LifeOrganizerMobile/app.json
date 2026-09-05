@@ -51,6 +51,12 @@
             "usesCleartextTraffic": true
           }
         }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Allow $(PRODUCT_NAME) to access your calendar to add chore reminders."
+        }
       ]
     ],
     "experiments": {
