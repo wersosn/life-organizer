@@ -5,13 +5,17 @@ import { apiClient } from "@/api/apiClient";
 import { useAuth } from "@/auth/AuthContext";
 import { styles } from "../../src/styles/login.styles";
 import { LoginResponse } from "@/types/auth";
+import { Blob } from "@/components/ui/Blob";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
+    
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#FFFFFF" : "#0B0B0B";
+    const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function handleLogin() {
         try {
@@ -35,47 +39,49 @@ export default function LoginScreen() {
     }
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <ScrollView
-                contentContainerStyle={[
-                    styles.container,
-                    { backgroundColor: isDark ? "#121212" : "#F5F5F5" },
-                ]}
-                keyboardShouldPersistTaps="handled">
-                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" },]}>
-                    Login
-                </Text>
-
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor="#888"
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCapitalize="none"
-                    style={styles.input}
-                />
-
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor="#888"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                    style={[styles.input,  { color: "#000000" }]}
-                />
-
-                <View style={styles.buttonContainer}>
-                    <Button title="Login" onPress={handleLogin} color="#4F7CFF" />
-                </View>
-
-                <Link href="../forgotPassword" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
-                    Forgot password? Click here
-                </Link>
-                <View style={[styles.divider, { backgroundColor: isDark ? "#2A2A2A" : "#F0F0F0" }]} />
-                <Link href="../register" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
-                    Don't have an account? Register here
-                </Link>
-            </ScrollView>
-        </KeyboardAvoidingView>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="top" color={blobColor} width={430} style={styles.blobTop} />
+            <Blob variant="drip" color={blobColor} width={430} style={styles.blobBottom} />
+ 
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    keyboardShouldPersistTaps="handled">
+                    <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" },]}>
+                        Login
+                    </Text>
+ 
+                    <TextInput
+                        placeholder="Email"
+                        placeholderTextColor="#888"
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCapitalize="none"
+                        style={styles.input}
+                    />
+ 
+                    <TextInput
+                        placeholder="Password"
+                        placeholderTextColor="#888"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                        style={[styles.input,  { color: "#000000" }]}
+                    />
+ 
+                    <View style={styles.buttonContainer}>
+                        <Button title="Login" onPress={handleLogin} color="#4F7CFF" />
+                    </View>
+ 
+                    <Link href="../forgotPassword" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                        Forgot password? Click here
+                    </Link>
+                    <View style={[styles.divider, { backgroundColor: isDark ? "#2A2A2A" : "#F0F0F0" }]} />
+                    <Link href="../register" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                        Don't have an account? Register here
+                    </Link>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </View>
     );
 }
