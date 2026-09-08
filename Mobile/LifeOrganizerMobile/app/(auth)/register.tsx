@@ -3,6 +3,7 @@ import { Link, router } from "expo-router";
 import { useState } from "react";
 import { apiClient } from "@/api/apiClient";
 import { styles } from "../../src/styles/register.styles";
+import { Blob } from "@/components/ui/Blob";
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState("");
@@ -10,15 +11,18 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#FFFFFF" : "#0B0B0B";
+    const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function register() {
         if (password !== confirmPassword) {
             console.log("Passwords do not match");
             return;
         }
-        
+
         setLoading(true);
         try {
             await apiClient.post("/auth/register", { email, name, password });
@@ -37,69 +41,67 @@ export default function RegisterScreen() {
     }
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <ScrollView
-                contentContainerStyle={[
-                    styles.container,
-                    {
-                        backgroundColor: isDark ? "#121212" : "#F5F5F5",
-                    },
-                ]}
-                keyboardShouldPersistTaps="handled">
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="top3" color={blobColor} width={430} style={styles.blobTop} />
+            <Blob variant="drip3" color={blobColor} width={430} style={styles.blobBottom} />
 
-                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000", },]}>
-                    Registration
-                </Text>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
 
-                <TextInput
-                    placeholder="Username"
-                    placeholderTextColor="#888"
-                    value={name}
-                    onChangeText={setName}
-                    style={styles.input}
-                />
+                    <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000", },]}>
+                        Registration
+                    </Text>
 
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor="#888"
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    style={styles.input}
-                />
-
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor="#888"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                    style={[styles.input,  { color: "#000000" }]}
-                />
-
-                <TextInput
-                    placeholder="Repeat password"
-                    placeholderTextColor="#888"
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    secureTextEntry
-                    style={[styles.input,  { color: "#000000" }]}
-                />
-
-                <View style={styles.buttonContainer}>
-                    <Button
-                        title={loading ? "Creating account..." : "Create account"}
-                        onPress={register}
-                        disabled={loading}
-                        color="#4F7CFF"
+                    <TextInput
+                        placeholder="Username"
+                        placeholderTextColor="#888"
+                        value={name}
+                        onChangeText={setName}
+                        style={styles.input}
                     />
-                </View>
 
-                <Link href="../login" style={styles.link}>
-                    Already have an account? Login here
-                </Link>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                    <TextInput
+                        placeholder="Email"
+                        placeholderTextColor="#888"
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                        style={styles.input}
+                    />
+
+                    <TextInput
+                        placeholder="Password"
+                        placeholderTextColor="#888"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                        style={[styles.input, { color: "#000000" }]}
+                    />
+
+                    <TextInput
+                        placeholder="Repeat password"
+                        placeholderTextColor="#888"
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                        secureTextEntry
+                        style={[styles.input, { color: "#000000" }]}
+                    />
+
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            title={loading ? "Creating account..." : "Create account"}
+                            onPress={register}
+                            disabled={loading}
+                            color="#4F7CFF"
+                        />
+                    </View>
+
+                    <Link href="../login" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                        Already have an account? Login here
+                    </Link>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </View>
     );
 }

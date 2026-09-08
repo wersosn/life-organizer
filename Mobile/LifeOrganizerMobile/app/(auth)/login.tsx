@@ -40,8 +40,8 @@ export default function LoginScreen() {
 
     return (
         <View style={[styles.screen, { backgroundColor: screenBackground }]}>
-            <Blob variant="top" color={blobColor} width={430} style={styles.blobTop} />
-            <Blob variant="drip" color={blobColor} width={430} style={styles.blobBottom} />
+            <Blob variant="top2" color={blobColor} width={430} style={styles.blobTop} />
+            <Blob variant="drip1" color={blobColor} width={430} style={styles.blobBottom} />
  
             <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
                 <ScrollView

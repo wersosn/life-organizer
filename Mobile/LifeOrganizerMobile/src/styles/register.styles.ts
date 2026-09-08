@@ -1,6 +1,24 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        position: "relative",
+        overflow: "hidden",
+    },
+ 
+    blobTop: {
+        position: "absolute",
+        top: 0,
+        left: -30,
+    },
+ 
+    blobBottom: {
+        position: "absolute",
+        bottom: 0,
+        left: -30,
+    },
+
     container: {
         flex: 1,
         justifyContent: "center",
@@ -18,8 +36,8 @@ export const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
         borderWidth: 1,
         borderColor: "#CCCCCC",
-        borderRadius: 12,
-        paddingHorizontal: 16,
+        borderRadius: 24,
+        paddingHorizontal: 20,
         paddingVertical: 14,
         fontSize: 16,
         marginBottom: 20,
@@ -28,6 +46,8 @@ export const styles = StyleSheet.create({
     buttonContainer: {
         marginTop: 10,
         marginBottom: 30,
+        borderRadius: 24,
+        overflow: "hidden",
     },
 
     link: {
