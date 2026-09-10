@@ -6,13 +6,17 @@ import { router, useFocusEffect } from "expo-router";
 import TodoCard from "@/components/TodoCard";
 import { styles } from "../../src/styles/todo.styles";
 import { SettingsButton } from "@/components/SettingsButton";
+import { Blob } from "@/components/ui/Blob";
 
 export default function TodoScreen() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#FFFFFF" : "#0B0B0B";
+    const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function loadTodos() {
         try {
@@ -88,40 +92,44 @@ export default function TodoScreen() {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
-                    To-do List
-                </Text>
-                <View style={styles.headerActions}>
-                    <SettingsButton />
-                </View>
-            </View>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="drip2" color={blobColor} width={430} style={styles.blobBottom} />
 
-            {!loading && todos.length === 0 ? (
-                <View style={styles.emptyState}>
-                    <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
-                        No tasks yet. Tap + to create one.
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                        To-do List
                     </Text>
+                    <View style={styles.headerActions}>
+                        <SettingsButton />
+                    </View>
                 </View>
-            ) : (
-                <FlatList
-                    style={{ marginTop: 20 }}
-                    data={todos}
-                    keyExtractor={(item) => item.id}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-                    }
-                    renderItem={({ item }) => (
-                        <TodoCard
-                            todo={item}
-                            onComplete={handleComplete}
-                            onDelete={handleDelete}
-                            onEdit={handleEdit}
-                        />
-                    )}
-                />
-            )}
+
+                {!loading && todos.length === 0 ? (
+                    <View style={styles.emptyState}>
+                        <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
+                            No tasks yet. Tap + to create one.
+                        </Text>
+                    </View>
+                ) : (
+                    <FlatList
+                        style={{ marginTop: 20 }}
+                        data={todos}
+                        keyExtractor={(item) => item.id}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+                        }
+                        renderItem={({ item }) => (
+                            <TodoCard
+                                todo={item}
+                                onComplete={handleComplete}
+                                onDelete={handleDelete}
+                                onEdit={handleEdit}
+                            />
+                        )}
+                    />
+                )}
+            </View>
         </View>
     );
 }

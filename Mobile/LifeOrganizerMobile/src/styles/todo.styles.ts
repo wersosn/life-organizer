@@ -1,11 +1,28 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        position: "relative",
+        overflow: "hidden",
+    },
+ 
+    blobTop: {
+        position: "absolute",
+        top: 0,
+        left: -30,
+    },
+ 
+    blobBottom: {
+        position: "absolute",
+        bottom: 0,
+        left: -30,
+    },
+    
     container: {
         flex: 1,
         paddingTop: 60,
         paddingHorizontal: 20,
-        backgroundColor: "#fff",
     },
 
     header: {

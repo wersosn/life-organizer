@@ -1,15 +1,12 @@
 import { router, Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useAuth } from "@/auth/AuthContext";
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-
-// For the future:
-// tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
@@ -40,8 +37,10 @@ export default function TabLayout() {
                     name="todo"
                     options={{
                         title: "To-do",
-                        tabBarIcon: ({ color }) => (
-                            <IconSymbol size={26} name="checklist" color={color} />
+                        tabBarIcon: () => (
+                            <Image
+                                source={isDark ? require("../../src/assets/images/todo-light.png") : require("../../src/assets/images/todo-dark.png")}
+                                style={{ width: 22, height: 22, resizeMode: "contain" }} />
                         ),
                     }}
                 />
@@ -50,8 +49,10 @@ export default function TabLayout() {
                     name="habits"
                     options={{
                         title: "Habits",
-                        tabBarIcon: ({ color }) => (
-                            <IconSymbol size={26} name="repeat" color={color} />
+                        tabBarIcon: () => (
+                            <Image
+                                source={isDark ? require("../../src/assets/images/habit-light.png") : require("../../src/assets/images/habit-dark.png")}
+                                style={{ width: 22, height: 22, resizeMode: "contain" }} />
                         ),
                     }}
                 />
@@ -92,8 +93,10 @@ export default function TabLayout() {
                     name="finances"
                     options={{
                         title: "Finance",
-                        tabBarIcon: ({ color }) => (
-                            <IconSymbol size={26} name="creditcard.fill" color={color} />
+                        tabBarIcon: () => (
+                            <Image
+                                source={isDark ? require("../../src/assets/images/piggy-bank-light.png") : require("../../src/assets/images/piggy-bank-dark.png")}
+                                style={{ width: 22, height: 22, resizeMode: "contain" }} />
                         ),
                     }}
                 />
@@ -102,8 +105,10 @@ export default function TabLayout() {
                     name="chores"
                     options={{
                         title: "Chores",
-                        tabBarIcon: ({ color }) => (
-                            <IconSymbol size={26} name="house.fill" color={color} />
+                        tabBarIcon: () => (
+                            <Image
+                                source={isDark ? require("../../src/assets/images/chore-light.png") : require("../../src/assets/images/chore-dark.png")}
+                                style={{ width: 22, height: 22, resizeMode: "contain" }} />
                         ),
                     }}
                 />
