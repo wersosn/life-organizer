@@ -56,6 +56,7 @@ export function ChoreCard({ chore, onComplete, onPress, onEdit, onDelete }: Prop
                 <Pressable onPress={() => onComplete(chore.id)} style={styles.completeButton} testID="complete-button">
                     <Text style={styles.completeButtonText}>
                         <Image
+                            testID="chore-checkmark"
                             source={require("@/assets/images/check-light.png")}
                             style={{ width: 12, height: 12, resizeMode: "contain" }}
                         />

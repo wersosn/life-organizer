@@ -49,6 +49,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                 {todo.isCompleted && (
                     <Text style={styles.checkmark}>
                         <Image
+                            testID="todo-checkmark"
                             source={require("@/assets/images/check-light.png")}
                             style={{ width: 12, height: 12, resizeMode: "contain" }}
                         />

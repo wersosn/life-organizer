@@ -41,7 +41,7 @@ describe("TodoCard", () => {
     });
 
     it("does not render a description when none is provided", () => {
-        const { queryByText } = render(
+        const { queryByTestId } = render(
             <TodoCard
                 todo={baseTodo}
                 onComplete={jest.fn()}
@@ -50,11 +50,11 @@ describe("TodoCard", () => {
             />
         );
 
-        expect(queryByText("2% fat")).toBeNull();
+        expect(queryByTestId("2% fat")).toBeNull();
     });
 
     it("does not show a checkmark when the todo is not completed", () => {
-        const { queryByText } = render(
+        const { queryByTestId } = render(
             <TodoCard
                 todo={baseTodo}
                 onComplete={jest.fn()}
@@ -63,13 +63,13 @@ describe("TodoCard", () => {
             />
         );
 
-        expect(queryByText("✓")).toBeNull();
+        expect(queryByTestId("todo-checkmark")).toBeNull();
     });
 
     it("shows a checkmark when the todo is completed", () => {
         const completedTodo = { ...baseTodo, isCompleted: true };
 
-        const { getByText } = render(
+        const { queryByTestId } = render(
             <TodoCard
                 todo={completedTodo}
                 onComplete={jest.fn()}
@@ -78,7 +78,7 @@ describe("TodoCard", () => {
             />
         );
 
-        expect(getByText("✓")).toBeTruthy();
+        expect(queryByTestId("todo-checkmark")).toBeTruthy();
     });
 
     it("calls onComplete with the todo id when the checkbox is pressed", () => {

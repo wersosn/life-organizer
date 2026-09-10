@@ -11,6 +11,7 @@ const baseHabit: Habit = {
     isActive: true,
     createdAt: "2026-01-01",
     isCompletedToday: false,
+    isAutomationEnabled: true,
 };
 
 describe("HabitCard", () => {
@@ -65,7 +66,7 @@ describe("HabitCard", () => {
     });
 
     it("does not show a checkmark when the habit is not completed today", () => {
-        render(
+        const { queryByTestId } = render(
             <HabitCard
                 habit={baseHabit}
                 onToggleComplete={jest.fn()}
@@ -75,13 +76,13 @@ describe("HabitCard", () => {
             />
         );
 
-        expect(screen.queryByText("✓")).toBeNull();
+        expect(queryByTestId("habit-checkmark")).toBeNull();
     });
 
     it("shows a checkmark when the habit is completed today", () => {
         const completedHabit = { ...baseHabit, isCompletedToday: true };
 
-        render(
+        const { queryByTestId } = render(
             <HabitCard
                 habit={completedHabit}
                 onToggleComplete={jest.fn()}
@@ -91,7 +92,7 @@ describe("HabitCard", () => {
             />
         );
 
-        expect(screen.getByText("✓")).toBeTruthy();
+        expect(queryByTestId("habit-checkmark")).toBeTruthy();
     });
 
     it("calls onToggleComplete with the habit id when checkbox is pressed", () => {
@@ -166,3 +167,7 @@ describe("HabitCard", () => {
         expect(onDelete).toHaveBeenCalledWith("1");
     });
 });
+
+function queryByText(arg0: string): any {
+    throw new Error("Function not implemented.");
+}

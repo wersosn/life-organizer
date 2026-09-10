@@ -48,6 +48,7 @@ export function HabitCard({ habit, onToggleComplete, onPress, onEdit, onDelete }
             >
                 {habit.isCompletedToday && <Text style={styles.checkmark}>
                     <Image
+                        testID="habit-checkmark"
                         source={require("@/assets/images/check-light.png")}
                         style={{ width: 12, height: 12, resizeMode: "contain" }}
                     />
