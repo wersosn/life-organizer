@@ -1,11 +1,24 @@
 import { router, Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
-
+import { styles } from "../../src/styles/addModal.styles";
 import { useAuth } from "@/auth/AuthContext";
 import { HapticTab } from "@/components/haptic-tab";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Ionicons } from "@expo/vector-icons";
+
+const ADD_OPTIONS: {
+    label: string;
+    icon: React.ComponentProps<typeof Ionicons>["name"];
+    route: Parameters<typeof router.push>[0];
+}[] = [
+        { label: "Add new task", icon: "checkbox-outline", route: "/(todo)/create" },
+        { label: "Add new habit", icon: "repeat-outline", route: "/(habits)/create" },
+        { label: "Add new transaction", icon: "swap-horizontal-outline", route: "/(finances)/createTransaction" },
+        { label: "Add new budget", icon: "wallet-outline", route: "/(finances)/createBudget" },
+        { label: "Add new chore", icon: "home-outline", route: "/(chores)/createChore" },
+    ];
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
@@ -114,89 +127,38 @@ export default function TabLayout() {
             </Tabs>
 
             <Modal visible={showAddMenu} transparent animationType="fade">
-                <Pressable
-                    style={styles.overlay}
-                    onPress={() => setShowAddMenu(false)}
-                >
+                <Pressable style={styles.overlay} onPress={() => setShowAddMenu(false)}>
                     <View style={styles.menu}>
-                        <Pressable
-                            style={styles.option}
-                            onPress={() => {
-                                setShowAddMenu(false);
-                                router.push("/(todo)/create");
-                            }}
-                        >
-                            <Text style={styles.optionText}>Add new task</Text>
-                        </Pressable>
+                        <View style={styles.menuHeader}>
+                            <Text style={styles.menuTitle}>Add</Text>
+                            <Pressable onPress={() => setShowAddMenu(false)} hitSlop={10}>
+                                <Ionicons name="close" size={22} color="#0B0B0B" />
+                            </Pressable>
+                        </View>
 
-                        <Pressable
-                            style={styles.option}
-                            onPress={() => {
-                                setShowAddMenu(false);
-                                router.push("/(habits)/create");
-                            }}
-                        >
-                            <Text style={styles.optionText}>Add new habit</Text>
-                        </Pressable>
-
-                        <Pressable
-                            style={styles.option}
-                            onPress={() => {
-                                setShowAddMenu(false);
-                                router.push("/(finances)/createTransaction");
-                            }}
-                        >
-                            <Text style={styles.optionText}>Add new transaction</Text>
-                        </Pressable>
-
-                        <Pressable
-                            style={styles.option}
-                            onPress={() => {
-                                setShowAddMenu(false);
-                                router.push("/(finances)/createBudget");
-                            }}
-                        >
-                            <Text style={styles.optionText}>Add new budget</Text>
-                        </Pressable>
-
-                        <Pressable
-                            style={styles.option}
-                            onPress={() => {
-                                setShowAddMenu(false);
-                                router.push("/(chores)/createChore");
-                            }}
-                        >
-                            <Text style={styles.optionText}>Add new chore</Text>
-                        </Pressable>
+                        {ADD_OPTIONS.map((item, index) => (
+                            <Pressable
+                                key={index}
+                                style={({ pressed }) => [
+                                    styles.option,
+                                    index === ADD_OPTIONS.length - 1 && styles.optionLast,
+                                    pressed && styles.optionPressed,
+                                ]}
+                                onPress={() => {
+                                    setShowAddMenu(false);
+                                    router.push(item.route);
+                                }}
+                            >
+                                <View style={styles.optionIcon}>
+                                    <Ionicons name={item.icon} size={18} color="#4F7CFF" />
+                                </View>
+                                <Text style={styles.optionText}>{item.label}</Text>
+                                <Ionicons name="chevron-forward" size={18} color="#C4C4C4" />
+                            </Pressable>
+                        ))}
                     </View>
                 </Pressable>
             </Modal>
         </>
     );
 }
-
-const styles = StyleSheet.create({
-    overlay: {
-        flex: 1,
-        backgroundColor: "rgba(0,0,0,0.35)",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-
-    menu: {
-        width: 280,
-        backgroundColor: "white",
-        borderRadius: 18,
-        paddingVertical: 20,
-        paddingHorizontal: 16,
-    },
-
-    option: {
-        paddingVertical: 14,
-    },
-
-    optionText: {
-        fontSize: 18,
-        textAlign: "center",
-    },
-});
