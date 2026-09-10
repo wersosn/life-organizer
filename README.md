@@ -42,8 +42,6 @@ The key feature is an **automation system** that connects these modules together
 
 ### Mobile App
 - **React Native** with **Expo**
-- **SQLite** for local storage (database for offline mode)
-- **Offline-first** sync approach
 - **Axios** with automatic token refresh and retry logic
 - **Expo Notifications** for push notifications
 - **Expo Secure Store** for token storage
@@ -276,8 +274,6 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 
 ### Mobile App
 - **React Native** z **Expo**
-- **SQLite** do przechowywania danych lokalnych (baza danych do trybu offline)
-- Podejście **offline-first** z synchronizacją
 - **Axios** z automatycznym odświeżaniem tokenów i logiką ponawiania żądań
 - **Expo Notifications** do obsługi powiadomień push
 - **Expo Secure Store** do przechowywania tokenów
