@@ -25,7 +25,7 @@ export function HabitCard({ habit, onToggleComplete, onPress, onEdit, onDelete }
             onPress={() => onPress(habit)}
             style={[
                 styles.card,
-                { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" },
+                { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" },
             ]}
         >
             <Pressable
@@ -58,7 +58,7 @@ export function HabitCard({ habit, onToggleComplete, onPress, onEdit, onDelete }
                 <Text
                     style={[
                         styles.name,
-                        { color: isDark ? "#FFFFFF" : "#000000" },
+                        { color: isDark ? "#F5F5F5" : "#030303" },
                         habit.isCompletedToday && styles.nameCompleted,
                     ]}
                     numberOfLines={1}

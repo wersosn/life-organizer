@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
 
     balanceDivider: { 
         height: 1, 
-        backgroundColor: "#00000010", 
+        backgroundColor: "#03030310", 
         marginVertical: 14 
     },
 

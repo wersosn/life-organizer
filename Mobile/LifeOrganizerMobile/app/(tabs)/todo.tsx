@@ -15,7 +15,7 @@ export default function TodoScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#FFFFFF" : "#0B0B0B";
+    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
     const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function loadTodos() {
@@ -97,7 +97,7 @@ export default function TodoScreen() {
 
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                    <Text style={[styles.title, { color: isDark ? "#F5F5F5" : "#030303" }]}>
                         To-do List
                     </Text>
                     <View style={styles.headerActions}>

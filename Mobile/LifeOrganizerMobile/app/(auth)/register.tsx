@@ -14,7 +14,7 @@ export default function RegisterScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#FFFFFF" : "#0B0B0B";
+    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
     const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function register() {
@@ -48,7 +48,7 @@ export default function RegisterScreen() {
             <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
 
-                    <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000", },]}>
+                    <Text style={[styles.title, { color: isDark ? "#F5F5F5" : "#030303", },]}>
                         Registration
                     </Text>
 
@@ -76,7 +76,7 @@ export default function RegisterScreen() {
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry
-                        style={[styles.input, { color: "#000000" }]}
+                        style={[styles.input, { color: "#030303" }]}
                     />
 
                     <TextInput
@@ -85,7 +85,7 @@ export default function RegisterScreen() {
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
                         secureTextEntry
-                        style={[styles.input, { color: "#000000" }]}
+                        style={[styles.input, { color: "#030303" }]}
                     />
 
                     <View style={styles.buttonContainer}>
@@ -97,7 +97,7 @@ export default function RegisterScreen() {
                         />
                     </View>
 
-                    <Link href="../login" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                    <Link href="../login" style={[styles.link, { color: isDark ? "#F5F5F5" : "#030303" }]}>
                         Already have an account? Login here
                     </Link>
                 </ScrollView>

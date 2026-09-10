@@ -89,7 +89,7 @@ export function TransactionsView() {
     return (
         <>
             {summary && (
-                <View style={[styles.summaryCard, { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }]}>
+                <View style={[styles.summaryCard, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
                     <View style={styles.summaryRow}>
                         <View style={styles.summaryItem}>
                             <Text style={[styles.summaryLabel, { color: isDark ? "#888" : "#999" }]}>Income</Text>

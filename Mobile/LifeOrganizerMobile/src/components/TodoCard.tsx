@@ -34,7 +34,7 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                 {
                     backgroundColor: isDark
                         ? "#1E1E1E"
-                        : "#FFFFFF",
+                        : "#F5F5F5",
                 },
             ]}
         >
@@ -62,8 +62,8 @@ export default function TodoCard({ todo, onComplete, onDelete, onEdit, }: Props)
                             styles.title,
                             {
                                 color: isDark
-                                    ? "#FFFFFF"
-                                    : "#000000",
+                                    ? "#F5F5F5"
+                                    : "#030303",
                             },
                             todo.isCompleted &&
                             styles.completedText,

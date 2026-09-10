@@ -47,7 +47,7 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                 style={styles.overlay}
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
-                <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }]}>
+                <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
                     <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>
                         New {type === TransactionType.Expense ? "expense" : "income"} category
                     </Text>

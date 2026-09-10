@@ -16,7 +16,7 @@ export function BudgetCard({ budget, onEdit, onDelete }: Props) {
     const clampedPercentage = Math.min(budget.percentageUsed, 100);
 
     return (
-        <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }]}>
+        <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
             <View style={styles.cardHeader}>
                 <Text style={[styles.categoryName, { color: isDark ? "#fff" : "#000" }]}>
                     {budget.categoryName}

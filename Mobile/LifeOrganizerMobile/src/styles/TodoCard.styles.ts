@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     },
 
     checkmark: {
-        color: "#FFFFFF",
+        color: "#F5F5F5",
         fontSize: 17,
         fontWeight: "700",
     },

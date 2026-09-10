@@ -7,6 +7,7 @@ import { HabitCard } from "@/components/HabitCard";
 import { isScheduledForToday } from "@/utils/habitSchedule";
 import { styles } from "../../src/styles/habits.styles";
 import { SettingsButton } from "@/components/SettingsButton";
+import { Blob } from "@/components/ui/Blob";
 
 type ViewMode = "today" | "all";
 
@@ -15,8 +16,11 @@ export default function HabitsScreen() {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [viewMode, setViewMode] = useState<ViewMode>("today");
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
+    const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     const visibleHabits = useMemo(() => {
         if (viewMode === "all") {
@@ -122,71 +126,75 @@ export default function HabitsScreen() {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
-                    Habits
-                </Text>
-                <View style={styles.headerActions}>
-                    <SettingsButton />
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="drip3" color={blobColor} width={430} style={styles.blobBottom} />
+            
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={[styles.title, { color: isDark ? "#F5F5F5" : "#030303" }]}>
+                        Habits
+                    </Text>
+                    <View style={styles.headerActions}>
+                        <SettingsButton />
+                    </View>
                 </View>
-            </View>
-            <View style={styles.viewToggle}>
-                <Pressable
-                    onPress={() => setViewMode("today")}
-                    style={[
-                        styles.toggleButton,
-                        {
-                            backgroundColor: viewMode === "today" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
-                            borderColor: isDark ? "#333" : "#ccc",
-                        },
-                    ]}
-                >
-                    <Text style={{ color: viewMode === "today" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                        Today
-                    </Text>
-                </Pressable>
-                <Pressable
-                    onPress={() => setViewMode("all")}
-                    style={[
-                        styles.toggleButton,
-                        {
-                            backgroundColor: viewMode === "all" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
-                            borderColor: isDark ? "#333" : "#ccc",
-                        },
-                    ]}
-                >
-                    <Text style={{ color: viewMode === "all" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                        All
-                    </Text>
-                </Pressable>
-            </View>
+                <View style={styles.viewToggle}>
+                    <Pressable
+                        onPress={() => setViewMode("today")}
+                        style={[
+                            styles.toggleButton,
+                            {
+                                backgroundColor: viewMode === "today" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                borderColor: isDark ? "#333" : "#ccc",
+                            },
+                        ]}
+                    >
+                        <Text style={{ color: viewMode === "today" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            Today
+                        </Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={() => setViewMode("all")}
+                        style={[
+                            styles.toggleButton,
+                            {
+                                backgroundColor: viewMode === "all" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                borderColor: isDark ? "#333" : "#ccc",
+                            },
+                        ]}
+                    >
+                        <Text style={{ color: viewMode === "all" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            All
+                        </Text>
+                    </Pressable>
+                </View>
 
-            {!loading && habits.length === 0 ? (
-                <View style={styles.emptyState}>
-                    <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
-                        No habits yet. Tap + to create one.
-                    </Text>
-                </View>
-            ) : (
-                <FlatList
-                    data={visibleHabits}
-                    keyExtractor={item => item.id}
-                    contentContainerStyle={styles.list}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-                    }
-                    renderItem={({ item }) => (
-                        <HabitCard
-                            habit={item}
-                            onToggleComplete={handleToggleComplete}
-                            onPress={handlePressHabit}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                        />
-                    )}
-                />
-            )}
+                {!loading && habits.length === 0 ? (
+                    <View style={styles.emptyState}>
+                        <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
+                            No habits yet. Tap + to create one.
+                        </Text>
+                    </View>
+                ) : (
+                    <FlatList
+                        data={visibleHabits}
+                        keyExtractor={item => item.id}
+                        contentContainerStyle={styles.list}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+                        }
+                        renderItem={({ item }) => (
+                            <HabitCard
+                                habit={item}
+                                onToggleComplete={handleToggleComplete}
+                                onPress={handlePressHabit}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
+                        )}
+                    />
+                )}
+            </View>
         </View>
     );
 }

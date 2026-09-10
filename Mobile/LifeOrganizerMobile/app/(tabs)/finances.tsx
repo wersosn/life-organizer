@@ -7,13 +7,17 @@ import { BudgetsView } from "@/components/BudgetsView";
 import { TransactionsView } from "@/components/TransactionView";
 import { exportTransactions } from "@/api/transactionsApi";
 import { saveAndShareCsv } from "@/utils/exportFile";
+import { Blob } from "@/components/ui/Blob";
 
 type FinanceView = "transactions" | "budgets";
 
 export default function FinancesScreen() {
     const [view, setView] = useState<FinanceView>("transactions");
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
+    const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function handleExport() {
         try {
@@ -26,54 +30,57 @@ export default function FinancesScreen() {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
-                    Finances
-                </Text>
-                <View style={styles.headerActions}>
-                    <Pressable onPress={() => router.push("../(finances)/monthlySummary")} style={styles.summaryButton}>
-                        <Text style={styles.summaryButtonText}>Monthly Summary</Text>
-                    </Pressable>
-                    <Pressable onPress={handleExport} style={styles.exportButton}>
-                        <Text style={styles.exportButtonText}>Export</Text>
-                    </Pressable>
-                    <SettingsButton />
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="drip4" color={blobColor} width={430} style={styles.blobBottom} />
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={[styles.title, { color: isDark ? "#F5F5F5" : "#030303" }]}>
+                        Finances
+                    </Text>
+                    <View style={styles.headerActions}>
+                        <Pressable onPress={() => router.push("../(finances)/monthlySummary")} style={styles.summaryButton}>
+                            <Text style={styles.summaryButtonText}>Monthly Summary</Text>
+                        </Pressable>
+                        <Pressable onPress={handleExport} style={styles.exportButton}>
+                            <Text style={styles.exportButtonText}>Export</Text>
+                        </Pressable>
+                        <SettingsButton />
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.segmentedControl}>
-                <Pressable
-                    onPress={() => setView("transactions")}
-                    style={[
-                        styles.segment,
-                        {
-                            backgroundColor: view === "transactions" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
-                            borderColor: isDark ? "#333" : "#ccc",
-                        },
-                    ]}
-                >
-                    <Text style={{ color: view === "transactions" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                        Transactions
-                    </Text>
-                </Pressable>
-                <Pressable
-                    onPress={() => setView("budgets")}
-                    style={[
-                        styles.segment,
-                        {
-                            backgroundColor: view === "budgets" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
-                            borderColor: isDark ? "#333" : "#ccc",
-                        },
-                    ]}
-                >
-                    <Text style={{ color: view === "budgets" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                        Budgets
-                    </Text>
-                </Pressable>
-            </View>
+                <View style={styles.segmentedControl}>
+                    <Pressable
+                        onPress={() => setView("transactions")}
+                        style={[
+                            styles.segment,
+                            {
+                                backgroundColor: view === "transactions" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                borderColor: isDark ? "#333" : "#ccc",
+                            },
+                        ]}
+                    >
+                        <Text style={{ color: view === "transactions" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            Transactions
+                        </Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={() => setView("budgets")}
+                        style={[
+                            styles.segment,
+                            {
+                                backgroundColor: view === "budgets" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                borderColor: isDark ? "#333" : "#ccc",
+                            },
+                        ]}
+                    >
+                        <Text style={{ color: view === "budgets" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            Budgets
+                        </Text>
+                    </Pressable>
+                </View>
 
-            {view === "transactions" ? <TransactionsView /> : <BudgetsView />}
+                {view === "transactions" ? <TransactionsView /> : <BudgetsView />}
+            </View>
         </View>
     );
 }

@@ -6,6 +6,7 @@ import { Chore } from "@/types/chore";
 import { completeChore, deleteChore, getChores } from "@/api/choresApi";
 import { SettingsButton } from "@/components/SettingsButton";
 import { ChoreCard } from "@/components/ChoreCard";
+import { Blob } from "@/components/ui/Blob";
 
 type ViewMode = "overdue" | "all";
 
@@ -14,8 +15,11 @@ export default function ChoresScreen() {
     const [viewMode, setViewMode] = useState<ViewMode>("overdue");
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
+    const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function loadChores() {
         try {
@@ -94,66 +98,69 @@ export default function ChoresScreen() {
             },
         ]);
     }
-    
+
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" }]}>
-                    Chores
-                </Text>
-                <View style={styles.headerActions}>
-                    <SettingsButton />
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="drip1" color={blobColor} width={430} style={styles.blobBottom} />
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={[styles.title, { color: isDark ? "#F5F5F5" : "#030303" }]}>
+                        Chores
+                    </Text>
+                    <View style={styles.headerActions}>
+                        <SettingsButton />
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.viewToggle}>
-                <Pressable
-                    onPress={() => setViewMode("overdue")}
-                    style={[
-                        styles.toggleButton,
-                        { backgroundColor: viewMode === "overdue" ? "#E53935" : isDark ? "#1E1E1E" : "#fff" },
-                    ]}
-                >
-                    <Text style={{ color: viewMode === "overdue" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                        Overdue
-                    </Text>
-                </Pressable>
-                <Pressable
-                    onPress={() => setViewMode("all")}
-                    style={[
-                        styles.toggleButton,
-                        { backgroundColor: viewMode === "all" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff" },
-                    ]}
-                >
-                    <Text style={{ color: viewMode === "all" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
-                        All
-                    </Text>
-                </Pressable>
-            </View>
-
-            {!loading && visibleChores.length === 0 ? (
-                <View style={styles.emptyState}>
-                    <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
-                        {viewMode === "overdue" ? "Nothing overdue. Nice!" : "No chores yet. Tap + to add one."}
-                    </Text>
+                <View style={styles.viewToggle}>
+                    <Pressable
+                        onPress={() => setViewMode("overdue")}
+                        style={[
+                            styles.toggleButton,
+                            { backgroundColor: viewMode === "overdue" ? "#E53935" : isDark ? "#1E1E1E" : "#fff" },
+                        ]}
+                    >
+                        <Text style={{ color: viewMode === "overdue" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            Overdue
+                        </Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={() => setViewMode("all")}
+                        style={[
+                            styles.toggleButton,
+                            { backgroundColor: viewMode === "all" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff" },
+                        ]}
+                    >
+                        <Text style={{ color: viewMode === "all" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            All
+                        </Text>
+                    </Pressable>
                 </View>
-            ) : (
-                <FlatList
-                    data={visibleChores}
-                    keyExtractor={item => item.id}
-                    contentContainerStyle={styles.list}
-                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-                    renderItem={({ item }) => (
-                        <ChoreCard
-                            chore={item}
-                            onComplete={handleComplete}
-                            onPress={handlePress}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                        />
-                    )}
-                />
-            )}
+
+                {!loading && visibleChores.length === 0 ? (
+                    <View style={styles.emptyState}>
+                        <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
+                            {viewMode === "overdue" ? "Nothing overdue. Nice!" : "No chores yet. Tap + to add one."}
+                        </Text>
+                    </View>
+                ) : (
+                    <FlatList
+                        data={visibleChores}
+                        keyExtractor={item => item.id}
+                        contentContainerStyle={styles.list}
+                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+                        renderItem={({ item }) => (
+                            <ChoreCard
+                                chore={item}
+                                onComplete={handleComplete}
+                                onPress={handlePress}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
+                        )}
+                    />
+                )}
+            </View>
         </View>
     );
 }

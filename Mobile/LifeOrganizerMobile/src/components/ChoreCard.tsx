@@ -20,7 +20,7 @@ export function ChoreCard({ chore, onComplete, onPress, onEdit, onDelete }: Prop
             onPress={() => onPress(chore)}
             style={[
                 styles.card,
-                { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" },
+                { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" },
                 chore.isOverdue && styles.overdueBorder,
             ]}
         >

@@ -14,7 +14,7 @@ export default function LoginScreen() {
     
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#FFFFFF" : "#0B0B0B";
+    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
     const screenBackground = isDark ? "#121212" : "#F5F5F5";
 
     async function handleLogin() {
@@ -47,7 +47,7 @@ export default function LoginScreen() {
                 <ScrollView
                     contentContainerStyle={styles.container}
                     keyboardShouldPersistTaps="handled">
-                    <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000" },]}>
+                    <Text style={[styles.title, { color: isDark ? "#F5F5F5" : "#030303" },]}>
                         Login
                     </Text>
  
@@ -66,18 +66,18 @@ export default function LoginScreen() {
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry
-                        style={[styles.input,  { color: "#000000" }]}
+                        style={[styles.input,  { color: "#030303" }]}
                     />
  
                     <View style={styles.buttonContainer}>
                         <Button title="Login" onPress={handleLogin} color="#4F7CFF" />
                     </View>
  
-                    <Link href="../forgotPassword" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                    <Link href="../forgotPassword" style={[styles.link, { color: isDark ? "#F5F5F5" : "#030303" }]}>
                         Forgot password? Click here
                     </Link>
                     <View style={[styles.divider, { backgroundColor: isDark ? "#2A2A2A" : "#F0F0F0" }]} />
-                    <Link href="../register" style={[styles.link, { color: isDark ? "#FFFFFF" : "#000000" }]}>
+                    <Link href="../register" style={[styles.link, { color: isDark ? "#F5F5F5" : "#030303" }]}>
                         Don't have an account? Register here
                     </Link>
                 </ScrollView>

@@ -15,9 +15,9 @@ export function TransactionCard({ transaction, onEdit, onDelete }: Props) {
     const isExpense = transaction.type === TransactionType.Expense;
 
     return (
-        <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#FFFFFF" }]}>
+        <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
             <View style={styles.content}>
-                <Text style={[styles.category, { color: isDark ? "#FFFFFF" : "#000000" }]} numberOfLines={1}>
+                <Text style={[styles.category, { color: isDark ? "#F5F5F5" : "#030303" }]} numberOfLines={1}>
                     {transaction.categoryName}
                 </Text>
                 {transaction.description ? (
