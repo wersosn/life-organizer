@@ -11,8 +11,11 @@ export default function ResetPasswordScreen() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function handleSubmit() {
         if (!token) {
