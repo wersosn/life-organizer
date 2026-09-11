@@ -213,8 +213,9 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Task history + configurable retention/cleanup
 - [x] Background services for scheduled checks
 - [x] Data export (csv, json)
-- [ ] Unit & integration tests
+- [x] Unit & integration tests
 - [x] API documentation (Swagger/OpenAPI)
+- [ ] Azure hosting
 
 ### Mobile App
 - [x] Auth screens (register/login)
@@ -447,8 +448,9 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Historia zadań + konfigurowalny czas przechowywania i czyszczenie
 - [x] Background services do zaplanowanych sprawdzeń
 - [x] Eksport danych (csv, json)
-- [ ] Testy jednostkowe i integracyjne
+- [x] Testy jednostkowe i integracyjne
 - [x] Dokumentacja API (Swagger/OpenAPI)
+- [ ] Azure hosting
 
 ### Aplikacja mobilna
 - [x] Ekrany logowania/rejestracji
