@@ -1,6 +1,24 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        position: "relative",
+        overflow: "hidden",
+    },
+ 
+    blobTop: {
+        position: "absolute",
+        top: 0,
+        left: -30,
+    },
+ 
+    blobBottom: {
+        position: "absolute",
+        bottom: 0,
+        left: -30,
+    },
+
     container: {
         flexGrow: 1,
         paddingTop: 60,
@@ -26,6 +44,24 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
         flex: 1,
         marginRight: 12,
+    },
+
+    inputWrapper: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#f5f5f5",
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 18,
+        paddingHorizontal: 14,
+        marginBottom: 16,
+    },
+ 
+    input: {
+        flex: 1,
+        paddingVertical: 14,
+        fontSize: 16,
+        color: "#030303",
     },
 
     headerActions: {
@@ -79,12 +115,12 @@ export const styles = StyleSheet.create({
     streakNumber: {
         fontSize: 40,
         fontWeight: "800",
-        color: "#4F7CFF",
+        color: "#408bbc",
     },
 
     streakLabel: {
         fontSize: 14,
-        color: "#4F7CFF",
+        color: "#408bbc",
         fontWeight: "600",
     },
 
@@ -159,5 +195,26 @@ export const styles = StyleSheet.create({
         overflow: "hidden",
         marginTop: 20,
         marginBottom: 20,
+    },
+
+    button: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 8,
+        backgroundColor: "#408bbc",
+        borderRadius: 18,
+        paddingVertical: 16,
+        marginTop: 8,
+    },
+ 
+    buttonPressed: {
+        opacity: 0.85,
+    },
+ 
+    buttonText: {
+        color: "#f5f5f5",
+        fontSize: 16,
+        fontWeight: "700",
     },
 });

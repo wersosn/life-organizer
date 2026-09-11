@@ -24,7 +24,7 @@ export function SettingsRow({ label, onPress, destructive, subtitle }: Props) {
                 <Text
                     style={[
                         styles.label,
-                        { color: destructive ? "#E53935" : isDark ? "#fff" : "#000" },
+                        { color: destructive ? "#8a3c5c" : isDark ? "#f5f5f5" : "#030303" },
                     ]}
                 >
                     {label}

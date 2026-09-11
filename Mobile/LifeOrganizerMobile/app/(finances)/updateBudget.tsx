@@ -43,11 +43,11 @@ export default function UpdateBudgetScreen() {
                 contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}
                 keyboardShouldPersistTaps="handled"
             >
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Edit budget</Text>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Edit budget</Text>
 
                 <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Category</Text>
-                <View style={[styles.categoryDisplay, { backgroundColor: isDark ? "#1E1E1E" : "#fff", borderColor: isDark ? "#333" : "#ccc" }]}>
-                    <Text style={{ color: isDark ? "#fff" : "#000", fontWeight: "600" }}>{categoryName}</Text>
+                <View style={[styles.categoryDisplay, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5", borderColor: isDark ? "#333" : "#ccc" }]}>
+                    <Text style={{ color: isDark ? "#f5f5f5" : "#030303", fontWeight: "600" }}>{categoryName}</Text>
                 </View>
 
                 <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Monthly limit</Text>
@@ -63,7 +63,7 @@ export default function UpdateBudgetScreen() {
                 {error && <Text style={styles.errorText}>{error}</Text>}
 
                 <View style={styles.buttonWrapper}>
-                    <Button title="Save" onPress={handleUpdate} color="#4F7CFF" />
+                    <Button title="Save" onPress={handleUpdate} color="#408bbc" />
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

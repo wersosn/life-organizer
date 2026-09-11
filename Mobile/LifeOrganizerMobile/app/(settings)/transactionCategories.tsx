@@ -75,7 +75,7 @@ export default function TransactionCategoriesScreen() {
     return (
         <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
             <View style={styles.header}>
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Categories</Text>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Categories</Text>
                 <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
                 </Pressable>
@@ -89,19 +89,19 @@ export default function TransactionCategoriesScreen() {
                     keyExtractor={item => item.id}
                     contentContainerStyle={styles.list}
                     renderItem={({ item }) => (
-                        <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#fff" }]}>
+                        <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
                             <View style={styles.rowContent}>
-                                <Text style={[styles.name, { color: isDark ? "#fff" : "#000" }]}>{item.name}</Text>
+                                <Text style={[styles.name, { color: isDark ? "#f5f5f5" : "#030303" }]}>{item.name}</Text>
                                 <View
                                     style={[
                                         styles.badge,
-                                        { backgroundColor: item.type === TransactionType.Expense ? "#E5393520" : "#4CAF5020" },
+                                        { backgroundColor: item.type === TransactionType.Expense ? "#8a3c5c20" : "#4CAF5020" },
                                     ]}
                                 >
                                     <Text
                                         style={[
                                             styles.badgeText,
-                                            { color: item.type === TransactionType.Expense ? "#E53935" : "#4CAF50" },
+                                            { color: item.type === TransactionType.Expense ? "#8a3c5c" : "#4CAF50" },
                                         ]}
                                     >
                                         {item.type === TransactionType.Expense ? "Expense" : "Income"}

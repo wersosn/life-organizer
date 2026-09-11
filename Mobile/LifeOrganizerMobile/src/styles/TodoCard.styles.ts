@@ -22,14 +22,14 @@ export const styles = StyleSheet.create({
         height: 26,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: "#4F7CFF",
+        borderColor: "#408bbc",
         justifyContent: "center",
         alignItems: "center",
         marginRight: 14,
     },
 
     checked: {
-        backgroundColor: "#4F7CFF",
+        backgroundColor: "#408bbc",
     },
 
     checkmark: {
@@ -82,18 +82,18 @@ export const styles = StyleSheet.create({
 
     automationBorder: {
         borderLeftWidth: 3,
-        borderLeftColor: "#4F7CFF",
+        borderLeftColor: "#408bbc",
     },
 
     automationBadge: {
-        backgroundColor: "#4F7CFF20",
+        backgroundColor: "#408bbc20",
         paddingHorizontal: 8,
         paddingVertical: 2,
         borderRadius: 6,
     },
     
     automationBadgeText: {
-        color: "#4F7CFF",
+        color: "#408bbc",
         fontSize: 11,
         fontWeight: "700",
     },

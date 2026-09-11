@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     },
 
     errorText: {
-        color: "#E53935",
+        color: "#8a3c5c",
         fontSize: 13,
         marginBottom: 8,
     },
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     },
 
     createButton: {
-        backgroundColor: "#4F7CFF",
+        backgroundColor: "#408bbc",
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 20,

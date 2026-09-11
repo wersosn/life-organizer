@@ -21,7 +21,7 @@ export function ExpenseBreakdownChart({ breakdown }: Props) {
         );
     }
 
-    const data = toPieChartData(breakdown, isDark ? "#fff" : "#000");
+    const data = toPieChartData(breakdown, isDark ? "#f5f5f5" : "#030303");
 
     return (
         <View testID="expense-breakdown-chart">
@@ -30,7 +30,7 @@ export function ExpenseBreakdownChart({ breakdown }: Props) {
                 width={screenWidth}
                 height={200}
                 chartConfig={{
-                    color: () => (isDark ? "#fff" : "#000"),
+                    color: () => (isDark ? "#f5f5f5" : "#030303"),
                 }}
                 accessor="value"
                 backgroundColor="transparent"

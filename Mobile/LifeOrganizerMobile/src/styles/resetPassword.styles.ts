@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     },
 
     input: { 
-        backgroundColor: "#fff", 
+        backgroundColor: "#f5f5f5", 
         borderWidth: 1, 
         borderColor: "#ccc", 
         borderRadius: 12, 

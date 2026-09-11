@@ -58,7 +58,7 @@ export function EditChoreCategoryModal({ visible, category, onClose, onUpdated }
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
                 <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Edit category</Text>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Edit category</Text>
 
                     <TextInput
                         placeholder="Category name"
@@ -68,7 +68,7 @@ export function EditChoreCategoryModal({ visible, category, onClose, onUpdated }
                         autoFocus
                         style={[
                             styles.input,
-                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#fff" : "#000" },
+                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#f5f5f5" : "#030303" },
                         ]}
                     />
 
@@ -79,7 +79,7 @@ export function EditChoreCategoryModal({ visible, category, onClose, onUpdated }
                             <Text style={{ color: isDark ? "#ccc" : "#666", fontWeight: "600" }}>Cancel</Text>
                         </Pressable>
                         <Pressable onPress={handleUpdate} style={styles.createButton} testID="save-button">
-                            <Text style={{ color: "#fff", fontWeight: "600" }}>Save</Text>
+                            <Text style={{ color: "#f5f5f5", fontWeight: "600" }}>Save</Text>
                         </Pressable>
                     </View>
                 </View>

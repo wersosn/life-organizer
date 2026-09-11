@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: "#4F7CFF",
+        backgroundColor: "#408bbc",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
 
     summaryButtonText: {
         fontSize: 12,
-        color: "#4F7CFF",
+        color: "#408bbc",
         fontWeight: "600"
     },
 
@@ -136,7 +136,7 @@ export const styles = StyleSheet.create({
 
     exportButtonText: {
         fontSize: 12,
-        color: "#4F7CFF",
+        color: "#408bbc",
         fontWeight: "600"
     },
 

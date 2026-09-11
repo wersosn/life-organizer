@@ -1,16 +1,21 @@
 import { updateTodo } from "@/api/todoApi";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
+import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, View, Pressable } from "react-native";
 import { styles } from "../../src/styles/updateTodo.styles";
+import { Blob } from "@/components/ui/Blob";
+import { BackButton } from "@/components/ui/BackButton";
 
 export default function UpdateTodoScreen() {
     const params = useLocalSearchParams();
     const id = params.id as string;
     const [title, setTitle] = useState(params.title as string);
     const [description, setDescription] = useState(params.description as string);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function handleUpdate() {
         if (!title.trim()) {
@@ -31,62 +36,54 @@ export default function UpdateTodoScreen() {
     }
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-        >
-            <ScrollView
-                contentContainerStyle={[
-                    styles.container,
-                    {
-                        backgroundColor: isDark
-                            ? "#121212"
-                            : "#F5F5F5",
-                    },
-                ]}
-                keyboardShouldPersistTaps="handled"
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="top4" color={blobColor} width={430} style={styles.blobTop} />
+            <Blob variant="drip3" color={blobColor} width={430} style={styles.blobBottom} />
+            <BackButton />
+
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
             >
 
-                <Text
-                    style={[
-                        styles.title,
-                        {
-                            color: isDark
-                                ? "#fff"
-                                : "#000",
-                        },
-                    ]}
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    keyboardShouldPersistTaps="handled"
                 >
-                    New task
-                </Text>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>
+                        Update task
+                    </Text>
 
-                <TextInput
-                    placeholder="Title"
-                    placeholderTextColor="#888"
-                    value={title}
-                    onChangeText={setTitle}
-                    style={styles.input}
-                />
+                    <View style={styles.inputWrapper}>
+                        <TextInput
+                            placeholder="Title"
+                            placeholderTextColor="#888"
+                            value={title}
+                            onChangeText={setTitle}
+                            style={styles.input}
+                        />
+                    </View>
 
-                <TextInput
-                    placeholder="Description"
-                    placeholderTextColor="#888"
-                    value={description}
-                    onChangeText={setDescription}
-                    multiline
-                    style={[
-                        styles.input,
-                        styles.description
-                    ]}
-                />
+                    <View style={[styles.inputWrapper, styles.descriptionWrapper]}>
+                        <TextInput
+                            placeholder="Description"
+                            placeholderTextColor="#888"
+                            value={description}
+                            onChangeText={setDescription}
+                            multiline
+                            style={[styles.input, styles.description]}
+                        />
+                    </View>
 
-                <Button
-                    title="Save changes"
-                    onPress={handleUpdate}
-                    color="#4F7CFF"
-                />
-            </ScrollView>
-        </KeyboardAvoidingView>
+                    <Pressable
+                        style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+                        onPress={handleUpdate}
+                    >
+                        <Text style={styles.buttonText}>Save changes</Text>
+                    </Pressable>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </View>
     );
 }

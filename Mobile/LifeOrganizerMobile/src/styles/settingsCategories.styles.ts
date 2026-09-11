@@ -23,13 +23,13 @@ export const styles = StyleSheet.create({
         width: 34, 
         height: 34, 
         borderRadius: 17, 
-        backgroundColor: "#4F7CFF", 
+        backgroundColor: "#408bbc", 
         alignItems: "center", 
         justifyContent: "center" 
     },
 
     addButtonText: { 
-        color: "#fff", 
+        color: "#f5f5f5", 
         fontSize: 20, 
         fontWeight: "600", 
         lineHeight: 22 

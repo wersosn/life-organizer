@@ -93,19 +93,19 @@ export function TransactionsView() {
                     <View style={styles.summaryRow}>
                         <View style={styles.summaryItem}>
                             <Text style={[styles.summaryLabel, { color: isDark ? "#888" : "#999" }]}>Income</Text>
-                            <Text style={[styles.summaryValue, { color: "#4F7CFF" }]}>
+                            <Text style={[styles.summaryValue, { color: "#408bbc" }]}>
                                 +{summary.totalIncome.toFixed(2)} zł
                             </Text>
                         </View>
                         <View style={styles.summaryItem}>
                             <Text style={[styles.summaryLabel, { color: isDark ? "#888" : "#999" }]}>Expenses</Text>
-                            <Text style={[styles.summaryValue, { color: "#E53935" }]}>
+                            <Text style={[styles.summaryValue, { color: "#8a3c5c" }]}>
                                 -{summary.totalExpense.toFixed(2)} zł
                             </Text>
                         </View>
                         <View style={styles.summaryItem}>
                             <Text style={[styles.summaryLabel, { color: isDark ? "#888" : "#999" }]}>Balance</Text>
-                            <Text style={[styles.summaryValue, { color: isDark ? "#fff" : "#000" }]}>
+                            <Text style={[styles.summaryValue, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                                 {summary.balance.toFixed(2)} zł
                             </Text>
                         </View>

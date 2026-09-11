@@ -26,7 +26,7 @@ export function ChoreCard({ chore, onComplete, onPress, onEdit, onDelete }: Prop
         >
             <View style={styles.content}>
                 <View style={styles.nameRow}>
-                    <Text style={[styles.name, { color: isDark ? "#fff" : "#000" }]} numberOfLines={1}>
+                    <Text style={[styles.name, { color: isDark ? "#f5f5f5" : "#030303" }]} numberOfLines={1}>
                         {chore.name}
                     </Text>
                     {chore.isOverdue && (
@@ -47,7 +47,7 @@ export function ChoreCard({ chore, onComplete, onPress, onEdit, onDelete }: Prop
                     </Text>
                 </View>
 
-                <Text style={[styles.lastCompleted, { color: chore.isOverdue ? "#E53935" : isDark ? "#666" : "#aaa" }]}>
+                <Text style={[styles.lastCompleted, { color: chore.isOverdue ? "#8a3c5c" : isDark ? "#666" : "#aaa" }]}>
                     {formatLastCompleted(chore.lastCompletedAt)}
                 </Text>
             </View>

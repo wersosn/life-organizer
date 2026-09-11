@@ -34,7 +34,7 @@ export default function ForgotPasswordScreen() {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Reset password</Text>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Reset password</Text>
                 <Text style={[styles.subtitle, { color: isDark ? "#888" : "#999" }]}>
                     Enter your email and we'll send you a link to reset your password.
                 </Text>
@@ -49,7 +49,7 @@ export default function ForgotPasswordScreen() {
                     style={styles.input}
                 />
 
-                <Button title={loading ? "Sending..." : "Send reset link"} onPress={handleSubmit} disabled={loading} color="#4F7CFF" />
+                <Button title={loading ? "Sending..." : "Send reset link"} onPress={handleSubmit} disabled={loading} color="#408bbc" />
             </View>
         </KeyboardAvoidingView>
     );

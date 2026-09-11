@@ -63,7 +63,7 @@ export function EditCategoryModal({ visible, category, onClose, onUpdated }: Pro
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
                 <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                         Edit category
                     </Text>
 
@@ -75,7 +75,7 @@ export function EditCategoryModal({ visible, category, onClose, onUpdated }: Pro
                         autoFocus
                         style={[
                             styles.input,
-                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#fff" : "#000" },
+                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#f5f5f5" : "#030303" },
                         ]}
                     />
 
@@ -85,11 +85,11 @@ export function EditCategoryModal({ visible, category, onClose, onUpdated }: Pro
                             style={[
                                 styles.typeSegment,
                                 {
-                                    backgroundColor: type === TransactionType.Expense ? "#E53935" : isDark ? "#2A2A2A" : "#F5F5F5",
+                                    backgroundColor: type === TransactionType.Expense ? "#8a3c5c" : isDark ? "#2A2A2A" : "#F5F5F5",
                                 },
                             ]}
                         >
-                            <Text style={{ color: type === TransactionType.Expense ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            <Text style={{ color: type === TransactionType.Expense ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                                 Expense
                             </Text>
                         </Pressable>
@@ -102,7 +102,7 @@ export function EditCategoryModal({ visible, category, onClose, onUpdated }: Pro
                                 },
                             ]}
                         >
-                            <Text style={{ color: type === TransactionType.Income ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            <Text style={{ color: type === TransactionType.Income ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                                 Income
                             </Text>
                         </Pressable>
@@ -115,7 +115,7 @@ export function EditCategoryModal({ visible, category, onClose, onUpdated }: Pro
                             <Text style={{ color: isDark ? "#ccc" : "#666", fontWeight: "600" }}>Cancel</Text>
                         </Pressable>
                         <Pressable onPress={handleUpdate} style={styles.createButton} testID="save-button">
-                            <Text style={{ color: "#fff", fontWeight: "600" }}>Save</Text>
+                            <Text style={{ color: "#f5f5f5", fontWeight: "600" }}>Save</Text>
                         </Pressable>
                     </View>
                 </View>

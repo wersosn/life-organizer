@@ -1,10 +1,10 @@
 import { createTodo } from "@/api/todoApi";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Text, useColorScheme, Button, TextInput, KeyboardAvoidingView, ScrollView, Platform, View, Pressable } from "react-native";
+import { Text, useColorScheme, TextInput, KeyboardAvoidingView, ScrollView, Platform, View, Pressable } from "react-native";
 import { styles } from "../../src/styles/createTodo.styles";
 import { Blob } from "@/components/ui/Blob";
-import { Ionicons } from "@expo/vector-icons";
+import { BackButton } from "@/components/ui/BackButton";
 
 export default function CreateTodoScreen() {
     const [title, setTitle] = useState("");
@@ -12,8 +12,8 @@ export default function CreateTodoScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
-    const screenBackground = isDark ? "#121212" : "#F5F5F5";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function handleCreate() {
         if (!title.trim()) {
@@ -29,6 +29,8 @@ export default function CreateTodoScreen() {
         <View style={[styles.screen, { backgroundColor: screenBackground }]}>
             <Blob variant="top4" color={blobColor} width={430} style={styles.blobTop} />
             <Blob variant="drip3" color={blobColor} width={430} style={styles.blobBottom} />
+            <BackButton />
+            
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -38,12 +40,11 @@ export default function CreateTodoScreen() {
                     contentContainerStyle={styles.container}
                     keyboardShouldPersistTaps="handled"
                 >
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                         New task
                     </Text>
 
                     <View style={styles.inputWrapper}>
-                        <Ionicons name="pricetag-outline" size={18} color="#9A9A9A" style={styles.inputIcon} />
                         <TextInput
                             placeholder="Title"
                             placeholderTextColor="#888"
@@ -54,12 +55,6 @@ export default function CreateTodoScreen() {
                     </View>
 
                     <View style={[styles.inputWrapper, styles.descriptionWrapper]}>
-                        <Ionicons
-                            name="document-text-outline"
-                            size={18}
-                            color="#9A9A9A"
-                            style={[styles.inputIcon, styles.descriptionIcon]}
-                        />
                         <TextInput
                             placeholder="Description"
                             placeholderTextColor="#888"

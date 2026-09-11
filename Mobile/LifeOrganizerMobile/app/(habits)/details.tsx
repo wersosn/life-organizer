@@ -8,6 +8,8 @@ import { buildLast30Days, calculateStreak } from "@/utils/habitCalendar";
 import { formatScheduledDays, FREQUENCY_LABELS } from "@/utils/habitLabels";
 import { styles } from "../../src/styles/detailsHabit.styles";
 import { HabitWeeklyChart } from "@/components/HabitWeeklyChart";
+import { Blob } from "@/components/ui/Blob";
+import { BackButton } from "@/components/ui/BackButton";
 
 export default function HabitDetailsScreen() {
     const params = useLocalSearchParams();
@@ -15,8 +17,11 @@ export default function HabitDetailsScreen() {
 
     const [habit, setHabit] = useState<HabitDetails | null>(null);
     const [loading, setLoading] = useState(true);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function loadHabit() {
         try {
@@ -98,7 +103,7 @@ export default function HabitDetailsScreen() {
     if (loading) {
         return (
             <View style={[styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <ActivityIndicator size="large" color="#4F7CFF" />
+                <ActivityIndicator size="large" color="#408bbc" />
             </View>
         );
     }
@@ -106,7 +111,7 @@ export default function HabitDetailsScreen() {
     if (!habit) {
         return (
             <View style={[styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <Text style={{ color: isDark ? "#fff" : "#000" }}>Habit not found</Text>
+                <Text style={{ color: isDark ? "#f5f5f5" : "#030303" }}>Habit not found</Text>
             </View>
         );
     }
@@ -116,116 +121,119 @@ export default function HabitDetailsScreen() {
     const last30Days = buildLast30Days(habit.recentCompletions);
 
     return (
-        <ScrollView contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <View style={styles.headerRow}>
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]} numberOfLines={2}>
-                    {habit.name}
-                </Text>
-                <View style={styles.headerActions}>
-                    <Pressable onPress={handleEdit} hitSlop={10} style={styles.iconButton}>
-                        <Image
-                            source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
-                            style={styles.icon}
-                        />
-                    </Pressable>
-                    <Pressable onPress={handleDelete} hitSlop={10} style={styles.iconButton}>
-                        <Image
-                            source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
-                            style={styles.icon}
-                        />
-                    </Pressable>
-                </View>
-            </View>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
 
-            <View style={styles.badgeRow}>
-                <View style={[styles.badge, { backgroundColor: isDark ? "#2A2A2A" : "#F0F0F0" }]}>
-                    <Text style={[styles.badgeText, { color: isDark ? "#AAA" : "#666" }]}>
-                        {FREQUENCY_LABELS[habit.frequency]}
+            <ScrollView contentContainerStyle={styles.container}>
+                <View style={styles.headerRow}>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]} numberOfLines={2}>
+                        {habit.name}
                     </Text>
+                    <View style={styles.headerActions}>
+                        <Pressable onPress={handleEdit} hitSlop={10} style={styles.iconButton}>
+                            <Image
+                                source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
+                                style={styles.icon}
+                            />
+                        </Pressable>
+                        <Pressable onPress={handleDelete} hitSlop={10} style={styles.iconButton}>
+                            <Image
+                                source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
+                                style={styles.icon}
+                            />
+                        </Pressable>
+                    </View>
                 </View>
-                {habit.frequency !== HabitFrequency.Daily && habit.scheduledDays.length > 0 && (
-                    <Text style={[styles.badgeSubtext, { color: isDark ? "#888" : "#999" }]}>
-                        {formatScheduledDays(habit.scheduledDays)}
+
+                <View style={styles.badgeRow}>
+                    <View style={[styles.badge, { backgroundColor: isDark ? "#2A2A2A" : "#F0F0F0" }]}>
+                        <Text style={[styles.badgeText, { color: isDark ? "#AAA" : "#666" }]}>
+                            {FREQUENCY_LABELS[habit.frequency]}
+                        </Text>
+                    </View>
+                    {habit.frequency !== HabitFrequency.Daily && habit.scheduledDays.length > 0 && (
+                        <Text style={[styles.badgeSubtext, { color: isDark ? "#888" : "#999" }]}>
+                            {formatScheduledDays(habit.scheduledDays)}
+                        </Text>
+                    )}
+                </View>
+
+                {deadlineDate && (
+                    <Text style={[styles.deadlineText, { color: isDark ? "#888" : "#999" }]}>
+                        Deadline: {formatTimeDisplay(deadlineDate)}
                     </Text>
                 )}
-            </View>
 
-            {deadlineDate && (
-                <Text style={[styles.deadlineText, { color: isDark ? "#888" : "#999" }]}>
-                    Deadline: {formatTimeDisplay(deadlineDate)}
+                <View style={styles.streakCard}>
+                    <Text style={styles.streakNumber}>{streak}</Text>
+                    <Text style={styles.streakLabel}>day{streak === 1 ? "" : "s"} streak</Text>
+                </View>
+
+                <Pressable onPress={handleToggleToday} style={[
+                    styles.completeButton,
+                    { backgroundColor: isCompletedToday ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5" },
+                    { borderColor: isCompletedToday ? "#408bbc" : isDark ? "#333" : "#ccc" },
+                ]}>
+                    <Text style={[styles.completeButtonText, { color: isCompletedToday ? "#f5f5f5" : isDark ? "#ccc" : "#333" },]}>
+                        {isCompletedToday ? "✓ Completed today" : "Mark as done today"}
+                    </Text>
+                </Pressable>
+
+                <Text style={[styles.sectionTitle, { color: isDark ? "#f5f5f5" : "#030303" }]}>
+                    Last 30 days
                 </Text>
-            )}
 
-            <View style={styles.streakCard}>
-                <Text style={styles.streakNumber}>{streak}</Text>
-                <Text style={styles.streakLabel}>day{streak === 1 ? "" : "s"} streak</Text>
-            </View>
-
-            <Pressable onPress={handleToggleToday} style={[
-                styles.completeButton,
-                { backgroundColor: isCompletedToday ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff" },
-                { borderColor: isCompletedToday ? "#4F7CFF" : isDark ? "#333" : "#ccc" },
-            ]}>
-                <Text style={[styles.completeButtonText, { color: isCompletedToday ? "#fff" : isDark ? "#ccc" : "#333" },]}>
-                    {isCompletedToday ? "✓ Completed today" : "Mark as done today"}
-                </Text>
-            </Pressable>
-
-            <Text style={[styles.sectionTitle, { color: isDark ? "#fff" : "#000" }]}>
-                Last 30 days
-            </Text>
-
-            <View style={styles.grid}>
-                {last30Days.map(day => (
-                    <View
-                        key={day.date}
-                        style={[
-                            styles.dayCell,
-                            {
-                                backgroundColor:
-                                    day.status === HabitCompletionStatus.Completed
-                                        ? "#4F7CFF"
-                                        : day.status === HabitCompletionStatus.Missed
-                                            ? "#E5393555"
-                                            : isDark
-                                                ? "#1E1E1E"
-                                                : "#EFEFEF",
-                            },
-                        ]}
-                    >
-                        <Text
+                <View style={styles.grid}>
+                    {last30Days.map(day => (
+                        <View
+                            key={day.date}
                             style={[
-                                styles.dayCellText,
+                                styles.dayCell,
                                 {
-                                    color:
+                                    backgroundColor:
                                         day.status === HabitCompletionStatus.Completed
-                                            ? "#fff"
-                                            : isDark
-                                                ? "#888"
-                                                : "#999",
+                                            ? "#408bbc"
+                                            : day.status === HabitCompletionStatus.Missed
+                                                ? "#8a3c5c"
+                                                : isDark
+                                                    ? "#1E1E1E"
+                                                    : "#EFEFEF",
                                 },
                             ]}
                         >
-                            {day.dayOfMonth}
-                        </Text>
+                            <Text
+                                style={[
+                                    styles.dayCellText,
+                                    {
+                                        color:
+                                            day.status === HabitCompletionStatus.Completed
+                                                ? "#f5f5f5"
+                                                : isDark
+                                                    ? "#888"
+                                                    : "#999",
+                                    },
+                                ]}
+                            >
+                                {day.dayOfMonth}
+                            </Text>
+                        </View>
+                    ))}
+                </View>
+
+                <View style={styles.legendRow}>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendDot, { backgroundColor: "#408bbc" }]} />
+                        <Text style={[styles.legendText, { color: isDark ? "#888" : "#999" }]}>Completed</Text>
                     </View>
-                ))}
-            </View>
-
-            <View style={styles.legendRow}>
-                <View style={styles.legendItem}>
-                    <View style={[styles.legendDot, { backgroundColor: "#4F7CFF" }]} />
-                    <Text style={[styles.legendText, { color: isDark ? "#888" : "#999" }]}>Completed</Text>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendDot, { backgroundColor: "#8a3c5c" }]} />
+                        <Text style={[styles.legendText, { color: isDark ? "#888" : "#999" }]}>Missed</Text>
+                    </View>
                 </View>
-                <View style={styles.legendItem}>
-                    <View style={[styles.legendDot, { backgroundColor: "#E5393555" }]} />
-                    <Text style={[styles.legendText, { color: isDark ? "#888" : "#999" }]}>Missed</Text>
-                </View>
-            </View>
 
-            <View style={styles.barChartContainer}>
-                <HabitWeeklyChart completions={habit.recentCompletions} />
-            </View>
-        </ScrollView>
+                <View style={styles.barChartContainer}>
+                    <HabitWeeklyChart completions={habit.recentCompletions} />
+                </View>
+            </ScrollView>
+        </View>
     );
 }

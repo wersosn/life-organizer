@@ -12,13 +12,13 @@ export function BudgetCard({ budget, onEdit, onDelete }: Props) {
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
-    const barColor = budget.isExceeded ? "#E53935" : "#4F7CFF";
+    const barColor = budget.isExceeded ? "#8a3c5c" : "#408bbc";
     const clampedPercentage = Math.min(budget.percentageUsed, 100);
 
     return (
         <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
             <View style={styles.cardHeader}>
-                <Text style={[styles.categoryName, { color: isDark ? "#fff" : "#000" }]}>
+                <Text style={[styles.categoryName, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                     {budget.categoryName}
                 </Text>
                 <View style={styles.actions}>

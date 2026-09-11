@@ -45,7 +45,7 @@ export default function ResetPasswordScreen() {
     if (!token) {
         return (
             <View style={[styles.container, styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Invalid link</Text>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Invalid link</Text>
                 <Text style={{ color: isDark ? "#888" : "#999", textAlign: "center" }}>
                     This password reset link is invalid or has expired. Please request a new one.
                 </Text>
@@ -57,7 +57,7 @@ export default function ResetPasswordScreen() {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Set a new password</Text>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Set a new password</Text>
 
                 <TextInput
                     placeholder="New password"
@@ -76,7 +76,7 @@ export default function ResetPasswordScreen() {
                     style={[styles.input, { color: "#030303" }]}
                 />
 
-                <Button title={loading ? "Saving..." : "Reset password"} onPress={handleSubmit} disabled={loading} color="#4F7CFF" />
+                <Button title={loading ? "Saving..." : "Reset password"} onPress={handleSubmit} disabled={loading} color="#408bbc" />
             </View>
         </KeyboardAvoidingView>
     );

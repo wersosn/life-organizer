@@ -37,14 +37,14 @@ export default function RetentionScreen() {
     if (loading) {
         return (
             <View style={[styles.container, styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <ActivityIndicator size="large" color="#4F7CFF" />
+                <ActivityIndicator size="large" color="#408bbc" />
             </View>
         );
     }
 
     return (
         <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Task history retention</Text>
+            <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Task history retention</Text>
             <Text style={[styles.subtitle, { color: isDark ? "#888" : "#999" }]}>
                 Completed tasks older than this many days will be automatically deleted.
             </Text>
@@ -53,12 +53,12 @@ export default function RetentionScreen() {
                 value={days}
                 onChangeText={setDays}
                 keyboardType="number-pad"
-                style={[styles.input, { backgroundColor: isDark ? "#1E1E1E" : "#fff", color: isDark ? "#fff" : "#000" }]}
+                style={[styles.input, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5", color: isDark ? "#f5f5f5" : "#030303" }]}
             />
 
             {error && <Text style={styles.errorText}>{error}</Text>}
 
-            <Button title="Save" onPress={handleSave} color="#4F7CFF"/>
+            <Button title="Save" onPress={handleSave} color="#408bbc"/>
         </View>
     );
 }

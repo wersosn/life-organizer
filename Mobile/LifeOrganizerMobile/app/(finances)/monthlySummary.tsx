@@ -66,35 +66,35 @@ export default function MonthlySummaryScreen() {
         >
             <View style={styles.monthSelector}>
                 <Pressable onPress={goToPreviousMonth} hitSlop={10}>
-                    <Text style={[styles.arrow, { color: isDark ? "#fff" : "#000" }]}>‹</Text>
+                    <Text style={[styles.arrow, { color: isDark ? "#f5f5f5" : "#030303" }]}>‹</Text>
                 </Pressable>
-                <Text style={[styles.monthLabel, { color: isDark ? "#fff" : "#000" }]}>
+                <Text style={[styles.monthLabel, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                     {MONTH_NAMES[month - 1]} {year}
                 </Text>
                 <Pressable onPress={goToNextMonth} hitSlop={10}>
-                    <Text style={[styles.arrow, { color: isDark ? "#fff" : "#000" }]}>›</Text>
+                    <Text style={[styles.arrow, { color: isDark ? "#f5f5f5" : "#030303" }]}>›</Text>
                 </Pressable>
             </View>
 
             {loading ? (
-                <ActivityIndicator size="large" color="#4F7CFF" style={{ marginTop: 40 }} />
+                <ActivityIndicator size="large" color="#408bbc" style={{ marginTop: 40 }} />
             ) : !summary ? (
                 <Text style={{ color: isDark ? "#888" : "#999", textAlign: "center", marginTop: 40 }}>
                     No data available
                 </Text>
             ) : (
                 <>
-                    <View style={[styles.totalsCard, { backgroundColor: isDark ? "#1E1E1E" : "#fff" }]}>
+                    <View style={[styles.totalsCard, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
                         <View style={styles.totalsRow}>
                             <View style={styles.totalsItem}>
                                 <Text style={[styles.totalsLabel, { color: isDark ? "#888" : "#999" }]}>Income</Text>
-                                <Text style={[styles.totalsValue, { color: "#4F7CFF" }]}>
+                                <Text style={[styles.totalsValue, { color: "#408bbc" }]}>
                                     +{summary.totalIncome.toFixed(2)} zł
                                 </Text>
                             </View>
                             <View style={styles.totalsItem}>
                                 <Text style={[styles.totalsLabel, { color: isDark ? "#888" : "#999" }]}>Expenses</Text>
-                                <Text style={[styles.totalsValue, { color: "#E53935" }]}>
+                                <Text style={[styles.totalsValue, { color: "#8a3c5c" }]}>
                                     -{summary.totalExpense.toFixed(2)} zł
                                 </Text>
                             </View>
@@ -105,7 +105,7 @@ export default function MonthlySummaryScreen() {
                             <Text
                                 style={[
                                     styles.balanceValue,
-                                    { color: summary.balance >= 0 ? "#4F7CFF" : "#E53935" },
+                                    { color: summary.balance >= 0 ? "#408bbc" : "#8a3c5c" },
                                 ]}
                             >
                                 {summary.balance.toFixed(2)} zł
@@ -113,7 +113,7 @@ export default function MonthlySummaryScreen() {
                         </View>
                     </View>
 
-                    <Text style={[styles.sectionTitle, { color: isDark ? "#fff" : "#000" }]}>
+                    <Text style={[styles.sectionTitle, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                         Expenses by category
                     </Text>
 
@@ -127,7 +127,7 @@ export default function MonthlySummaryScreen() {
                             return (
                                 <View key={category.categoryId} style={styles.categoryRow}>
                                     <View style={styles.categoryHeader}>
-                                        <Text style={[styles.categoryName, { color: isDark ? "#fff" : "#000" }]}>
+                                        <Text style={[styles.categoryName, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                                             {category.categoryName}
                                         </Text>
                                         <Text style={[styles.categoryAmount, { color: isDark ? "#ccc" : "#444" }]}>

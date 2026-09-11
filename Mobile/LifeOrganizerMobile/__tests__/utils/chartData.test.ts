@@ -8,23 +8,23 @@ describe("toPieChartData", () => {
             { categoryId: "2", categoryName: "Transport", total: 50 },
         ];
 
-        const result = toPieChartData(breakdown, "#000");
+        const result = toPieChartData(breakdown, "#030303");
 
         expect(result).toHaveLength(2);
-        expect(result[0]).toMatchObject({ name: "Food", value: 150, legendFontColor: "#000" });
+        expect(result[0]).toMatchObject({ name: "Food", value: 150, legendFontColor: "#030303" });
         expect(result[1]).toMatchObject({ name: "Transport", value: 50 });
     });
 
     it("assigns a color to every entry", () => {
         const breakdown = [{ categoryId: "1", categoryName: "Food", total: 100 }];
 
-        const result = toPieChartData(breakdown, "#000");
+        const result = toPieChartData(breakdown, "#030303");
 
         expect(result[0].color).toBeTruthy();
     });
 
     it("returns an empty array when given no data", () => {
-        expect(toPieChartData([], "#000")).toEqual([]);
+        expect(toPieChartData([], "#030303")).toEqual([]);
     });
 
     it("cycles through the color palette when there are more categories than colors", () => {
@@ -34,7 +34,7 @@ describe("toPieChartData", () => {
             total: 10,
         }));
 
-        const result = toPieChartData(breakdown, "#000");
+        const result = toPieChartData(breakdown, "#030303");
         
         expect(result[8].color).toBe(result[0].color);
     });

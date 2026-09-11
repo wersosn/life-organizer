@@ -30,7 +30,7 @@ export function TransactionCard({ transaction, onEdit, onDelete }: Props) {
                 </Text>
             </View>
 
-            <Text style={[styles.amount, { color: isExpense ? "#E53935" : "#4F7CFF" }]}>
+            <Text style={[styles.amount, { color: isExpense ? "#8a3c5c" : "#408bbc" }]}>
                 {formatAmount(transaction.amount, transaction.type)}
             </Text>
 

@@ -1,6 +1,6 @@
 import { router, Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Modal, Pressable, Text, View } from "react-native";
 import { styles } from "../../src/styles/addModal.styles";
 import { useAuth } from "@/auth/AuthContext";
 import { HapticTab } from "@/components/haptic-tab";
@@ -82,14 +82,14 @@ export default function TabLayout() {
                                     width: 64,
                                     height: 64,
                                     borderRadius: 32,
-                                    backgroundColor: "#4F7CFF",
+                                    backgroundColor: "#408bbc",
                                     justifyContent: "center",
                                     alignItems: "center",
                                 }}
                             >
                                 <Text
                                     style={{
-                                        color: "#fff",
+                                        color: "#f5f5f5",
                                         fontSize: 34,
                                         fontWeight: "600",
                                     }}
@@ -150,7 +150,7 @@ export default function TabLayout() {
                                 }}
                             >
                                 <View style={styles.optionIcon}>
-                                    <Ionicons name={item.icon} size={18} color="#4F7CFF" />
+                                    <Ionicons name={item.icon} size={18} color="#408bbc" />
                                 </View>
                                 <Text style={styles.optionText}>{item.label}</Text>
                                 <Ionicons name="chevron-forward" size={18} color="#C4C4C4" />

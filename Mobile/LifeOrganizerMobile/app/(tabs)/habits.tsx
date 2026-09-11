@@ -19,8 +19,8 @@ export default function HabitsScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
-    const screenBackground = isDark ? "#121212" : "#F5F5F5";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     const visibleHabits = useMemo(() => {
         if (viewMode === "all") {
@@ -144,12 +144,12 @@ export default function HabitsScreen() {
                         style={[
                             styles.toggleButton,
                             {
-                                backgroundColor: viewMode === "today" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                backgroundColor: viewMode === "today" ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
                                 borderColor: isDark ? "#333" : "#ccc",
                             },
                         ]}
                     >
-                        <Text style={{ color: viewMode === "today" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        <Text style={{ color: viewMode === "today" ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                             Today
                         </Text>
                     </Pressable>
@@ -158,12 +158,12 @@ export default function HabitsScreen() {
                         style={[
                             styles.toggleButton,
                             {
-                                backgroundColor: viewMode === "all" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                backgroundColor: viewMode === "all" ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
                                 borderColor: isDark ? "#333" : "#ccc",
                             },
                         ]}
                     >
-                        <Text style={{ color: viewMode === "all" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        <Text style={{ color: viewMode === "all" ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                             All
                         </Text>
                     </Pressable>

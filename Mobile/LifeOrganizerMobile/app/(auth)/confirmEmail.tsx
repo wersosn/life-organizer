@@ -30,28 +30,28 @@ export default function ConfirmEmailScreen() {
         <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
             {status === "loading" && (
                 <>
-                    <ActivityIndicator size="large" color="#4F7CFF" />
+                    <ActivityIndicator size="large" color="#408bbc" />
                     <Text style={{ color: isDark ? "#888" : "#999", marginTop: 12 }}>Confirming your email...</Text>
                 </>
             )}
 
             {status === "success" && (
                 <>
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Email confirmed!</Text>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Email confirmed!</Text>
                     <Text style={{ color: isDark ? "#888" : "#999", textAlign: "center", marginBottom: 20 }}>
                         You can now log in to your account.
                     </Text>
-                    <Button title="Go to login" onPress={() => router.replace("/(auth)/login")} color="#4F7CFF" />
+                    <Button title="Go to login" onPress={() => router.replace("/(auth)/login")} color="#408bbc" />
                 </>
             )}
 
             {status === "error" && (
                 <>
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>Confirmation failed</Text>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Confirmation failed</Text>
                     <Text style={{ color: isDark ? "#888" : "#999", textAlign: "center", marginBottom: 20 }}>
                         This link may be invalid or expired.
                     </Text>
-                    <Button title="Back to login" onPress={() => router.replace("/(auth)/login")} color="#4F7CFF" />
+                    <Button title="Back to login" onPress={() => router.replace("/(auth)/login")} color="#408bbc" />
                 </>
             )}
         </View>

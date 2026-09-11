@@ -83,7 +83,7 @@ export default function CreateTransactionScreen() {
                 contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}
                 keyboardShouldPersistTaps="handled"
             >
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>New transaction</Text>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>New transaction</Text>
 
                 <View style={styles.segmentedControl}>
                     <Pressable
@@ -91,12 +91,12 @@ export default function CreateTransactionScreen() {
                         style={[
                             styles.segment,
                             {
-                                backgroundColor: type === TransactionType.Expense ? "#E53935" : isDark ? "#1E1E1E" : "#fff",
+                                backgroundColor: type === TransactionType.Expense ? "#8a3c5c" : isDark ? "#1E1E1E" : "#f5f5f5",
                                 borderColor: isDark ? "#333" : "#ccc",
                             },
                         ]}
                     >
-                        <Text style={{ color: type === TransactionType.Expense ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        <Text style={{ color: type === TransactionType.Expense ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                             Expense
                         </Text>
                     </Pressable>
@@ -105,12 +105,12 @@ export default function CreateTransactionScreen() {
                         style={[
                             styles.segment,
                             {
-                                backgroundColor: type === TransactionType.Income ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                backgroundColor: type === TransactionType.Income ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
                                 borderColor: isDark ? "#333" : "#ccc",
                             },
                         ]}
                     >
-                        <Text style={{ color: type === TransactionType.Income ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        <Text style={{ color: type === TransactionType.Income ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                             Income
                         </Text>
                     </Pressable>
@@ -152,12 +152,12 @@ export default function CreateTransactionScreen() {
                                     style={[
                                         styles.categoryChip,
                                         {
-                                            backgroundColor: isSelected ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                            backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
                                             borderColor: isDark ? "#333" : "#ccc",
                                         },
                                     ]}
                                 >
-                                    <Text style={{ color: isSelected ? "#fff" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
+                                    <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
                                         {category.name}
                                     </Text>
                                 </Pressable>
@@ -179,7 +179,7 @@ export default function CreateTransactionScreen() {
                 {error && <Text style={styles.errorText}>{error}</Text>}
 
                 <View style={styles.buttonWrapper}>
-                    <Button title="Create" onPress={handleCreate} color="#4F7CFF" />
+                    <Button title="Create" onPress={handleCreate} color="#408bbc" />
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

@@ -16,8 +16,8 @@ export default function FinancesScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
-    const screenBackground = isDark ? "#121212" : "#F5F5F5";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function handleExport() {
         try {
@@ -54,12 +54,12 @@ export default function FinancesScreen() {
                         style={[
                             styles.segment,
                             {
-                                backgroundColor: view === "transactions" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                backgroundColor: view === "transactions" ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
                                 borderColor: isDark ? "#333" : "#ccc",
                             },
                         ]}
                     >
-                        <Text style={{ color: view === "transactions" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        <Text style={{ color: view === "transactions" ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                             Transactions
                         </Text>
                     </Pressable>
@@ -68,12 +68,12 @@ export default function FinancesScreen() {
                         style={[
                             styles.segment,
                             {
-                                backgroundColor: view === "budgets" ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                backgroundColor: view === "budgets" ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
                                 borderColor: isDark ? "#333" : "#ccc",
                             },
                         ]}
                     >
-                        <Text style={{ color: view === "budgets" ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                        <Text style={{ color: view === "budgets" ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                             Budgets
                         </Text>
                     </Pressable>

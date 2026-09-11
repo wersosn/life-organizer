@@ -48,7 +48,7 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
                 <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                         New {type === TransactionType.Expense ? "expense" : "income"} category
                     </Text>
 
@@ -60,7 +60,7 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                         autoFocus
                         style={[
                             styles.input,
-                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#fff" : "#000" },
+                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#f5f5f5" : "#030303" },
                         ]}
                     />
 
@@ -69,10 +69,10 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                             onPress={() => setType(TransactionType.Expense)}
                             style={[
                                 styles.typeSegment,
-                                { backgroundColor: type === TransactionType.Expense ? "#E53935" : isDark ? "#2A2A2A" : "#F5F5F5" },
+                                { backgroundColor: type === TransactionType.Expense ? "#8a3c5c" : isDark ? "#2A2A2A" : "#F5F5F5" },
                             ]}
                         >
-                            <Text style={{ color: type === TransactionType.Expense ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            <Text style={{ color: type === TransactionType.Expense ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                                 Expense
                             </Text>
                         </Pressable>
@@ -80,10 +80,10 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                             onPress={() => setType(TransactionType.Income)}
                             style={[
                                 styles.typeSegment,
-                                { backgroundColor: type === TransactionType.Income ? "#4F7CFF" : isDark ? "#2A2A2A" : "#F5F5F5" },
+                                { backgroundColor: type === TransactionType.Income ? "#408bbc" : isDark ? "#2A2A2A" : "#F5F5F5" },
                             ]}
                         >
-                            <Text style={{ color: type === TransactionType.Income ? "#fff" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
+                            <Text style={{ color: type === TransactionType.Income ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontWeight: "600" }}>
                                 Income
                             </Text>
                         </Pressable>
@@ -96,7 +96,7 @@ export function CreateCategoryModal({ visible, onClose, onCreated }: Props) {
                             <Text style={{ color: isDark ? "#ccc" : "#666", fontWeight: "600" }}>Cancel</Text>
                         </Pressable>
                         <Pressable onPress={handleCreate} style={styles.createButton} testID="create-button">
-                            <Text style={{ color: "#fff", fontWeight: "600" }}>Create</Text>
+                            <Text style={{ color: "#f5f5f5", fontWeight: "600" }}>Create</Text>
                         </Pressable>
                     </View>
                 </View>

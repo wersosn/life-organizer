@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
         padding: 14,
         borderRadius: 12,
         marginBottom: 10,
-        shadowColor: "#000",
+        shadowColor: "#030303",
         shadowOpacity: 0.05,
         shadowRadius: 4,
         shadowOffset: { width: 0, height: 2 },
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
 
     overdueBorder: {
         borderLeftWidth: 3,
-        borderLeftColor: "#E53935",
+        borderLeftColor: "#8a3c5c",
     },
     
     content: { 
@@ -35,14 +35,14 @@ export const styles = StyleSheet.create({
     },
 
     overdueBadge: { 
-        backgroundColor: "#E5393520", 
+        backgroundColor: "#8a3c5c20", 
         paddingHorizontal: 8, 
         paddingVertical: 2, 
         borderRadius: 6 
     },
 
     overdueBadgeText: { 
-        color: "#E53935", 
+        color: "#8a3c5c", 
         fontSize: 11, 
         fontWeight: "700" 
     },
@@ -81,14 +81,14 @@ export const styles = StyleSheet.create({
 
     completeButton: {
         flex: 1,
-        backgroundColor: "#4F7CFF",
+        backgroundColor: "#408bbc",
         borderRadius: 10,
         paddingVertical: 10,
         alignItems: "center",
     },
 
     completeButtonText: { 
-        color: "#fff", 
+        color: "#f5f5f5", 
         fontSize: 16, 
         fontWeight: "700" 
     },

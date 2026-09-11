@@ -15,7 +15,7 @@ export type BarChartData = {
 };
 
 const CHART_COLORS = [
-    "#4F7CFF", "#E53935", "#4CAF50", "#FF9800",
+    "#408bbc", "#8a3c5c", "#4CAF50", "#FF9800",
     "#9C27B0", "#00BCD4", "#FFC107", "#795548",
 ];
 

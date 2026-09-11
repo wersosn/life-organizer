@@ -46,9 +46,9 @@ export const styles = StyleSheet.create({
     inputWrapper: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#f5f5f5",
         borderWidth: 1,
-        borderColor: "#E4E4E4",
+        borderColor: "#ccc",
         borderRadius: 18,
         paddingHorizontal: 14,
         marginBottom: 16,
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: 14,
         fontSize: 16,
-        color: "#000",
+        color: "#030303",
     },
  
     description: {
@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 8,
-        backgroundColor: "#4F7CFF",
+        backgroundColor: "#408bbc",
         borderRadius: 18,
         paddingVertical: 16,
         marginTop: 8,
@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     },
  
     buttonText: {
-        color: "#fff",
+        color: "#f5f5f5",
         fontSize: 16,
         fontWeight: "700",
     },

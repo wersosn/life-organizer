@@ -24,9 +24,9 @@ export function HabitWeeklyChart({ completions }: Props) {
                 yAxisLabel=""
                 yAxisSuffix=""
                 chartConfig={{
-                    backgroundGradientFrom: isDark ? "#1E1E1E" : "#fff",
-                    backgroundGradientTo: isDark ? "#1E1E1E" : "#fff",
-                    color: () => "#4F7CFF",
+                    backgroundGradientFrom: isDark ? "#1E1E1E" : "#f5f5f5",
+                    backgroundGradientTo: isDark ? "#1E1E1E" : "#f5f5f5",
+                    color: () => "#408bbc",
                     labelColor: () => (isDark ? "#ccc" : "#666"),
                     barPercentage: 0.6,
                     propsForBackgroundLines: { strokeWidth: 0 },

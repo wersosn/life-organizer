@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
     },
 
     completeButton: { 
-        backgroundColor: "#4F7CFF", 
+        backgroundColor: "#408bbc", 
         borderRadius: 12, 
         paddingVertical: 14, 
         alignItems: "center", 
@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
     },
 
     completeButtonText: { 
-        color: "#fff", 
+        color: "#f5f5f5", 
         fontSize: 15, 
         fontWeight: "700" 
     },
@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
     },
 
     undoButtonText: { 
-        color: "#E53935", 
+        color: "#8a3c5c", 
         fontSize: 13, 
         fontWeight: "600" 
     },

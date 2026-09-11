@@ -67,7 +67,7 @@ export default function CreateBudgetScreen() {
                 contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}
                 keyboardShouldPersistTaps="handled"
             >
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>New budget</Text>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>New budget</Text>
 
                 <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Category</Text>
 
@@ -88,12 +88,12 @@ export default function CreateBudgetScreen() {
                                     style={[
                                         styles.categoryChip,
                                         {
-                                            backgroundColor: isSelected ? "#4F7CFF" : isDark ? "#1E1E1E" : "#fff",
+                                            backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
                                             borderColor: isDark ? "#333" : "#ccc",
                                         },
                                     ]}
                                 >
-                                    <Text style={{ color: isSelected ? "#fff" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
+                                    <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
                                         {category.name}
                                     </Text>
                                 </Pressable>
@@ -115,7 +115,7 @@ export default function CreateBudgetScreen() {
                 {error && <Text style={styles.errorText}>{error}</Text>}
 
                 <View style={styles.buttonWrapper}>
-                    <Button title="Create" onPress={handleCreate} color="#4F7CFF" />
+                    <Button title="Create" onPress={handleCreate} color="#408bbc" />
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

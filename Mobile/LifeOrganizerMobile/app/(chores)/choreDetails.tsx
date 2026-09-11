@@ -122,7 +122,7 @@ export default function ChoreDetailsScreen() {
     if (loading) {
         return (
             <View style={[styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <ActivityIndicator size="large" color="#4F7CFF" />
+                <ActivityIndicator size="large" color="#408bbc" />
             </View>
         );
     }
@@ -130,7 +130,7 @@ export default function ChoreDetailsScreen() {
     if (!chore) {
         return (
             <View style={[styles.center, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <Text style={{ color: isDark ? "#fff" : "#000" }}>Chore not found</Text>
+                <Text style={{ color: isDark ? "#f5f5f5" : "#030303" }}>Chore not found</Text>
             </View>
         );
     }
@@ -138,7 +138,7 @@ export default function ChoreDetailsScreen() {
     return (
         <ScrollView contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
             <View style={styles.headerRow}>
-                <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]} numberOfLines={2}>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]} numberOfLines={2}>
                     {chore.name}
                 </Text>
                 <View style={styles.headerActions}>
@@ -183,10 +183,10 @@ export default function ChoreDetailsScreen() {
             <View
                 style={[
                     styles.statusCard,
-                    { backgroundColor: chore.isOverdue ? "#E5393515" : "#4CAF5015" },
+                    { backgroundColor: chore.isOverdue ? "#8a3c5c15" : "#4CAF5015" },
                 ]}
             >
-                <Text style={[styles.statusText, { color: chore.isOverdue ? "#E53935" : "#4F7CFF" }]}>
+                <Text style={[styles.statusText, { color: chore.isOverdue ? "#8a3c5c" : "#408bbc" }]}>
                     {chore.isOverdue ? "Overdue" : "Up to date"}
                 </Text>
                 <Text style={[styles.statusSubtext, { color: isDark ? "#888" : "#999" }]}>
@@ -204,14 +204,14 @@ export default function ChoreDetailsScreen() {
                 </Pressable>
             )}
 
-            <Text style={[styles.sectionTitle, { color: isDark ? "#fff" : "#000" }]}>History</Text>
+            <Text style={[styles.sectionTitle, { color: isDark ? "#f5f5f5" : "#030303" }]}>History</Text>
 
             {chore.recentCompletions.length === 0 ? (
                 <Text style={{ color: isDark ? "#888" : "#999" }}>No completions logged yet.</Text>
             ) : (
                 chore.recentCompletions.map(completion => (
-                    <View key={completion.id} style={[styles.historyRow, { backgroundColor: isDark ? "#1E1E1E" : "#fff" }]}>
-                        <Text style={[styles.historyDate, { color: isDark ? "#fff" : "#000" }]}>
+                    <View key={completion.id} style={[styles.historyRow, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
+                        <Text style={[styles.historyDate, { color: isDark ? "#f5f5f5" : "#030303" }]}>
                             {new Date(completion.completedAt).toLocaleDateString()}
                         </Text>
                         {completion.notes ? (

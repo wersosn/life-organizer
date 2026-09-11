@@ -14,8 +14,8 @@ export default function LoginScreen() {
     
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
-    const screenBackground = isDark ? "#121212" : "#F5F5F5";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function handleLogin() {
         try {
@@ -70,7 +70,7 @@ export default function LoginScreen() {
                     />
  
                     <View style={styles.buttonContainer}>
-                        <Button title="Login" onPress={handleLogin} color="#4F7CFF" />
+                        <Button title="Login" onPress={handleLogin} color="#408bbc" />
                     </View>
  
                     <Link href="../forgotPassword" style={[styles.link, { color: isDark ? "#F5F5F5" : "#030303" }]}>

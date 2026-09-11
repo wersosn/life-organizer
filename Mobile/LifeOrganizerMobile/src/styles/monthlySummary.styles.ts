@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
     
     barFill: { 
         height: "100%", 
-        backgroundColor: "#4F7CFF", 
+        backgroundColor: "#408bbc", 
         borderRadius: 4 
     },
 });

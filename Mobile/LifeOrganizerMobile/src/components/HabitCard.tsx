@@ -36,10 +36,10 @@ export function HabitCard({ habit, onToggleComplete, onPress, onEdit, onDelete }
                     styles.checkbox,
                     {
                         backgroundColor: habit.isCompletedToday
-                            ? "#4F7CFF"
+                            ? "#408bbc"
                             : "transparent",
                         borderColor: habit.isCompletedToday
-                            ? "#4F7CFF"
+                            ? "#408bbc"
                             : isDark
                                 ? "#555"
                                 : "#CCC",

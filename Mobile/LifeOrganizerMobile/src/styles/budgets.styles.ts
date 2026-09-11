@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     },
 
     input: { 
-        backgroundColor: "#fff", 
+        backgroundColor: "#f5f5f5", 
         borderWidth: 1, 
         borderColor: "#ccc", 
         borderRadius: 12, 
@@ -126,7 +126,7 @@ export const styles = StyleSheet.create({
     },
 
     errorText: { 
-        color: "#E53935", 
+        color: "#8a3c5c", 
         fontSize: 13, 
         marginBottom: 12, 
         textAlign: "center" 

@@ -14,8 +14,8 @@ export default function RegisterScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#F5F5F5" : "#0B0B0B";
-    const screenBackground = isDark ? "#121212" : "#F5F5F5";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function register() {
         if (password !== confirmPassword) {
@@ -93,7 +93,7 @@ export default function RegisterScreen() {
                             title={loading ? "Creating account..." : "Create account"}
                             onPress={register}
                             disabled={loading}
-                            color="#4F7CFF"
+                            color="#408bbc"
                         />
                     </View>
 

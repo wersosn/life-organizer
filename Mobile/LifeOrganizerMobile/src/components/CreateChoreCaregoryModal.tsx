@@ -46,7 +46,7 @@ export function CreateChoreCategoryModal({ visible, onClose, onCreated }: Props)
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
                 <View style={[styles.card, { backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5" }]}>
-                    <Text style={[styles.title, { color: isDark ? "#fff" : "#000" }]}>New category</Text>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>New category</Text>
 
                     <TextInput
                         placeholder="Category name"
@@ -56,7 +56,7 @@ export function CreateChoreCategoryModal({ visible, onClose, onCreated }: Props)
                         autoFocus
                         style={[
                             styles.input,
-                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#fff" : "#000" },
+                            { backgroundColor: isDark ? "#2A2A2A" : "#F5F5F5", color: isDark ? "#f5f5f5" : "#030303" },
                         ]}
                     />
 
@@ -67,7 +67,7 @@ export function CreateChoreCategoryModal({ visible, onClose, onCreated }: Props)
                             <Text style={{ color: isDark ? "#ccc" : "#666", fontWeight: "600" }}>Cancel</Text>
                         </Pressable>
                         <Pressable onPress={handleCreate} style={styles.createButton} testID="create-button">
-                            <Text style={{ color: "#fff", fontWeight: "600" }}>Create</Text>
+                            <Text style={{ color: "#f5f5f5", fontWeight: "600" }}>Create</Text>
                         </Pressable>
                     </View>
                 </View>
