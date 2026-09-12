@@ -59,4 +59,25 @@ export const styles = StyleSheet.create({
         height: 1,
         margin: 10,
     },
+
+    button: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 8,
+        backgroundColor: "#408bbc",
+        borderRadius: 18,
+        paddingVertical: 16,
+        marginTop: 8,
+    },
+ 
+    buttonPressed: {
+        opacity: 0.85,
+    },
+ 
+    buttonText: {
+        color: "#f5f5f5",
+        fontSize: 16,
+        fontWeight: "700",
+    },
 });

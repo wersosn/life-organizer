@@ -85,7 +85,7 @@ export default function CreateChoreScreen() {
             <Blob variant="top5" color={blobColor} width={430} style={styles.blobTop} />
             <Blob variant="drip4" color={blobColor} width={430} style={styles.blobBottom} />
             <BackButton />
-            
+
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -192,7 +192,7 @@ export default function CreateChoreScreen() {
                         <Text style={[styles.label, { color: isDark ? "#ccc" : "#444", marginBottom: 0 }]}>
                             Automation enabled
                         </Text>
-                        <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} />
+                        <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"/>
                     </View>
 
                     {error && <Text style={styles.errorText}>{error}</Text>}

@@ -1,4 +1,4 @@
-import { Alert, Button, KeyboardAvoidingView, Platform, Text, TextInput, useColorScheme, View } from "react-native";
+import { Alert, Button, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, useColorScheme, View } from "react-native";
 import { styles } from "../../src/styles/resetPassword.styles";
 import { router, useLocalSearchParams } from "expo-router";
 import { resetPassword } from "@/api/authApi";
@@ -14,7 +14,6 @@ export default function ResetPasswordScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#f2f3f7" : "#13161d";
     const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function handleSubmit() {
@@ -58,29 +57,37 @@ export default function ResetPasswordScreen() {
     }
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Set a new password</Text>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+                <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Set a new password</Text>
 
-                <TextInput
-                    placeholder="New password"
-                    placeholderTextColor="#888"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                    style={[styles.input, { color: "#030303" }]}
-                />
-                <TextInput
-                    placeholder="Confirm password"
-                    placeholderTextColor="#888"
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    secureTextEntry
-                    style={[styles.input, { color: "#030303" }]}
-                />
+                    <TextInput
+                        placeholder="New password"
+                        placeholderTextColor="#888"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                        style={[styles.input, { color: "#030303" }]}
+                    />
 
-                <Button title={loading ? "Saving..." : "Reset password"} onPress={handleSubmit} disabled={loading} color="#408bbc" />
-            </View>
-        </KeyboardAvoidingView>
+                    <TextInput
+                        placeholder="Confirm password"
+                        placeholderTextColor="#888"
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                        secureTextEntry
+                        style={[styles.input, { color: "#030303" }]}
+                    />
+
+                    <Pressable
+                        style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+                        onPress={handleSubmit}
+                    >
+                        <Text style={styles.buttonText}>{loading ? "Saving..." : "Reset password"}</Text>
+                    </Pressable>
+                </View>
+            </KeyboardAvoidingView>
+        </View>
     );
 }

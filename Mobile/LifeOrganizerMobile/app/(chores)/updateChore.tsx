@@ -193,7 +193,7 @@ export default function UpdateChoreScreen() {
                         <Text style={[styles.label, { color: isDark ? "#ccc" : "#444", marginBottom: 0 }]}>
                             Automation enabled
                         </Text>
-                        <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} />
+                        <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"/>
                     </View>
 
                     {error && <Text style={styles.errorText}>{error}</Text>}

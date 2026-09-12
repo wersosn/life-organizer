@@ -56,6 +56,7 @@ export default function NotificationsScreen() {
                 <Switch
                     value={settings.pushNotificationsEnabled}
                     onValueChange={handleToggle}
+                    trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
                 />
             </View>
         </View>

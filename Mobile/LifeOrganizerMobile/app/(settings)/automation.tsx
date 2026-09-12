@@ -54,6 +54,7 @@ export default function AutomationScreen() {
                 <Switch
                     value={settings.habitAutomationEnabled}
                     onValueChange={value => handleToggle("habitAutomationEnabled", value)}
+                    trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
                 />
             </View>
 
@@ -67,6 +68,7 @@ export default function AutomationScreen() {
                 <Switch
                     value={settings.choreAutomationEnabled}
                     onValueChange={value => handleToggle("choreAutomationEnabled", value)}
+                    trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
                 />
             </View>
         </View>
