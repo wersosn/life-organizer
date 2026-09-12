@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        position: "relative",
+        overflow: "hidden",
+    },
+
     container: { 
         flexGrow: 1, 
         paddingTop: 60, 

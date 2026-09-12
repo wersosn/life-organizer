@@ -6,6 +6,8 @@ import { styles } from "../../src/styles/createChore.styles";
 import { getChoreCategories } from "@/api/choreCategoriesApi";
 import { updateChore } from "@/api/choresApi";
 import { CreateChoreCategoryModal } from "@/components/CreateChoreCaregoryModal";
+import { Blob } from "@/components/ui/Blob";
+import { BackButton } from "@/components/ui/BackButton";
 
 const FREQUENCY_UNITS = [
     { value: ChoreFrequency.Days, label: "Days" },
@@ -27,8 +29,11 @@ export default function UpdateChoreScreen() {
     const [loadingCategories, setLoadingCategories] = useState(true);
     const [categoryModalVisible, setCategoryModalVisible] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     useEffect(() => {
         loadCategories();
@@ -87,117 +92,126 @@ export default function UpdateChoreScreen() {
     }
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-        >
-            <ScrollView
-                contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}
-                keyboardShouldPersistTaps="handled"
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="top5" color={blobColor} width={430} style={styles.blobTop} />
+            <Blob variant="drip4" color={blobColor} width={430} style={styles.blobBottom} />
+            <BackButton />
+
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
             >
-                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Edit chore</Text>
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Edit chore</Text>
 
-                <TextInput
-                    placeholder="Name"
-                    placeholderTextColor="#888"
-                    value={name}
-                    onChangeText={setName}
-                    style={styles.input}
-                />
-
-                <TextInput
-                    placeholder="Description (optional)"
-                    placeholderTextColor="#888"
-                    value={description}
-                    onChangeText={setDescription}
-                    style={styles.input}
-                />
-
-                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Category</Text>
-
-                {loadingCategories ? (
-                    <ActivityIndicator style={{ marginBottom: 20 }} />
-                ) : (
-                    <View style={styles.chipRow}>
-                        {categories.map(category => {
-                            const isSelected = categoryId === category.id;
-                            return (
-                                <Pressable
-                                    key={category.id}
-                                    onPress={() => setCategoryId(category.id)}
-                                    style={[
-                                        styles.chip,
-                                        {
-                                            backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
-                                            borderColor: isDark ? "#333" : "#ccc",
-                                        },
-                                    ]}
-                                >
-                                    <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
-                                        {category.name}
-                                    </Text>
-                                </Pressable>
-                            );
-                        })}
-                    </View>
-                )}
-
-                <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.newCategoryButton}>
-                    <Text style={styles.newCategoryText}>+ New category</Text>
-                </Pressable>
-
-                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Repeat every</Text>
-                <View style={styles.frequencyRow}>
                     <TextInput
-                        value={frequencyValue}
-                        onChangeText={setFrequencyValue}
-                        keyboardType="number-pad"
-                        style={[styles.input, styles.frequencyInput]}
+                        placeholder="Name"
+                        placeholderTextColor="#888"
+                        value={name}
+                        onChangeText={setName}
+                        style={styles.input}
                     />
-                    <View style={styles.unitRow}>
-                        {FREQUENCY_UNITS.map(unit => {
-                            const isSelected = frequencyUnit === unit.value;
-                            return (
-                                <Pressable
-                                    key={unit.value}
-                                    onPress={() => setFrequencyUnit(unit.value)}
-                                    style={[
-                                        styles.unitChip,
-                                        {
-                                            backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
-                                            borderColor: isDark ? "#333" : "#ccc",
-                                        },
-                                    ]}
-                                >
-                                    <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
-                                        {unit.label}
-                                    </Text>
-                                </Pressable>
-                            );
-                        })}
+
+                    <TextInput
+                        placeholder="Description (optional)"
+                        placeholderTextColor="#888"
+                        value={description}
+                        onChangeText={setDescription}
+                        style={styles.input}
+                    />
+
+                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Category</Text>
+
+                    {loadingCategories ? (
+                        <ActivityIndicator style={{ marginBottom: 20 }} />
+                    ) : (
+                        <View style={styles.chipRow}>
+                            {categories.map(category => {
+                                const isSelected = categoryId === category.id;
+                                return (
+                                    <Pressable
+                                        key={category.id}
+                                        onPress={() => setCategoryId(category.id)}
+                                        style={[
+                                            styles.chip,
+                                            {
+                                                backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
+                                                borderColor: isDark ? "#333" : "#ccc",
+                                            },
+                                        ]}
+                                    >
+                                        <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
+                                            {category.name}
+                                        </Text>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                    )}
+
+                    <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.newCategoryButton}>
+                        <Text style={styles.newCategoryText}>+ New category</Text>
+                    </Pressable>
+
+                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Repeat every</Text>
+                    <View style={styles.frequencyRow}>
+                        <TextInput
+                            value={frequencyValue}
+                            onChangeText={setFrequencyValue}
+                            keyboardType="number-pad"
+                            style={[styles.input, styles.frequencyInput]}
+                        />
+                        <View style={styles.unitRow}>
+                            {FREQUENCY_UNITS.map(unit => {
+                                const isSelected = frequencyUnit === unit.value;
+                                return (
+                                    <Pressable
+                                        key={unit.value}
+                                        onPress={() => setFrequencyUnit(unit.value)}
+                                        style={[
+                                            styles.unitChip,
+                                            {
+                                                backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
+                                                borderColor: isDark ? "#333" : "#ccc",
+                                            },
+                                        ]}
+                                    >
+                                        <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
+                                            {unit.label}
+                                        </Text>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
                     </View>
-                </View>
 
-                <View style={styles.switchRow}>
-                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444", marginBottom: 0 }]}>
-                        Automation enabled
-                    </Text>
-                    <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} />
-                </View>
+                    <View style={styles.switchRow}>
+                        <Text style={[styles.label, { color: isDark ? "#ccc" : "#444", marginBottom: 0 }]}>
+                            Automation enabled
+                        </Text>
+                        <Switch value={isAutomationEnabled} onValueChange={setIsAutomationEnabled} />
+                    </View>
 
-                {error && <Text style={styles.errorText}>{error}</Text>}
+                    {error && <Text style={styles.errorText}>{error}</Text>}
 
-                <View style={styles.buttonWrapper}>
-                    <Button title="Save" onPress={handleUpdate} color="#408bbc"/>
-                </View>
+                    <Pressable
+                        style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+                        onPress={handleUpdate}
+                    >
+                        <Text style={styles.buttonText}>Save</Text>
+                    </Pressable>
 
-                <CreateChoreCategoryModal
-                    visible={categoryModalVisible}
-                    onClose={() => setCategoryModalVisible(false)}
-                    onCreated={handleCategoryCreated}
-                />
-            </ScrollView>
-        </KeyboardAvoidingView>
+                    <CreateChoreCategoryModal
+                        visible={categoryModalVisible}
+                        onClose={() => setCategoryModalVisible(false)}
+                        onCreated={handleCategoryCreated}
+                    />
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </View>
     );
 }

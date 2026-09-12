@@ -27,7 +27,7 @@ export default function CreateTodoScreen() {
 
     return (
         <View style={[styles.screen, { backgroundColor: screenBackground }]}>
-            <Blob variant="top4" color={blobColor} width={430} style={styles.blobTop} />
+            <Blob variant="top5" color={blobColor} width={430} style={styles.blobTop} />
             <Blob variant="drip3" color={blobColor} width={430} style={styles.blobBottom} />
             <BackButton />
             

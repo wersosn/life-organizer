@@ -6,7 +6,7 @@ import { styles } from "../../src/styles/choreDetails.styles";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { formatFrequency, formatLastCompleted } from "@/utils/choreFormat";
 import { addChoreToCalendar } from "@/utils/calendar";
-import DateTimePickerimport, { DateTimePickerAndroid, } from "@react-native-community/datetimepicker";
+import { DateTimePickerAndroid, } from "@react-native-community/datetimepicker";
 
 export default function ChoreDetailsScreen() {
     const params = useLocalSearchParams();
@@ -14,7 +14,6 @@ export default function ChoreDetailsScreen() {
 
     const [chore, setChore] = useState<ChoreDetails | null>(null);
     const [loading, setLoading] = useState(true);
-    const [calendarDate, setCalendarDate] = useState(new Date());
     const [showCalendarPicker, setShowCalendarPicker] = useState(false);
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
