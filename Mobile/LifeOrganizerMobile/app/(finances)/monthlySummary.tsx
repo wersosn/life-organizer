@@ -17,6 +17,7 @@ export default function MonthlySummaryScreen() {
     const [month, setMonth] = useState(now.getMonth() + 1);
     const [summary, setSummary] = useState<MonthlySummary | null>(null);
     const [loading, setLoading] = useState(true);
+    
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 

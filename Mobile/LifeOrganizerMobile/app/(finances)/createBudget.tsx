@@ -5,6 +5,8 @@ import { ActivityIndicator, Button, KeyboardAvoidingView, Platform, Pressable, S
 import { styles } from "@/styles/budgets.styles";
 import { createBudget } from "@/api/budgetsApi";
 import { router } from "expo-router";
+import { Blob } from "@/components/ui/Blob";
+import { BackButton } from "@/components/ui/BackButton";
 
 export default function CreateBudgetScreen() {
     const [amount, setAmount] = useState("");
@@ -12,8 +14,11 @@ export default function CreateBudgetScreen() {
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [loadingCategories, setLoadingCategories] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const blobColor = isDark ? "#f2f3f7" : "#13161d";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     useEffect(() => {
         loadCategories();
@@ -58,66 +63,75 @@ export default function CreateBudgetScreen() {
     }
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-        >
-            <ScrollView
-                contentContainerStyle={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}
-                keyboardShouldPersistTaps="handled"
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <Blob variant="top4" color={blobColor} width={430} style={styles.blobTop} />
+            <Blob variant="drip3" color={blobColor} width={430} style={styles.blobBottom} />
+            <BackButton />
+
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
             >
-                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>New budget</Text>
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>New budget</Text>
 
-                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Category</Text>
+                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Category</Text>
 
-                {loadingCategories ? (
-                    <ActivityIndicator style={{ marginBottom: 20 }} />
-                ) : categories.length === 0 ? (
-                    <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
-                        No expense categories yet. Create one first.
-                    </Text>
-                ) : (
-                    <View style={styles.categoryRow}>
-                        {categories.map(category => {
-                            const isSelected = categoryId === category.id;
-                            return (
-                                <Pressable
-                                    key={category.id}
-                                    onPress={() => setCategoryId(category.id)}
-                                    style={[
-                                        styles.categoryChip,
-                                        {
-                                            backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
-                                            borderColor: isDark ? "#333" : "#ccc",
-                                        },
-                                    ]}
-                                >
-                                    <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
-                                        {category.name}
-                                    </Text>
-                                </Pressable>
-                            );
-                        })}
-                    </View>
-                )}
+                    {loadingCategories ? (
+                        <ActivityIndicator style={{ marginBottom: 20 }} />
+                    ) : categories.length === 0 ? (
+                        <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>
+                            No expense categories yet. Create one first.
+                        </Text>
+                    ) : (
+                        <View style={styles.categoryRow}>
+                            {categories.map(category => {
+                                const isSelected = categoryId === category.id;
+                                return (
+                                    <Pressable
+                                        key={category.id}
+                                        onPress={() => setCategoryId(category.id)}
+                                        style={[
+                                            styles.categoryChip,
+                                            {
+                                                backgroundColor: isSelected ? "#408bbc" : isDark ? "#1E1E1E" : "#f5f5f5",
+                                                borderColor: isDark ? "#333" : "#ccc",
+                                            },
+                                        ]}
+                                    >
+                                        <Text style={{ color: isSelected ? "#f5f5f5" : isDark ? "#ccc" : "#333", fontSize: 13, fontWeight: "600" }}>
+                                            {category.name}
+                                        </Text>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                    )}
 
-                <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Monthly limit</Text>
-                <TextInput
-                    placeholder="Amount"
-                    placeholderTextColor="#888"
-                    value={amount}
-                    onChangeText={setAmount}
-                    keyboardType="decimal-pad"
-                    style={styles.input}
-                />
+                    <Text style={[styles.label, { color: isDark ? "#ccc" : "#444" }]}>Monthly limit</Text>
+                    <TextInput
+                        placeholder="Amount"
+                        placeholderTextColor="#888"
+                        value={amount}
+                        onChangeText={setAmount}
+                        keyboardType="decimal-pad"
+                        style={styles.input}
+                    />
 
-                {error && <Text style={styles.errorText}>{error}</Text>}
+                    {error && <Text style={styles.errorText}>{error}</Text>}
 
-                <View style={styles.buttonWrapper}>
-                    <Button title="Create" onPress={handleCreate} color="#408bbc" />
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                    <Pressable
+                        style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+                        onPress={handleCreate}
+                    >
+                        <Text style={styles.buttonText}>Create</Text>
+                    </Pressable>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </View>
     );
 }
