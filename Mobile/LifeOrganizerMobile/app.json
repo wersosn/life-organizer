@@ -4,7 +4,7 @@
     "slug": "LifeOrganizerMobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/images/cat-icon.jpg",
     "scheme": "lifeorganizermobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,9 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./src/assets/images/android-icon-foreground.png",
-        "backgroundImage": "./src/assets/images/android-icon-background.png",
-        "monochromeImage": "./src/assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./src/assets/images/cat-icon.jpg"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
