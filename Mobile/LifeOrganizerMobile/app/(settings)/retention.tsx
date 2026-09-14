@@ -61,8 +61,6 @@ export default function RetentionScreen() {
 
                 {error && <Text style={styles.errorText}>{error}</Text>}
 
-                <Button title="Save" onPress={handleSave} color="#408bbc" />
-
                 <Pressable
                     style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
                     onPress={handleSave}
