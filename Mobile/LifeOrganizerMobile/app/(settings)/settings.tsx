@@ -6,7 +6,6 @@ import { useAuth } from "@/auth/AuthContext";
 import { useState } from "react";
 import { saveFileToDevice } from "@/utils/exportFile";
 import { exportFullData } from "@/api/exportApi";
-import { BackButton } from "@/components/ui/BackButton";
 
 export default function SettingsScreen() {
     const { logout } = useAuth();
@@ -14,7 +13,6 @@ export default function SettingsScreen() {
 
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
-    const blobColor = isDark ? "#f2f3f7" : "#13161d";
     const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     function handleLogout() {

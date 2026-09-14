@@ -13,8 +13,10 @@ export default function ChoreCategoriesScreen() {
     const [editingCategory, setEditingCategory] = useState<ChoreCategory | null>(null);
     const [loading, setLoading] = useState(true);
     const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     async function loadCategories() {
         try {
@@ -72,58 +74,65 @@ export default function ChoreCategoriesScreen() {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Chore categories</Text>
-                <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.addButton}>
-                    <Text style={styles.addButtonText}>+</Text>
-                </Pressable>
-            </View>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Chore categories</Text>
+                    <Pressable onPress={() => setCategoryModalVisible(true)} style={styles.addButton}>
+                        <Text style={styles.addButtonText}>
+                            <Image
+                                source={isDark ? require("@/assets/images/add-light.png") : require("@/assets/images/add-dark.png")}
+                                style={styles.icon}
+                            />
+                        </Text>
+                    </Pressable>
+                </View>
 
-            {!loading && categories.length === 0 ? (
-                <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>No categories yet.</Text>
-            ) : (
-                <FlatList
-                    data={categories}
-                    keyExtractor={item => item.id}
-                    contentContainerStyle={styles.list}
-                    renderItem={({ item }) => (
-                        <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
-                            <View style={styles.rowContent}>
-                                <Text style={[styles.name, { color: isDark ? "#f5f5f5" : "#030303" }]}>{item.name}</Text>
-                            </View>
+                {!loading && categories.length === 0 ? (
+                    <Text style={[styles.emptyText, { color: isDark ? "#888" : "#999" }]}>No categories yet.</Text>
+                ) : (
+                    <FlatList
+                        data={categories}
+                        keyExtractor={item => item.id}
+                        contentContainerStyle={styles.list}
+                        renderItem={({ item }) => (
+                            <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
+                                <View style={styles.rowContent}>
+                                    <Text style={[styles.name, { color: isDark ? "#f5f5f5" : "#030303" }]}>{item.name}</Text>
+                                </View>
 
-                            <View style={styles.actions}>
-                                <Pressable onPress={() => handleEdit(item)} hitSlop={10} style={styles.iconButton}>
-                                    <Image
-                                        source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
-                                        style={styles.icon}
-                                    />
-                                </Pressable>
-                                <Pressable onPress={() => handleDelete(item)} hitSlop={10} style={styles.iconButton}>
-                                    <Image
-                                        source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
-                                        style={styles.icon}
-                                    />
-                                </Pressable>
+                                <View style={styles.actions}>
+                                    <Pressable onPress={() => handleEdit(item)} hitSlop={10} style={styles.iconButton}>
+                                        <Image
+                                            source={isDark ? require("@/assets/images/edit-light.png") : require("@/assets/images/edit-dark.png")}
+                                            style={styles.icon}
+                                        />
+                                    </Pressable>
+                                    <Pressable onPress={() => handleDelete(item)} hitSlop={10} style={styles.iconButton}>
+                                        <Image
+                                            source={isDark ? require("@/assets/images/trash-light.png") : require("@/assets/images/trash-dark.png")}
+                                            style={styles.icon}
+                                        />
+                                    </Pressable>
+                                </View>
                             </View>
-                        </View>
-                    )}
+                        )}
+                    />
+                )}
+
+                <CreateChoreCategoryModal
+                    visible={categoryModalVisible}
+                    onClose={() => setCategoryModalVisible(false)}
+                    onCreated={handleCreate}
                 />
-            )}
 
-            <CreateChoreCategoryModal
-                visible={categoryModalVisible}
-                onClose={() => setCategoryModalVisible(false)}
-                onCreated={handleCreate}
-            />
-
-            <EditChoreCategoryModal
-                visible={editingCategory !== null}
-                category={editingCategory}
-                onClose={() => setEditingCategory(null)}
-                onUpdated={handleUpdated}
-            />
+                <EditChoreCategoryModal
+                    visible={editingCategory !== null}
+                    category={editingCategory}
+                    onClose={() => setEditingCategory(null)}
+                    onUpdated={handleUpdated}
+                />
+            </View>
         </View>
     );
 }

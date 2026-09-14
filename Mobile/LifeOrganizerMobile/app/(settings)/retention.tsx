@@ -1,14 +1,16 @@
 import { getRetentionSettings, updateRetentionSettings } from "@/api/retentionApi";
 import { styles } from "../../src/styles/automation.styles";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Button, Text, TextInput, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Alert, Button, Pressable, Text, TextInput, useColorScheme, View } from "react-native";
 
 export default function RetentionScreen() {
     const [days, setDays] = useState("30");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     useEffect(() => {
         getRetentionSettings()
@@ -43,22 +45,31 @@ export default function RetentionScreen() {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Task history retention</Text>
-            <Text style={[styles.subtitle, { color: isDark ? "#888" : "#999" }]}>
-                Completed tasks older than this many days will be automatically deleted.
-            </Text>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <View style={styles.container}>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Task history retention</Text>
+                <Text style={[styles.subtitle, { color: isDark ? "#888" : "#999" }]}>
+                    Completed tasks older than this many days will be automatically deleted.
+                </Text>
 
-            <TextInput
-                value={days}
-                onChangeText={setDays}
-                keyboardType="number-pad"
-                style={[styles.input, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5", color: isDark ? "#f5f5f5" : "#030303" }]}
-            />
+                <TextInput
+                    value={days}
+                    onChangeText={setDays}
+                    keyboardType="number-pad"
+                    style={[styles.input, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5", color: isDark ? "#f5f5f5" : "#030303" }]}
+                />
 
-            {error && <Text style={styles.errorText}>{error}</Text>}
+                {error && <Text style={styles.errorText}>{error}</Text>}
 
-            <Button title="Save" onPress={handleSave} color="#408bbc"/>
+                <Button title="Save" onPress={handleSave} color="#408bbc" />
+
+                <Pressable
+                    style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+                    onPress={handleSave}
+                >
+                    <Text style={styles.buttonText}>Save</Text>
+                </Pressable>
+            </View>
         </View>
     );
 }

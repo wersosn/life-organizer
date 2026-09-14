@@ -7,8 +7,10 @@ import { ActivityIndicator, Switch, Text, useColorScheme, View } from "react-nat
 export default function NotificationsScreen() {
     const [settings, setSettings] = useState<NotificationSettings | null>(null);
     const [loading, setLoading] = useState(true);
+    
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     useEffect(() => {
         getNotificationSettings()
@@ -43,21 +45,23 @@ export default function NotificationsScreen() {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Notifications</Text>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <View style={styles.container}>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Notifications</Text>
 
-            <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
-                <View style={styles.rowText}>
-                    <Text style={[styles.rowLabel, { color: isDark ? "#f5f5f5" : "#030303" }]}>Push notifications</Text>
-                    <Text style={[styles.rowSubtitle, { color: isDark ? "#888" : "#999" }]}>
-                        Get notified about overdue habits, chores, and other important updates.
-                    </Text>
+                <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
+                    <View style={styles.rowText}>
+                        <Text style={[styles.rowLabel, { color: isDark ? "#f5f5f5" : "#030303" }]}>Push notifications</Text>
+                        <Text style={[styles.rowSubtitle, { color: isDark ? "#888" : "#999" }]}>
+                            Get notified about overdue habits, chores, and other important updates.
+                        </Text>
+                    </View>
+                    <Switch
+                        value={settings.pushNotificationsEnabled}
+                        onValueChange={handleToggle}
+                        trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
+                    />
                 </View>
-                <Switch
-                    value={settings.pushNotificationsEnabled}
-                    onValueChange={handleToggle}
-                    trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
-                />
             </View>
         </View>
     );

@@ -94,7 +94,10 @@ export default function TabLayout() {
                                         fontWeight: "600",
                                     }}
                                 >
-                                    +
+                                    <Image
+                                        source={require("../../src/assets/images/add-light.png")}
+                                        style={styles.icon}
+                                    />
                                 </Text>
                             </Pressable>
                         ),

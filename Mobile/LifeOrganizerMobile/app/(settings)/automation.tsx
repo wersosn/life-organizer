@@ -7,8 +7,10 @@ import { getAutomationSettings, updateAutomationSettings } from "@/api/automatio
 export default function AutomationScreen() {
     const [settings, setSettings] = useState<AutomationSettings | null>(null);
     const [loading, setLoading] = useState(true);
+
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
+    const screenBackground = isDark ? "#0c0e13" : "#edeff3";
 
     useEffect(() => {
         getAutomationSettings()
@@ -41,35 +43,37 @@ export default function AutomationScreen() {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: isDark ? "#121212" : "#F5F5F5" }]}>
-            <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Automation</Text>
+        <View style={[styles.screen, { backgroundColor: screenBackground }]}>
+            <View style={styles.container}>
+                <Text style={[styles.title, { color: isDark ? "#f5f5f5" : "#030303" }]}>Automation</Text>
 
-            <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
-                <View style={styles.rowText}>
-                    <Text style={[styles.rowLabel, { color: isDark ? "#f5f5f5" : "#030303" }]}>Habits</Text>
-                    <Text style={[styles.rowSubtitle, { color: isDark ? "#888" : "#999" }]}>
-                        Missed habits will automatically appear in your task list.
-                    </Text>
+                <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
+                    <View style={styles.rowText}>
+                        <Text style={[styles.rowLabel, { color: isDark ? "#f5f5f5" : "#030303" }]}>Habits</Text>
+                        <Text style={[styles.rowSubtitle, { color: isDark ? "#888" : "#999" }]}>
+                            Missed habits will automatically appear in your task list.
+                        </Text>
+                    </View>
+                    <Switch
+                        value={settings.habitAutomationEnabled}
+                        onValueChange={value => handleToggle("habitAutomationEnabled", value)}
+                        trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
+                    />
                 </View>
-                <Switch
-                    value={settings.habitAutomationEnabled}
-                    onValueChange={value => handleToggle("habitAutomationEnabled", value)}
-                    trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
-                />
-            </View>
 
-            <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
-                <View style={styles.rowText}>
-                    <Text style={[styles.rowLabel, { color: isDark ? "#f5f5f5" : "#030303" }]}>Chores</Text>
-                    <Text style={[styles.rowSubtitle, { color: isDark ? "#888" : "#999" }]}>
-                        Overdue chores will automatically appear in your task list.
-                    </Text>
+                <View style={[styles.row, { backgroundColor: isDark ? "#1E1E1E" : "#f5f5f5" }]}>
+                    <View style={styles.rowText}>
+                        <Text style={[styles.rowLabel, { color: isDark ? "#f5f5f5" : "#030303" }]}>Chores</Text>
+                        <Text style={[styles.rowSubtitle, { color: isDark ? "#888" : "#999" }]}>
+                            Overdue chores will automatically appear in your task list.
+                        </Text>
+                    </View>
+                    <Switch
+                        value={settings.choreAutomationEnabled}
+                        onValueChange={value => handleToggle("choreAutomationEnabled", value)}
+                        trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
+                    />
                 </View>
-                <Switch
-                    value={settings.choreAutomationEnabled}
-                    onValueChange={value => handleToggle("choreAutomationEnabled", value)}
-                    trackColor={{ false: "#30678b", true: "#408bbc" }} thumbColor="#bfd8e9"
-                />
             </View>
         </View>
     );

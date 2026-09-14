@@ -63,4 +63,10 @@ export const styles = StyleSheet.create({
         fontWeight: "500",
         color: "#0B0B0B",
     },
+
+    icon: {
+        width: 18,
+        height: 18,
+        resizeMode: "contain"
+    },
 });

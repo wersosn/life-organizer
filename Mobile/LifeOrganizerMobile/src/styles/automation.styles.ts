@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        position: "relative",
+        overflow: "hidden",
+    },
+
     container: { 
         flex: 1, 
         paddingTop: 60, 
@@ -58,5 +64,26 @@ export const styles = StyleSheet.create({
         color: "#8a3c5c", 
         fontSize: 13, 
         marginBottom: 12 
+    },
+
+    button: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 8,
+        backgroundColor: "#408bbc",
+        borderRadius: 18,
+        paddingVertical: 16,
+        marginTop: 8,
+    },
+ 
+    buttonPressed: {
+        opacity: 0.85,
+    },
+ 
+    buttonText: {
+        color: "#f5f5f5",
+        fontSize: 16,
+        fontWeight: "700",
     },
 });
