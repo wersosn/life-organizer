@@ -34,14 +34,17 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
+if (builder.Environment.IsDevelopment())
 {
-    serverOptions.ListenAnyIP(5292);
-    serverOptions.ListenAnyIP(7297, listenOptions =>
+    builder.WebHost.ConfigureKestrel(serverOptions =>
     {
-        listenOptions.UseHttps();
+        serverOptions.ListenAnyIP(5292);
+        serverOptions.ListenAnyIP(7297, listenOptions =>
+        {
+            listenOptions.UseHttps();
+        });
     });
-});
+}
 
 builder.Services
     .AddAuthentication(options =>
