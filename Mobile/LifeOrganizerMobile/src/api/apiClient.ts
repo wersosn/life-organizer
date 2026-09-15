@@ -7,7 +7,7 @@ import axiosRetry from "axios-retry";
 
 export const apiClient = axios.create({
     baseURL: API_URL,
-    timeout: 5000,
+    timeout: 30000,
 });
 
 apiClient.interceptors.request.use(
