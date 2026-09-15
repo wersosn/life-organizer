@@ -102,6 +102,9 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 builder.Services.AddScoped<LoggingFilter>();
 
+// Health check:
+builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!);
+
 // API versioning:
 builder.Services.AddApiVersioning(options =>
 {
@@ -130,6 +133,8 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
+app.MapHealthChecks("/health").AllowAnonymous();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
