@@ -52,6 +52,8 @@ The key feature is an **automation system** that connects these modules together
 - **Docker** / Docker Compose
 - **GitHub Actions** (CI/CD)
 - **Render** for backend API hosting as a Dockerized web service, with a managed PostgreSQL instance
+- **Health checks** (`/health`) + **UptimeRobot** for automated uptime monitoring with alerting on downtime
+- **Environment-based configuration** for secrets and connection strings through environment variables
 
 ## Architecture
 The backend follows **Clean Architecture** principles, with a clear separation between:
@@ -286,6 +288,8 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 - **Docker** / Docker Compose
 - **GitHub Actions** (CI/CD)
 - **Render** do hostowania API jako usługi webowej, uruchomionej w Dockerze, wraz z zarządzaną instancją PostgreSQL
+- **Health checks** (`/health`) + **UptimeRobot** do automatycznego monitorowania dostępności aplikacji i wysyłania powiadomień w przypadku jej awarii
+- **Environment-based configuration** do przekazywania sekretów i connection stringów za pomocą zmiennych środowiskowych
 
 ## Architektura
 Backend oparty jest na zasadach **Clean Architecture**, z wyraźnym podziałem na:
