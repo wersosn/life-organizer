@@ -51,6 +51,7 @@ The key feature is an **automation system** that connects these modules together
 ### DevOps
 - **Docker** / Docker Compose
 - **GitHub Actions** (CI/CD)
+- **Render** for backend API hosting as a Dockerized web service, with a managed PostgreSQL instance
 
 ## Architecture
 The backend follows **Clean Architecture** principles, with a clear separation between:
@@ -215,7 +216,7 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Data export (csv, json)
 - [x] Unit & integration tests
 - [x] API documentation (Swagger/OpenAPI)
-- [ ] Azure hosting
+- [x] Hosting
 
 ### Mobile App
 - [x] Auth screens (register/login)
@@ -229,7 +230,7 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Statistics
 - [x] Settings (automation toggle, history retention)
 - [x] System calendar integration for chore reminders
-- [ ] API, unit & components tests
+- [x] API, unit & components tests
       
 ---
 # Aplikacja do organizacji życia
@@ -284,6 +285,7 @@ Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze s
 ### DevOps
 - **Docker** / Docker Compose
 - **GitHub Actions** (CI/CD)
+- **Render** do hostowania API jako usługi webowej, uruchomionej w Dockerze, wraz z zarządzaną instancją PostgreSQL
 
 ## Architektura
 Backend oparty jest na zasadach **Clean Architecture**, z wyraźnym podziałem na:
@@ -450,7 +452,7 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Eksport danych (csv, json)
 - [x] Testy jednostkowe i integracyjne
 - [x] Dokumentacja API (Swagger/OpenAPI)
-- [ ] Azure hosting
+- [x] Hosting
 
 ### Aplikacja mobilna
 - [x] Ekrany logowania/rejestracji
@@ -464,4 +466,4 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Statystyki
 - [x] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
 - [x] Integracja z systemowym kalendarzem, w celu tworzenia przypomnień o obowiązkach domowych
-- [ ] Testy API, jednostkowe oraz komponentów
+- [x] Testy jednostkowe, API oraz komponentów
