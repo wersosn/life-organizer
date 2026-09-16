@@ -10,6 +10,7 @@ A mobile life-management app that brings together task management, habit trackin
 - [Architecture](#architecture)
 - [Getting started](#getting-started)
 - [Roadmap](#roadmap)
+- [Screenshots](#screenshots)
 
 ## Core idea
 After logging in, the user gets access to four main modules:
@@ -233,6 +234,85 @@ The first build will ask to generate a new Android Keystore - accept this unless
 - [x] Settings (automation toggle, history retention)
 - [x] System calendar integration for chore reminders
 - [x] API, unit & components tests
+
+## Screenshots
+<div align="center">
+<table>
+<tr>
+  <th>Light</th>
+  <th>Dark</th>
+</tr>
+<tr>
+  <td><img src="Images/login-light.jpg" width="250"></td>
+  <td><img src="Images/login-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Login screen</b></td>
+</tr>
+<tr>
+  <td><img src="Images/todo-light.jpg" width="250"></td>
+  <td><img src="Images/todo-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Todo list (with a task created via automation)</b></td>
+</tr>
+<tr>
+  <td><img src="Images/habit-light.jpg" width="250"></td>
+  <td><img src="Images/habit-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Habit tracker</b></td>
+</tr>
+<tr>
+  <td><img src="Images/habit-details-light.jpg" width="250"></td>
+  <td><img src="Images/habit-details-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Habit details</b></td>
+</tr>
+<tr>
+  <td><img src="Images/transaction-light.jpg" width="250"></td>
+  <td><img src="Images/transaction-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Transaction tracker</b></td>
+</tr>
+<tr>
+  <td><img src="Images/budget-light.jpg" width="250"></td>
+  <td><img src="Images/budget-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Budget tracker</b></td>
+</tr>
+<tr>
+  <td><img src="Images/summary-light.jpg" width="250"></td>
+  <td><img src="Images/summary-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Monthly summary for transactions</b></td>
+</tr>
+</tr>
+<tr>
+  <td><img src="Images/chore-light.jpg" width="250"></td>
+  <td><img src="Images/chore-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Chore tracker</b></td>
+</tr>
+<tr>
+  <td><img src="Images/settings-light.jpg" width="250"></td>
+  <td><img src="Images/settings-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Available settings</b></td>
+</tr>
+</table>
+
+<p align="center">
+  <img src="Images/notification.png" width="250"><br>
+  <em>Push notification delivered via Expo + FCM</em>
+</p>
+</div>
       
 ---
 # Aplikacja do organizacji życia
@@ -246,6 +326,7 @@ Projekt jest aplikacją mobilną do zarządzania życiem codziennym, łącząca 
 - [Architektura](#architektura)
 - [Instrukcja użytkowania](#instrukcja-użytkowania)
 - [Plan prac](#plan-prac)
+- [Prezentacja aplikacji](#prezentacja-aplikacji)
 
 ## Główna idea
 Po zalogowaniu użytkownik ma dostęp do czterech głównych zakładek:
@@ -471,3 +552,82 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 - [x] Ustawienia (włącz/wyłącz automatyzację, czas przechowywania historii)
 - [x] Integracja z systemowym kalendarzem, w celu tworzenia przypomnień o obowiązkach domowych
 - [x] Testy jednostkowe, API oraz komponentów
+
+## Prezentacja aplikacji
+<div align="center">
+<table>
+<tr>
+  <th>Tryb jasny</th>
+  <th>Tryb ciemny</th>
+</tr>
+<tr>
+  <td><img src="Images/login-light.jpg" width="250"></td>
+  <td><img src="Images/login-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Ekran logowania</b></td>
+</tr>
+<tr>
+  <td><img src="Images/todo-light.jpg" width="250"></td>
+  <td><img src="Images/todo-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Lista todo (z zadaniem, które zostało stworzone poprzez automatyzację)</b></td>
+</tr>
+<tr>
+  <td><img src="Images/habit-light.jpg" width="250"></td>
+  <td><img src="Images/habit-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Zarządzanie nawykami</b></td>
+</tr>
+<tr>
+  <td><img src="Images/habit-details-light.jpg" width="250"></td>
+  <td><img src="Images/habit-details-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Szczegóły nawyku</b></td>
+</tr>
+<tr>
+  <td><img src="Images/transaction-light.jpg" width="250"></td>
+  <td><img src="Images/transaction-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Zarządzanie transakcjami</b></td>
+</tr>
+<tr>
+  <td><img src="Images/budget-light.jpg" width="250"></td>
+  <td><img src="Images/budget-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Zarządzanie budżetem</b></td>
+</tr>
+<tr>
+  <td><img src="Images/summary-light.jpg" width="250"></td>
+  <td><img src="Images/summary-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Miesięczne podsumowanie dla transakcji</b></td>
+</tr>
+</tr>
+<tr>
+  <td><img src="Images/chore-light.jpg" width="250"></td>
+  <td><img src="Images/chore-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Zarządzanie obowiązkami</b></td>
+</tr>
+<tr>
+  <td><img src="Images/settings-light.jpg" width="250"></td>
+  <td><img src="Images/settings-dark.jpg" width="250"></td>
+</tr>
+<tr>
+  <td colspan="2" align="center"><b>Dostępne ustawienia</b></td>
+</tr>
+</table>
+
+<p align="center">
+  <img src="Images/notification.png" width="250"><br>
+  <em>Powiadomienie push wysłane przez Expo + FCM</em>
+</p>
+</div>
