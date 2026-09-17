@@ -309,7 +309,7 @@ The first build will ask to generate a new Android Keystore - accept this unless
 </table>
 
 <p align="center">
-  <img src="Images/notification.png" width="250"><br>
+  <img src="Images/notification.jpg" width="250"><br>
   <em>Push notification delivered via Expo + FCM</em>
 </p>
 </div>
@@ -627,7 +627,7 @@ Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, c
 </table>
 
 <p align="center">
-  <img src="Images/notification.png" width="250"><br>
+  <img src="Images/notification.jpg" width="250"><br>
   <em>Powiadomienie push wysłane przez Expo + FCM</em>
 </p>
 </div>
