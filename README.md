@@ -117,7 +117,7 @@ ASPNETCORE_ENVIRONMENT=Development
 ASPNETCORE_URLS=http://+:8080
 ```
 > The double underscore (`__`) syntax lets ASP.NET Core read these as nested configuration keys (e.g. `Jwt__Key` maps to `Jwt:Key`), which works both in `.env`/Docker and in `appsettings.json`.
- 
+
 ### 3. Run the backend - without Docker
 ```bash
 cd Server/LifeOrganizer/LifeOrganizer.API
@@ -213,6 +213,8 @@ The project's `eas.json` should have a `preview` profile configured to output an
 ```
 
 > **Environment variables are not read from your local `.env` file during a cloud build** - EAS Build runs on a remote machine that only has access to whatever is committed to the repository. Set `EXPO_PUBLIC_API_URL` (and any other `EXPO_PUBLIC_*` variables) either directly in `eas.json` as above, or via `eas env:set --scope project --name EXPO_PUBLIC_API_URL --value "..." --environment preview` (choose **Plain text** visibility for non-sensitive values like a local API URL).
+
+> **Important:** Replace `projectId`, `owner`, and the `updates.url` in `app.json` with your own EAS project details before running `eas build` - run `eas init` to generate a fresh `projectId` for your own account.
 
 Then build:
 ```bash
@@ -553,6 +555,8 @@ Profil `preview` w pliku `eas.json` projektu powinien być skonfigurowany tak, a
 ```
 
 > **Zmienne środowiskowe nie są odczytywane z lokalnego pliku `.env` podczas builda w chmurze** - EAS Build działa na zdalnej maszynie, która ma dostęp wyłącznie do tego, co zostało zacommitowane do repozytorium. Ustaw `EXPO_PUBLIC_API_URL` (i inne zmienne `EXPO_PUBLIC_*`) bezpośrednio w `eas.json` jak wyżej, albo przez `eas env:set --scope project --name EXPO_PUBLIC_API_URL --value "..." --environment preview` (dla wartości nie-wrażliwych, jak lokalny adres API, wybierz widoczność **Plain text**).
+
+> **Ważne:** Przed uruchomieniem `eas build` podmień `projectId`, `owner` oraz `updates.url` w `app.json` na dane własnego projektu EAS - użyj `eas init`, aby wygenerować nowy `projectId` dla swojego konta.
 
 Następnie uruchom build:
 ```bash

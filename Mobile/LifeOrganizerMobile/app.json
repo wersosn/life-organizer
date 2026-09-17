@@ -65,7 +65,7 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/e6b01631-c7a6-465e-8493-dfde560571f8"
+      "url": "https://u.expo.dev/your-project-id"
     },
     "extra": {
       "router": {},
