@@ -1,7 +1,8 @@
 Version [ENG](#Life-Organizer-App) | [PL](#Aplikacja-do-organizacji-życia)
 # Life Organizer App
-> **Status:** Final development stage - core features are implemented, with final UI improvements, testing, and deployment remaining. This README serves as both project documentation and a personal progress tracker.
-A mobile life-management app that brings together task management, habit tracking, personal finance tracking, and household chore tracking in one place - with smart automation that turns neglected habits and overdue chores into actionable tasks.
+> **Status:** Complete - all core features are implemented and deployed. The backend runs live on Render (Docker + PostgreSQL, CI/CD via GitHub Actions, monitored via UptimeRobot).  
+This README serves as both project documentation and a personal progress tracker.  
+A mobile life-management app that brings together task management, habit tracking, personal finance tracking, and household chore tracking in one place - with smart automation that turns neglected habits and overdue chores into actionable tasks and push notifications.
 
 ## Table of contents
 - [Core idea](#core-idea)
@@ -22,9 +23,11 @@ The key feature is an **automation system** that connects these modules together
 
 ## Automation system
 - If a **habit** isn't completed within a defined time window, it automatically gets added to the task list as a to-do item.
-- Each **chore** has a category, a set frequency, and a "last completed" timestamp. When the chore is overdue, the user receives a notification (e.g. *"You haven't changed your bedsheets in 3 weeks"*) and the chore is added to the task list.
+- Each **chore** has a category, a set frequency, and a "last completed" timestamp. 
+- When the habit is missed/chore is overdue, the user receives a notification (e.g. *"Habit missed/Chore overdue: Change my bedsheets"*) and the habit/chore is added to the task list.
 - Automation can be **disabled per user** at any time.
 - **Task history** is kept with a user-configurable retention period; entries older than the set threshold are automatically cleaned up.
+- Chores can be added **directly to user's device system calendar**, allowing them to receive reminders even outside the app.
 
 ## Tech stack
 ### Backend
@@ -65,14 +68,12 @@ The backend follows **Clean Architecture** principles, with a clear separation b
 - `Tests` - tests
 
 ## Getting started
-> This section is a work-in-progress starter guide and will be expanded as the project grows!
-
 ### Prerequisites
 - [.NET 8 SDK](https://dotnet.microsoft.com/download) - required only if running the backend without Docker
 - [Docker](https://www.docker.com/) - required only if running the backend with Docker
 - [PostgreSQL](https://www.postgresql.org/) instance (local or hosted, e.g. Supabase/Neon/Azure)
 - [Node.js](https://nodejs.org/) (LTS) + [Expo CLI](https://docs.expo.dev/get-started/installation/) - for the mobile app
-- [Expo Go](https://expo.dev/go) app on your phone - for quick local testing without building a native app
+- [Expo Go](https://expo.dev/go) app on your phone - for quick local testing without building a native app. Make sure your installed Expo Go version supports **SDK 54**
 - An [Expo account](https://expo.dev/) + [EAS CLI](https://docs.expo.dev/eas/) - only if you want to build a standalone, installable APK
 
 ### 1. Clone the repository
@@ -85,15 +86,32 @@ cd life-organizer
 Create an `.env` file (or update `appsettings.json` / `appsettings.Development.json` in `LifeOrganizer.API`) with your own values, based on the example below:
 ```env
 # Database
-ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=lifeorganizer;Username=postgres;Password=yourpassword
- 
+ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=LifeOrganizerDB;Username=your_username;Password=your_password
+ConnectionStrings__TestConnection=Host=localhost;Port=5432;Database=LifeOrganizerDB_Tests;Username=your_username;Password=your_password
+
 # JWT
 Jwt__Key=your-super-secret-key-min-32-characters
-Jwt__Issuer=LifeOrganizerAPI
-Jwt__Audience=LifeOrganizerClient
+Jwt__Issuer=LifeOrganizer
 Jwt__AccessTokenMinutes=20
-Jwt__RefreshTokenDays=30
- 
+Jwt__RefreshTokenDays=60
+
+# Automation (background service check intervals, in minutes)
+Automation__HabitCheckIntervalMinutes=60
+Automation__ChoreCheckIntervalMinutes=60
+Automation__CleanupCheckIntervalMinutes=1440
+
+# Email (SMTP - Mailtrap sandbox)
+Email__SmtpHost=sandbox.smtp.mailtrap.io
+Email__SmtpPort=port-from-your-sandbox
+Email__SmtpUsername=your-mailtrap-username
+Email__SmtpPassword=your-mailtrap-password
+Email__FromAddress=no-reply@lifeorganizer.app
+Email__FromName=LifeOrganizer
+
+# App
+App__BaseUrl=https://localhost:7297
+App__DeepLinkScheme=lifeorganizermobile
+
 # ASP.NET Core
 ASPNETCORE_ENVIRONMENT=Development
 ASPNETCORE_URLS=http://+:8080
@@ -150,12 +168,14 @@ npm install
 ```
 Create an `.env` file in `Mobile/LifeOrganizerMobile` pointing to your running backend instance:
 ```env
-EXPO_PUBLIC_API_URL=http://192.168.x.x:5292/api
+EXPO_PUBLIC_API_URL=http://192.168.x.x:5292/api/v1
 ```
 
 > **Use your computer's local network IP, not `localhost`.** Your phone and computer are separate devices on the network -  `localhost` on the phone refers to the phone itself, not your computer. Find your IP with `ipconfig` (Windows) or `ifconfig`/`ip addr` (macOS/Linux), and make sure your phone is connected to the **same Wi-Fi network** as your computer.
 
-> The backend uses plain HTTP for local development. Android blocks cleartext (non-HTTPS) traffic by default in standalone/release builds (though not in Expo Go or development builds) - this is already handled by the `expo-build-properties` plugin in `app.json` (`usesCleartextTraffic: true`). This is fine for local development, but should not be relied on for a production deployment - use HTTPS there instead.
+> The backend uses plain HTTP for local development. Android blocks cleartext (non-HTTPS) traffic by default in standalone/release builds (though not in Expo Go or development builds) - this is already handled by the `expo-build-properties` plugin in `app.json` (`usesCleartextTraffic: true`).
+
+> **Want to skip running the backend locally?** Point `EXPO_PUBLIC_API_URL` to the live, hosted instance instead: `https://life-organizer-abzg.onrender.com/api/v1`. Note: it's on a free tier and may take up to a minute to respond after a period of inactivity.
 
 ### 6. Run the mobile app - with Expo Go (recommended for day-to-day development)
 ```
@@ -184,7 +204,8 @@ The project's `eas.json` should have a `preview` profile configured to output an
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://192.168.x.x:5292/api"
+        "EXPO_PUBLIC_API_URL": "http://192.168.x.x:5292/api/v1" 
+        // or use: https://life-organizer-abzg.onrender.com/api/v1
       }
     }
   }
@@ -316,8 +337,11 @@ The first build will ask to generate a new Android Keystore - accept this unless
       
 ---
 # Aplikacja do organizacji życia
-> **Status:** Finalny etap - kluczowe funkcjonalności zostały zaimplementowane, a do zakończenia projektu pozostały finalne poprawki UI, testy oraz wdrożenie. To README pełni jednocześnie rolę dokumentacji projektu i osobistej listy postępu prac.
-Projekt jest aplikacją mobilną do zarządzania życiem codziennym, łącząca w sobie listę zadań, śledzenie nawyków, finansów oraz obowiązków domowych - wraz z inteligentnym systemem automatyzacji, który zamienia zaniedbane nawyki i zaległe obowiązki w konkretne zadania do wykonania.
+> **Status:** Projekt ukończony - wszystkie kluczowe funkcjonalności zostały zaimplementowane i wdrożone. Backend działa na żywo na Render (Docker + PostgreSQL, CI/CD przez GitHub Actions, monitorowanie przez UptimeRobot).  
+To README pełni jednocześnie rolę dokumentacji projektu, jak i osobistej listy postępu prac.  
+Projekt jest aplikacją mobilną do zarządzania życiem codziennym, łączącą w sobie listę zadań, śledzenie nawyków, finansów oraz obowiązków domowych - wraz z inteligentnym systemem automatyzacji, który zamienia zaniedbane nawyki i zaległe obowiązki w konkretne zadania do wykonania oraz powiadomienia push.
+
+> **Ważne:** Aplikacja posiada jedynie angielską wersję językową!
 
 ## Spis treści
 - [Główna idea](#główna-idea)
@@ -332,15 +356,17 @@ Projekt jest aplikacją mobilną do zarządzania życiem codziennym, łącząca 
 Po zalogowaniu użytkownik ma dostęp do czterech głównych zakładek:
 - **Task List** - ogólna lista rzeczy do zrobienia
 - **Habit Tracker** - śledzenie powtarzalnych nawyków
-- **Finance Tracker** - śledzenie finansów osobistych/budżetu
-- **Chore Tracker** - obowiązki domowe z kategoriami i częstotliwością  
+- **Finance Tracker** - śledzenie wykonanych transakcji/budżetu
+- **Chore Tracker** - śledzenia obowiązków domowych z kategoriami i częstotliwością  
 Kluczową funkcją jest **system automatyzacji**, który łączy te moduły ze sobą (opis poniżej).
 
 ## System automatyzacji
-- Jeśli **nawyk** nie zostanie wykonany w ustalonym czasie, automatycznie zostaje dodany do listy zadań jako task do wykonania.
-- Każdy **obowiązek domowy** ma kategorię, ustaloną częstotliwość oraz datę ostatniego wykonania. Gdy termin mija, użytkownik otrzymuje powiadomienie (np. *"Nie zmieniałeś/aś pościeli od 3 tygodni"*), a obowiązek trafia na listę zadań.
+- Jeśli **nawyk** nie zostanie wykonany w ustalonym czasie, automatycznie zostaje dodany do listy zadań jako zadanie do wykonania.
+- Każdy **obowiązek domowy** ma kategorię, ustaloną częstotliwość oraz datę ostatniego wykonania. 
+- Gdy termin wykonania nawyku/obowiązku mija, użytkownik otrzymuje powiadomienie (np. *"Habit missed/Chore overdue: Change my bedsheets" - "Niewykonany nawyk/Zaległy obowiązek: Zmiana pościeli"*), a nawyk/obowiązek trafia na listę zadań.
 - Automatyzację można **wyłączyć** w dowolnym momencie na poziomie ustawień użytkownika.
 - **Historia zadań** posiada konfigurowalny przez użytkownika czas przechowywania wpisów; starsze wpisy są automatycznie usuwane po przekroczeniu ustalonego progu.
+- Obowiązki domowe można dodać **bezpośrednio do systemowego kalendarza** urządzenia, dzięki czemu użytkownik otrzyma przypomnienia nawet poza aplikacją.
 
 ## Technologie
 ### Backend
@@ -381,14 +407,12 @@ Backend oparty jest na zasadach **Clean Architecture**, z wyraźnym podziałem n
 - `Tests` - testy
 
 ## Instrukcja użytkowania
-> Ta sekcja to wstępny przewodnik startowy i będzie rozbudowywana wraz z rozwojem projektu!
-
 ### Wymagania wstępne
 - [.NET 8 SDK](https://dotnet.microsoft.com/download) - wymagane tylko przy uruchamianiu backendu bez Dockera
 - [Docker](https://www.docker.com/) - wymagany tylko przy uruchamianiu backendu z Dockerem
 - Instancja [PostgreSQL](https://www.postgresql.org/) (lokalna lub hostowana, np. Supabase/Neon/Azure)
 - [Node.js](https://nodejs.org/) (LTS) + [Expo CLI](https://docs.expo.dev/get-started/installation/) - do aplikacji mobilnej
-- Aplikacja [Expo Go](https://expo.dev/go) na telefonie - do szybkiego testowania lokalnego bez budowania aplikacji natywnej
+- Aplikacja [Expo Go](https://expo.dev/go) na telefonie - do szybkiego testowania lokalnego bez budowania aplikacji natywnej. Upewnij się, że zainstalowana wersja Expo Go obsługuje **SDK 54**
 - Konto [Expo](https://expo.dev/) + [EAS CLI](https://docs.expo.dev/eas/) - tylko jeśli chcesz zbudować samodzielny, instalowalny plik APK
 
 ### 1. Sklonuj repozytorium
@@ -401,18 +425,36 @@ cd life-organizer
 Utwórz plik `.env` (lub uzupełnij `appsettings.json` / `appsettings.Development.json` w `LifeOrganizer.API`) własnymi wartościami, na wzór przykładu poniżej:
 ```env
 # Baza danych
-ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=lifeorganizer;Username=postgres;Password=yourpassword
- 
+ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=LifeOrganizerDB;Username=your_username;Password=your_password
+ConnectionStrings__TestConnection=Host=localhost;Port=5432;Database=LifeOrganizerDB_Tests;Username=your_username;Password=your_password
+
 # JWT
 Jwt__Key=your-super-secret-key-min-32-characters
-Jwt__Issuer=LifeOrganizerAPI
-Jwt__Audience=LifeOrganizerClient
+Jwt__Issuer=LifeOrganizer
 Jwt__AccessTokenMinutes=20
-Jwt__RefreshTokenDays=30
- 
+Jwt__RefreshTokenDays=60
+
+# Automatyzacja (interwały sprawdzania dla background service, w minutach)
+Automation__HabitCheckIntervalMinutes=60
+Automation__ChoreCheckIntervalMinutes=60
+Automation__CleanupCheckIntervalMinutes=1440
+
+# Email (SMTP - Mailtrap sandbox)
+Email__SmtpHost=sandbox.smtp.mailtrap.io
+Email__SmtpPort=port-from-your-sandbox
+Email__SmtpUsername=your-mailtrap-username
+Email__SmtpPassword=your-mailtrap-password
+Email__FromAddress=no-reply@lifeorganizer.app
+Email__FromName=LifeOrganizer
+
+# App
+App__BaseUrl=https://localhost:7297
+App__DeepLinkScheme=lifeorganizermobile
+
 # ASP.NET Core
 ASPNETCORE_ENVIRONMENT=Development
 ASPNETCORE_URLS=http://+:8080
+
 ```
 > Podwójny podkreślnik (`__`) pozwala ASP.NET Core odczytać te wartości jako zagnieżdżone klucze konfiguracji (np. `Jwt__Key` odpowiada `Jwt:Key`), co działa zarówno w `.env`/Dockerze, jak i w `appsettings.json`.
  
@@ -466,12 +508,14 @@ npm install
 
 Utwórz plik `.env` w `Mobile/LifeOrganizerMobile`, wskazujący na Twoją uruchomioną instancję backendu:
 ```env
-EXPO_PUBLIC_API_URL=http://192.168.x.x:5292/api
+EXPO_PUBLIC_API_URL=http://192.168.x.x:5292/api/v1
 ```
 
 > **Użyj lokalnego adresu IP komputera w sieci, nie `localhost`.** Telefon i komputer to osobne urządzenia w sieci - `localhost` na telefonie odnosi się do samego telefonu, nie do komputera. Adres IP znajdziesz przez `ipconfig` (Windows) lub `ifconfig`/`ip addr` (macOS/Linux). Upewnij się też, że telefon jest podłączony do **tej samej sieci Wi-Fi** co komputer.
 
-> Backend w wersji lokalnej używa zwykłego HTTP. Android domyślnie blokuje ruch cleartext (nieszyfrowany, nie HTTPS) w samodzielnych/wydaniowych buildach (nie dotyczy to jednak Expo Go ani development buildów) - jest to już obsłużone przez plugin `expo-build-properties` w `app.json` (`usesCleartextTraffic: true`). Jest to rozwiązanie odpowiednie do developmentu lokalnego, ale nie powinno być stosowane w wdrożeniu produkcyjnym - tam należy używać HTTPS.
+> Backend w wersji lokalnej używa zwykłego HTTP. Android domyślnie blokuje ruch cleartext (nieszyfrowany, nie HTTPS) w samodzielnych/wydaniowych buildach (nie dotyczy to jednak Expo Go ani development buildów) - jest to już obsłużone przez plugin `expo-build-properties` w `app.json` (`usesCleartextTraffic: true`).
+
+> **Chcesz pominąć uruchamianie backendu lokalnie?** Ustaw `EXPO_PUBLIC_API_URL` na działającą, hostowaną instancję: `https://life-organizer-abzg.onrender.com/api/v1`. Uwaga: działa na darmowym planie i po dłuższym okresie bezczynności pierwsza odpowiedź może chwilę potrwać.
 
 ### 6. Uruchomienie aplikacji mobilnej - przez Expo Go (zalecane do codziennej pracy)
 ```bash
@@ -500,7 +544,8 @@ Profil `preview` w pliku `eas.json` projektu powinien być skonfigurowany tak, a
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://192.168.x.x:5292/api"
+        "EXPO_PUBLIC_API_URL": "http://192.168.x.x:5292/api/v1"
+        // lub użyj: https://life-organizer-abzg.onrender.com/api/v1
       }
     }
   }
@@ -514,7 +559,7 @@ Następnie uruchom build:
 eas build --platform android --profile preview
 ```
 
-Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj to, chyba że masz już jeden przypisany do tego projektu (EAS bezpiecznie przechowuje go i zarządza nim za Ciebie). Build wykonuje się w całości w chmurze (10-20 minut, plus czas oczekiwania w kolejce na darmowym planie); po zakończeniu pobierz i zainstaluj plik `.apk` poprzez wypisany link/kod QR, albo z zakładki **Builds** na [expo.dev](https://expo.dev).
+Pierwszy build zapyta o wygenerowanie nowego Android Keystore - zaakceptuj tą opcję, chyba że masz już jeden przypisany do tego projektu (EAS bezpiecznie przechowuje go i zarządza nim za Ciebie). Build wykonuje się w całości w chmurze (10-20 minut, plus czas oczekiwania w kolejce na darmowym planie); po zakończeniu pobierz i zainstaluj plik `.apk` poprzez wypisany link/kod QR, albo z zakładki **Builds** na [expo.dev](https://expo.dev).
 
 > Każda zmiana na poziomie natywnym (nowa zależność natywna, plugin dodany w `app.json`, uprawnienia itd.) wymaga nowego builda, żeby zaczęła obowiązywać. Zmiany czysto w JS/TS - nie wymagają; do nich lepiej korzystać z Expo Go (krok 6) podczas developmentu, albo rozważyć [EAS Update](https://docs.expo.dev/eas-update/introduction/), żeby wypuszczać aktualizacje JS do już zainstalowanego builda bez pełnego rebuilda.
 
